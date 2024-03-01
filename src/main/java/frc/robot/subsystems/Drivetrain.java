@@ -18,7 +18,6 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Timer;
@@ -29,7 +28,6 @@ import frc.robot.Constants.DriveConstants.FrontRight;
 import frc.robot.Constants.DriveConstants.KeepAngle;
 import frc.robot.Constants.DriveConstants.RearLeft;
 import frc.robot.Constants.DriveConstants.RearRight;
-import frc.robot.Constants.ModuleConstants.Drive;
 
 /**
  * Implements a swerve Drivetrain Subsystem for the Robot
@@ -72,7 +70,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public Drivetrain() {
 
-    AutoBuilder.configureHolonomic(
+/*     AutoBuilder.configureHolonomic(
       this::getPose, // Robot pose supplier
       this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
       this::getChassisSpeed, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
@@ -96,7 +94,7 @@ public class Drivetrain extends SubsystemBase {
         return false;
       },
       this // Reference to this subsystem to set requirements
-);
+); */
 
     m_keepAngleTimer.reset();
     m_keepAngleTimer.start();

@@ -5,6 +5,9 @@
 package frc.robot;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -50,7 +53,7 @@ public final class Constants {
   public static final class ModuleConstants {
     public static final class Drive {
       public static final double kGearRatio = (36.0 / 14.0) * (18.0 / 24.0) * (45.0 / 15.0);
-      public static final double kWheelDiameter = 0.095;
+      public static final double kWheelDiameter = 0.09741;
       public static final double kToMeters = (1.0 / kGearRatio) * kWheelDiameter * Math.PI;
       public static final double kToRots = 1/kToMeters;
       public static final double kKrakenMaxRPS = 100.0;
@@ -67,6 +70,10 @@ public final class Constants {
 
     }
 
+  }
+
+  public static final class VisionConstants {
+    public static final double kPoseErrorAcceptance = 2.0; // How much error there can be between current stimated pose and vision pose in meters
   }
 
   public static final class DriveConstants {
@@ -118,8 +125,16 @@ public final class Constants {
     public static final double kRotTransFactor = 0.045;
 
     public static final class Auto {
-      public static final double kTranslationP = 1.0; // Placeholder, probaly should be changed
-      public static final double kRotationP = 1.0; // Placeholder, probaly should be changed
+
+      public static final HolonomicPathFollowerConfig autoConfig = new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
+                                                         // Constants class
+            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+            5.0, // Max module speed, in m/s
+            DriveConstants.kWheelBaseRadius, // Drive base radius in meters. Distance from robot center to furthest
+                                             // module.
+            new ReplanningConfig() // Default path replanning config. See the API for the options here
+        );
     }
   }
 

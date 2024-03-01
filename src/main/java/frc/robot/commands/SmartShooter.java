@@ -22,8 +22,7 @@ public class SmartShooter extends Command {
     private final Shooter m_shooter;
     private final Drivetrain m_robotDrive;
     private final Pitcher m_pitcher;
-/*     private final Indexer m_indexer;
-    private final Feeder m_feeder; */
+
     private final PIDController  m_pid = new PIDController(0.1,0.0,0.0);
     private final InterpolatingDoubleTreeMap m_pitchTable = new InterpolatingDoubleTreeMap();
     private final InterpolatingDoubleTreeMap m_velocityTable = new InterpolatingDoubleTreeMap();

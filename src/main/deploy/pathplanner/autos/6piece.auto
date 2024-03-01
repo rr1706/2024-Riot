@@ -80,12 +80,6 @@
                           }
                         ]
                       }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": null
-                      }
                     }
                   ]
                 }
