@@ -1,7 +1,11 @@
 package frc.robot.utilities;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import frc.robot.Constants.OperatorConstants;
+import java.awt.geom.Point2D;
+
+
 
 public class MathUtils {    
     public static double toUnitCircAngle(double angle) {
@@ -56,4 +60,15 @@ public class MathUtils {
       return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
     }
 
-}
+    public static InterpolatingDoubleTreeMap pointsToTreeMap(Point2D[] points){
+      int size = points.length;
+      InterpolatingDoubleTreeMap m_map = new InterpolatingDoubleTreeMap();
+      for(int i=0; i<size; i++){
+        m_map.put(points[i].getX(), points[i].getY());
+      }
+      return m_map;
+    }
+
+    }
+
+

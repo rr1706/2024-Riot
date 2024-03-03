@@ -8,20 +8,20 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 
-public class BiDirectionalIntake extends Command {
+public class AutoIntake extends Command {
     private final Intake m_intake;
-    private final Drivetrain m_robotDrive;
     private final Indexer m_indexer;
     private final Feeder m_feeder;
     private final Timer m_timer = new Timer();
     private boolean m_finishedIntake = false;
     private boolean m_currentSpiked = false;
+    private final boolean m_direction;
 
-    public BiDirectionalIntake(Intake intake, Drivetrain robotDrive, Indexer indexer, Feeder feeder){
+    public AutoIntake(Intake intake, Indexer indexer, Feeder feeder, boolean direction){
         m_intake = intake;
-        m_robotDrive = robotDrive;
         m_indexer = indexer;
         m_feeder = feeder;
+        m_direction = direction;
 
     }
     
@@ -29,23 +29,23 @@ public class BiDirectionalIntake extends Command {
 @Override
 public void initialize(){
     SmartDashboard.putNumber("Feeder Encoder", m_feeder.getEncoder());
-    SmartDashboard.putNumber("Velocity", m_robotDrive.getChassisSpeed().vxMetersPerSecond);
     m_timer.reset();
     m_timer.start();
     m_currentSpiked = false;
     m_finishedIntake = false;
     m_indexer.run(0.8);
     m_feeder.run(0.4);
-    double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
-    m_intake.run(1.0, robotVelocity);
+    if(m_direction){
+        m_intake.run(1.0, -1.0);
+    }
+    else{
+        m_intake.run(1.0, 1.0);
+    }
 }
 
 @Override
 public void execute(){
-    double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
-    m_intake.run(1.0, robotVelocity);
-
-    if(m_feeder.getCurrent() > 15.0 && !m_currentSpiked && m_timer.get() > 0.2){
+    if(m_feeder.getCurrent() > 10.0 && !m_currentSpiked && m_timer.get() > 0.5){
         m_currentSpiked = true;
         m_indexer.run(0.4);
         m_feeder.setZero();
