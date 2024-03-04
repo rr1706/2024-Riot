@@ -14,7 +14,7 @@ import frc.robot.Constants.PitcherConstants;
 public class Pitcher extends SubsystemBase{
     private final CANSparkMax m_motor = new CANSparkMax(5,MotorType.kBrushless);
     private final SparkPIDController m_pid = m_motor.getPIDController();
-    private double m_angle = 2.0;
+    private double m_angle = 3.0;
 
     public Pitcher(){
         m_motor.setSmartCurrentLimit(CurrentLimit.kPitcher);

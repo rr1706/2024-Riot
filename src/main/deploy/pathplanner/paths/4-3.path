@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.4058537347843933,
-        "y": 6.985795510052559
+        "x": 3.7147411242040724,
+        "y": 6.874261052373746
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.086958727031196,
-        "y": 6.985795510052559
+        "x": 4.395846116450874,
+        "y": 6.874261052373746
       },
       "isLocked": false,
       "linkedName": "6-2 End"
     },
     {
       "anchor": {
-        "x": 6.504073777378325,
-        "y": 6.314843398917567
+        "x": 6.115462616089283,
+        "y": 6.476092609817173
       },
       "prevControl": {
-        "x": 5.9317910943514205,
-        "y": 6.591117797620211
+        "x": 5.543179933062378,
+        "y": 6.752367008519817
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,7 +39,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 5.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -49,7 +49,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Pose 4 Piece",
   "previewStartingState": {
     "rotation": -150.0,
     "velocity": 0

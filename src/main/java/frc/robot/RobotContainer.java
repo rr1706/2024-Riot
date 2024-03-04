@@ -24,10 +24,13 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoIntakeAimAssist;
 import frc.robot.commands.AutoShooter;
+import frc.robot.commands.AutoShooterByPose;
 import frc.robot.commands.BiDirectionalIntake;
 import frc.robot.commands.DriveByController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Handoff;
+import frc.robot.commands.PerpetualIntake;
+import frc.robot.commands.ReverseFeed;
 import frc.robot.commands.SmartShooter;
 import frc.robot.commands.ZeroClimber;
 import frc.robot.commands.ZeroElevator;
@@ -127,7 +130,7 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> m_feeder.run(0.4)).alongWith(new InstantCommand(() -> m_indexer.run(0.4))))
         .onFalse(new InstantCommand(() -> m_feeder.stop()).alongWith(new InstantCommand(() -> m_indexer.stop())));
 
-    m_driverController.leftBumper().whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder));
+    m_driverController.leftBumper().whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder)).onFalse(new ReverseFeed(m_feeder, m_indexer).withTimeout(0.100));
     //    .onFalse(new InstantCommand(() -> m_feeder.run(-0.4)).andThen(new WaitCommand(0.06))
     //        .andThen(new InstantCommand(() -> m_feeder.stop()).alongWith(new InstantCommand(() -> m_indexer.stop()))));
 
@@ -155,17 +158,19 @@ public class RobotContainer {
 
   public void configureNamedCommands() {
     NamedCommands.registerCommand("Auto Shooter", new AutoShooter(m_shooter, m_pitcher, m_drive));
+    NamedCommands.registerCommand("Auto Shooter By Pose", new AutoShooterByPose(m_shooter, m_pitcher, m_poseEstimator::getPose));
+    NamedCommands.registerCommand("Perpetual Intake Back", new PerpetualIntake(m_intaker, m_indexer, m_feeder));
     NamedCommands.registerCommand("Auto Intake Back", new AutoIntake(m_intaker, m_indexer, m_feeder, true));
     NamedCommands.registerCommand("Auto Intake Forward", new AutoIntake(m_intaker, m_indexer, m_feeder, false));
-    NamedCommands.registerCommand("Start Feed", new InstantCommand(() -> m_feeder.run(0.4)).alongWith(new InstantCommand(() -> m_indexer.run(0.4))));
-    NamedCommands.registerCommand("End Feed", new InstantCommand(() -> m_feeder.stop()).alongWith(new InstantCommand(() -> m_indexer.stop())));
+    NamedCommands.registerCommand("Start Feed", new InstantCommand(() -> m_feeder.run(0.4)).alongWith(new InstantCommand(() -> m_indexer.run(0.4))).alongWith(new InstantCommand(() -> m_intaker.run(0.4))));
+    NamedCommands.registerCommand("End Feed", new InstantCommand(() -> m_feeder.stop()).alongWith(new InstantCommand(() -> m_indexer.stop())).alongWith(new InstantCommand(() -> m_indexer.stop())));
     NamedCommands.registerCommand("Auto Intake Assisted", new AutoIntakeAimAssist(m_drive).raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true)).alongWith(new InstantCommand(()->m_elevator.setPose(1.0)))));
     NamedCommands.registerCommand("Limelight Pipeline 1", switchLimelightPipeline("limelight-april", 1));
     NamedCommands.registerCommand("Limelight Pipeline 0", switchLimelightPipeline("limelight-april", 0));
   }
 
   public void configureAutoBuilder() {
-    AutoBuilder.configureHolonomic(m_drive::getPose, m_drive::resetOdometry, m_drive::getChassisSpeed,
+    AutoBuilder.configureHolonomic(m_poseEstimator::getPose, m_poseEstimator::resetOdometry, m_drive::getChassisSpeed,
         m_drive::drive, Auto.autoConfig,
         () -> {
           var alliance = DriverStation.getAlliance();

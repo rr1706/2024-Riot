@@ -47,7 +47,7 @@ public class AutoIntakeAimAssist extends Command {
          double xInput = -2.5;
 
         if(!tv){
-            xInput = -0.5;
+            xInput = -0.3;
         }
 
         double aimAssist = 0.0;
@@ -67,7 +67,7 @@ public class AutoIntakeAimAssist extends Command {
         else if(aimAssist<=-0.5){
             aimAssist = -0.5;
         }
-        
+
 
         double yInput = aimAssist;
 

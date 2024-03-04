@@ -1,7 +1,12 @@
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,10 +19,10 @@ import frc.robot.subsystems.Pitcher;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.MathUtils;
 
-public class AutoShooter extends Command {
+public class AutoShooterByPose extends Command {
     private final Shooter m_shooter;
-    private final Drivetrain m_robotDrive;
     private final Pitcher m_pitcher;
+    private final Supplier<Pose2d> getPose;
     private final PIDController  m_pid = new PIDController(0.1,0.0,0.0);
     private final Timer m_timer = new Timer();
     private final InterpolatingDoubleTreeMap m_pitchTable = MathUtils.pointsToTreeMap(ShooterConstants.kPitchTable);
@@ -27,11 +32,12 @@ public class AutoShooter extends Command {
     private boolean manualHoodOverride = false;
     private double manualVelocityValue = 70.0;
     private boolean manualVelocityOverride = false;
-    public AutoShooter(Shooter shooter, Pitcher pitcher, Drivetrain robotDrive){
+    public AutoShooterByPose(Shooter shooter, Pitcher pitcher, Supplier<Pose2d> getPose){
         m_shooter = shooter;
-        m_robotDrive = robotDrive;
         m_pitcher = pitcher;
-        addRequirements(m_robotDrive, shooter, pitcher);
+        this.getPose = getPose;
+
+        addRequirements(shooter, pitcher);
 
     }
 
@@ -49,44 +55,32 @@ public class AutoShooter extends Command {
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        double tx = LimelightHelpers.getTX("limelight-april");
+        // TODO Auto-generated method stud
+        var alliance = DriverStation.getAlliance();
 
-        double distance = m_distTable.get(LimelightHelpers.getTY("limelight-april"));
+        Translation2d goal = new Translation2d();
 
-        SmartDashboard.putNumber("Distance", distance);
+        if(alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
+            goal = new Translation2d(652.73/39.37, 218.42/39.37);
+        }
+        else{
+            goal = new Translation2d(-1.50/39.37, 218.42/39.37);
+        }
 
         boolean tv = LimelightHelpers.getTV("limelight-april");
 
-        double desiredRot = 0.0;
+        double tx = LimelightHelpers.getTX("limelight-april");
 
-        boolean ready = m_timer.get() >=0.05;
+        double distance = (getPose.get().getTranslation().getDistance(goal))*39.37;
 
-        if(tv && ready){
-            desiredRot = m_pid.calculate(tx);
+        if(tv){
+            distance = m_distTable.get(LimelightHelpers.getTY("limelight-april"));
         }
 
-        manualHoodOverride = SmartDashboard.getBoolean("Manual Hood Override", false);
-        manualVelocityOverride = SmartDashboard.getBoolean("Manual Velocity Override", false);
+        SmartDashboard.putNumber("Pose Distance", distance);
 
-        if(manualHoodOverride && manualVelocityOverride){
-            manualHoodValue = SmartDashboard.getNumber("Set Hood Adjust", 0);
-            manualVelocityValue = SmartDashboard.getNumber("Set Velocity Adjust", 70.0);
-            m_pitcher.pitchToAngle(manualHoodValue);
-            m_shooter.run(manualVelocityValue);
-        }
-        else if(manualHoodOverride){
-            manualHoodValue = SmartDashboard.getNumber("Set Hood Adjust", 0);
-            m_pitcher.pitchToAngle(manualHoodValue);
-        }
-        else if(manualVelocityOverride){
-            manualVelocityValue = SmartDashboard.getNumber("Set Velocity Adjust", 70.0);
-            m_shooter.run(manualVelocityValue);
-        }
-        else if(ready){
             m_pitcher.pitchToAngle(m_pitchTable.get(distance));
             m_shooter.run(m_velocityTable.get(distance));
-        }
 
 
         //double desiredRot = -MathUtils.inputTransform(m_controller.getRightX())* DriveConstants.kMaxAngularSpeed;
@@ -95,7 +89,7 @@ public class AutoShooter extends Command {
 
         //desiredTranslation = desiredTranslation.plus(rotAdj);
 
-        m_robotDrive.drive(0,0,desiredRot,true,true);
+
         
 
 /*     m_robotDrive.drive(m_slewX.calculate(

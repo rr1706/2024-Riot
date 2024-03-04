@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -35,6 +36,8 @@ public class SmartShooter extends Command {
     private double manualVelocityValue = 70.0;
     private boolean manualVelocityOverride = false;
     private boolean m_feedStarted = false;
+
+    private final Timer m_timer = new Timer();
 
     private final SlewRateLimiter m_rotFilter = new SlewRateLimiter(12.0);
     private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(20.0);
@@ -69,6 +72,8 @@ public class SmartShooter extends Command {
         SmartDashboard.putBoolean("Manual Hood Override", manualHoodOverride);
         SmartDashboard.putNumber("Set Hood Adjust", manualHoodValue);
         m_feedStarted = false;
+        m_timer.reset();
+        m_timer.start();
     }
 
     @Override
@@ -79,6 +84,7 @@ public class SmartShooter extends Command {
         boolean tv = LimelightHelpers.getTV("limelight-april");
         double desiredRot = -MathUtils.inputTransform(m_controller.getRightX())* DriveConstants.kMaxAngularSpeed;
 
+        SmartDashboard.putNumber("Limelight Ty", ty);
 
         Translation2d relGoalPose = compRelGoalPose(ty, tx);
 
@@ -86,10 +92,9 @@ public class SmartShooter extends Command {
         
         double goalDistance = relGoalPose.getDistance(new Translation2d());
 
-        boolean goodToShoot = pidAngle <= 1.0 && m_shooter.atSetpoint() && m_robotDrive.getChassisSpeed().omegaRadiansPerSecond <= 0.5 && m_robotDrive.getSpeed() <= 1.5 && goalDistance*39.37 <= 200.0;
+        boolean ready = m_timer.get() >= 0.05;
 
-
-        if(tv){
+        if(tv && ready){
             desiredRot = m_pid.calculate(pidAngle);
         }
 /*             if(goodToShoot && !m_feedStarted){
@@ -128,9 +133,15 @@ public class SmartShooter extends Command {
             manualVelocityValue = SmartDashboard.getNumber("Set Velocity Adjust", 70.0);
             m_shooter.run(manualVelocityValue);
         }
-        else{
+        else if(ready){
+            if(tv){
             m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance*39.37)));
-            m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance*39.37)));
+            m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance*39.37))); 
+            }
+            else{
+            m_pitcher.pitchToAngle(2.0);
+            m_shooter.run(m_velocityFilter.calculate(50.0));
+            }
         }
 
             var alliance = DriverStation.getAlliance();
@@ -178,7 +189,7 @@ public class SmartShooter extends Command {
         m_shooter.stop();
 /*                         m_indexer.stop();
                 m_feeder.stop(); */
-        m_pitcher.pitchToAngle(2.0);
+        m_pitcher.pitchToAngle(3.0);
     }
 
     public Translation2d compRelGoalPose(double ty, double tx){

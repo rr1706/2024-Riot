@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.053633184189446,
+        "y": 6.571383911998593
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.833121666243333,
+        "y": 6.7193880541607225
+      },
+      "isLocked": false,
+      "linkedName": "5-5 END"
+    },
+    {
+      "anchor": {
+        "x": 6.198198550243255,
+        "y": 6.304976456106759
+      },
+      "prevControl": {
+        "x": 5.221371211973196,
+        "y": 6.67005334010668
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 2.5,
+    "rotation": 170.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Pose 5 Piece",
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

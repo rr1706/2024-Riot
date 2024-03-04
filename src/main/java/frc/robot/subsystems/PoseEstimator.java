@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
@@ -17,7 +18,7 @@ import frc.robot.utilities.MathUtils;
 public class PoseEstimator extends SubsystemBase {
     private final SwerveDrivePoseEstimator m_poseEstimator;
     private final Drivetrain m_drivetrain;
-
+    private final Field2d m_field = new Field2d();
     public PoseEstimator(Drivetrain drivetrain){
         m_drivetrain = drivetrain;
         m_poseEstimator = new SwerveDrivePoseEstimator(DriveConstants.kSwerveKinematics,
@@ -25,7 +26,8 @@ public class PoseEstimator extends SubsystemBase {
              drivetrain.getModulePositions(), 
              new Pose2d(),
              VecBuilder.fill(0.229, 0.229, 0.0), 
-             VecBuilder.fill(5, 5, 5));
+             VecBuilder.fill(10, 10, 10));
+             SmartDashboard.putData("Field", m_field);
     }
     @Override
     public void periodic() {
@@ -53,14 +55,14 @@ public class PoseEstimator extends SubsystemBase {
 
         boolean updatePose = ((currentPose.getTranslation().getDistance(limelightBotPose.getTranslation()) <= VisionConstants.kPoseErrorAcceptance) && validSolution  && limelightBotPose.getTranslation().getDistance(currentPose.getTranslation()) >= 0.05 && velocity <= 4.0 && angularVelocity <= 0.5 * Math.PI);
 
-        boolean withinZOne = currentPose.getX() <= 5.0;
+        boolean withinZOne = true;
 
 
         //boolean m_overide = SmartDashboard.getBoolean("Set Pose Est", false);
 
         m_poseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_drivetrain.getGyro(), m_drivetrain.getModulePositions());
         if ((updatePose && validTagCount == 3) || (updatePose && withinZOne && validTagCount == 2.0)) {
-                    m_poseEstimator.addVisionMeasurement(limelightBotPose, timestamp, VecBuilder.fill(5.0, 5.0, 5.0));
+                    m_poseEstimator.addVisionMeasurement(limelightBotPose, timestamp, VecBuilder.fill(10.0, 10.0, 10.0));
         } 
     }
         
@@ -70,6 +72,8 @@ public class PoseEstimator extends SubsystemBase {
         SmartDashboard.putNumber("PoseEstX", pose.getX());
         SmartDashboard.putNumber("PoseEstY", pose.getY());
         SmartDashboard.putNumber("PoseEstRot", pose.getRotation().getRadians());
+
+        m_field.setRobotPose(pose);
     }
 
     public Pose2d getPose() {

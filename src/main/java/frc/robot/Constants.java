@@ -156,46 +156,60 @@ public final class Constants {
 
   public static final class ShooterConstants {
     public static final Point2D[] kDistTable = {
-        new Point2D.Double(16.75,38.0),
-        new Point2D.Double(12.15, 52.25),
-        new Point2D.Double(8.95, 56.0),
-        new Point2D.Double(6.11, 44.625+38.0),
-        new Point2D.Double(3.76, 66.0+38.0),
-        new Point2D.Double(2.17, 82.0+38.0),
-        new Point2D.Double(0.23, 107.0+38.0),
-        new Point2D.Double(-1.33, 128.5+38.0),
-        new Point2D.Double(-2.49, 150.5+38.0),
-        new Point2D.Double(-3.57, 174.0+38.0),
-        new Point2D.Double(-3.99, 196.0+38.0),
-        new Point2D.Double(-4.7, 221.5+38.0)
+        new Point2D.Double(0.0,38.0),
+        new Point2D.Double(-3.460, 38.0+12.0),
+        new Point2D.Double(-6.42, 38.0+24.0),
+        new Point2D.Double(-8.59, 38.0+36.0),
+        new Point2D.Double(-10.17, 38.0+48.0),
+        new Point2D.Double(-11.39, 38.0+60.0),
+        new Point2D.Double(-12.85, 38.0+72.0),
+        new Point2D.Double(-14.11, 38.0+84.0),
+        new Point2D.Double(-14.99,38.0+96.0),
+        new Point2D.Double(-15.53, 38.0+108),
+        new Point2D.Double(-16.47,38.0+120.0),
+        new Point2D.Double(-17.13, 38.0+132.0),
+        new Point2D.Double(-18.06,38.0+144.0),
+        new Point2D.Double(-18.6, 38.0+156.0),
+        new Point2D.Double(-18.81, 38.0+168.0),
+        new Point2D.Double(-19.27,38.0+180.0)
     };
 
     public static final Point2D[] kPitchTable = {
-        new Point2D.Double(41.0,20.0),
-        new Point2D.Double(53.68,18.50),
-        new Point2D.Double(63.77,16.67),
-        new Point2D.Double(85.77,14.97),
-        new Point2D.Double(100.2,13.41),
-        new Point2D.Double(120.0,12.40),
-        new Point2D.Double(140.0,10.54),
-        new Point2D.Double(160.5,9.05),
-        new Point2D.Double(171.0,7.86),
-        new Point2D.Double(179.0,7.27),
-        new Point2D.Double(200.0,6.51)
+        new Point2D.Double(38.0, 20.0),
+        new Point2D.Double(38.0+12.0, 20.0),
+        new Point2D.Double(38.0+24.0, 18.97),
+        new Point2D.Double(38.0+36.0, 16.59),
+        new Point2D.Double(38.0+48.0, 15.24),
+        new Point2D.Double(38.0+60.0, 13.88),
+        new Point2D.Double(38.0+72.0, 12.53),
+        new Point2D.Double(38.0+84.0, 11.57),
+        new Point2D.Double(38.0+96.0, 10.28),
+        new Point2D.Double(38.0+108, 9.57),
+        new Point2D.Double(38.0+120.0, 8.86),
+        new Point2D.Double(38.0+132.0, 8.22),
+        new Point2D.Double(38.0+144.0, 7.25),
+        new Point2D.Double(38.0+156.0, 6.55),
+        new Point2D.Double(38.0+168.0, 6.16),
+        new Point2D.Double(38.0+180.0, 5.71)
     };
 
     public static final Point2D[] kVelocityTable = {
-        new Point2D.Double(41.0,47.0),
-        new Point2D.Double(53.68,47.0),
-        new Point2D.Double(63.77,47.0),
-        new Point2D.Double(85.77,47.0),
-        new Point2D.Double(100.2,51.33),
-        new Point2D.Double(120.0,53.25),
-        new Point2D.Double(140.0,56.03),
-        new Point2D.Double(160.5,60.09),
-        new Point2D.Double(171.0,70.13),
-        new Point2D.Double(179.0,80.54),
-        new Point2D.Double(200.0,85.6)
+        new Point2D.Double(38.0, 52.06),
+        new Point2D.Double(38.0+12.0, 40.15),
+        new Point2D.Double(38.0+24.0, 40.15),
+        new Point2D.Double(38.0+36.0, 41.27),
+        new Point2D.Double(38.0+48.0, 42.94),
+        new Point2D.Double(38.0+60.0, 44.89),
+        new Point2D.Double(38.0+72.0, 50.19),
+        new Point2D.Double(38.0+84.0, 51.20),
+        new Point2D.Double(38.0+96.0, 55.94),
+        new Point2D.Double(38.0+108.0, 58.73),
+        new Point2D.Double(38.0+120.0, 61.35),
+        new Point2D.Double(38.0+132.0, 64.14),
+        new Point2D.Double(38.0+144.0, 68.05),
+        new Point2D.Double(38.0+156.0, 75.58),
+        new Point2D.Double(38.0+168.0, 82.83),
+        new Point2D.Double(38.0+180.0, 89.81)
     };
 
     public static final Point2D[] kTimeTable = {

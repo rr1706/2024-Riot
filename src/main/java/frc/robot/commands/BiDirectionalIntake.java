@@ -14,14 +14,14 @@ public class BiDirectionalIntake extends Command {
     private final Indexer m_indexer;
     private final Feeder m_feeder;
     private final Timer m_timer = new Timer();
-    private boolean m_finishedIntake = false;
-    private boolean m_currentSpiked = false;
 
     public BiDirectionalIntake(Intake intake, Drivetrain robotDrive, Indexer indexer, Feeder feeder){
         m_intake = intake;
         m_robotDrive = robotDrive;
         m_indexer = indexer;
         m_feeder = feeder;
+
+        addRequirements(feeder, indexer);
 
     }
     
@@ -32,8 +32,6 @@ public void initialize(){
     SmartDashboard.putNumber("Velocity", m_robotDrive.getChassisSpeed().vxMetersPerSecond);
     m_timer.reset();
     m_timer.start();
-    m_currentSpiked = false;
-    m_finishedIntake = false;
     m_indexer.run(0.8);
     m_feeder.run(0.4);
     double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
@@ -43,26 +41,9 @@ public void initialize(){
 @Override
 public void execute(){
     double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
-    m_intake.run(1.0, robotVelocity);
-
-    if(m_feeder.getCurrent() > 15.0 && !m_currentSpiked && m_timer.get() > 0.2){
-        m_currentSpiked = true;
-        m_indexer.run(0.4);
-        m_feeder.setZero();
-        m_feeder.setPose(3.0);
-    }
-    if (m_currentSpiked && m_feeder.atSetpoint()){
-        m_finishedIntake = true;
-    }
-
-
-   
+    m_intake.run(1.0, robotVelocity);   
 }
 
-@Override
-public boolean isFinished() {
-    return m_finishedIntake;
-}
 @Override
 public void end(boolean interrupted){
     m_intake.stop();

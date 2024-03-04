@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.289990426134699,
-        "y": 7.429807936538951
+        "x": 3.0999785076493245,
+        "y": 6.82792442507962
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.7739200093784815,
-        "y": 7.419940993728142
+        "x": 3.5834587053789506,
+        "y": 6.847658310701237
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "5-3 End"
     },
     {
       "anchor": {
-        "x": 3.6229264766221854,
-        "y": 5.564955745296107
+        "x": 5.892323323108186,
+        "y": 7.044997166917411
       },
       "prevControl": {
-        "x": 5.5568472675406895,
-        "y": 6.462847541079698
+        "x": 5.389109239756942,
+        "y": 6.956194681620132
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "6-4 End"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,19 +33,19 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 5.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 180.0,
+    "velocity": 2.5,
+    "rotation": -170.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Pose 5 Piece",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": -155.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

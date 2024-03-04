@@ -45,11 +45,11 @@ public void initialize(){
 
 @Override
 public void execute(){
-    if(m_feeder.getCurrent() > 10.0 && !m_currentSpiked && m_timer.get() > 0.5){
+    if(m_feeder.getCurrent() > 12.0 && !m_currentSpiked && m_timer.get() > 0.5){
         m_currentSpiked = true;
         m_indexer.run(0.4);
         m_feeder.setZero();
-        m_feeder.setPose(3.0);
+        m_feeder.setPose(3.5);
     }
     if (m_currentSpiked && m_feeder.atSetpoint()){
         m_finishedIntake = true;
