@@ -47,7 +47,8 @@ public void initialize(){
 public void execute(){
     if(m_feeder.getCurrent() > 12.0 && !m_currentSpiked && m_timer.get() > 0.5){
         m_currentSpiked = true;
-        m_indexer.run(0.4);
+        m_indexer.run(.2);
+        m_intake.run(.2);
         m_feeder.setZero();
         m_feeder.setPose(3.5);
     }

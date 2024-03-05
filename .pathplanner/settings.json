@@ -3,8 +3,10 @@
   "robotLength": 0.813,
   "holonomicMode": true,
   "pathFolders": [
+    "4 BIG NOTES",
+    "Pose 4 Piece",
     "Pose 5 Piece",
-    "Pose 4 Piece"
+    "Source Auto"
   ],
   "autoFolders": [],
   "defaultMaxVel": 5.0,

@@ -22,6 +22,7 @@ import frc.robot.Constants.DriveConstants.FrontRight;
 import frc.robot.Constants.DriveConstants.KeepAngle;
 import frc.robot.Constants.DriveConstants.RearLeft;
 import frc.robot.Constants.DriveConstants.RearRight;
+import frc.robot.utilities.ChassisAccel;
 
 /**
  * Implements a swerve Drivetrain Subsystem for the Robot
@@ -36,6 +37,9 @@ public class Drivetrain extends SubsystemBase {
   private final PIDController m_keepAnglePID = new PIDController(KeepAngle.kp, KeepAngle.ki, KeepAngle.kd);
 
   private final Timer m_keepAngleTimer = new Timer();
+
+  private ChassisSpeeds m_lastDriveSpeed = new ChassisSpeeds();
+  private ChassisAccel m_driveAccel = new ChassisAccel();
 
   private SlewRateLimiter m_slewX = new SlewRateLimiter(DriveConstants.kTransSlewRate);
   private SlewRateLimiter m_slewY = new SlewRateLimiter(DriveConstants.kTransSlewRate);
@@ -64,37 +68,13 @@ public class Drivetrain extends SubsystemBase {
    */
   public Drivetrain() {
 
-/*     AutoBuilder.configureHolonomic(
-      this::getPose, // Robot pose supplier
-      this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-      this::getChassisSpeed, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-      this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-      new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-              new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-              new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-              5.0, // Max module speed, in m/s
-              DriveConstants.kWheelBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
-              new ReplanningConfig() // Default path replanning config. See the API for the options here
-      ),
-      () -> {
-        // Boolean supplier that controls when the path will be mirrored for the red alliance
-        // This will flip the path being followed to the red side of the field.
-        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent()) {
-          return alliance.get() == DriverStation.Alliance.Red;
-        }
-        return false;
-      },
-      this // Reference to this subsystem to set requirements
-); */
-
     m_keepAngleTimer.reset();
     m_keepAngleTimer.start();
     m_keepAnglePID.enableContinuousInput(-Math.PI, Math.PI);
     m_odometry.resetPosition(ahrs.getRotation2d(), getModulePositions(), new Pose2d());
     ahrs.reset();
+
+    
 
     /*
     AutoBuilder.configureHolonomic(
@@ -166,6 +146,12 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
 
+    ChassisSpeeds m_speeds = getChassisSpeed();
+
+    m_driveAccel = new ChassisAccel(m_speeds,m_lastDriveSpeed,GlobalConstants.kLoopTime);
+
+    m_lastDriveSpeed = m_speeds;
+
     double xSpeed = getChassisSpeed().vxMetersPerSecond;
     double ySpeed = getChassisSpeed().vyMetersPerSecond;
 
@@ -194,6 +180,10 @@ public class Drivetrain extends SubsystemBase {
     m_FRModule.setDesiredState(desiredStates[1]);
     m_RLModule.setDesiredState(desiredStates[2]);
     m_RRModule.setDesiredState(desiredStates[3]);
+  }
+
+  public ChassisAccel getChassisAccel(){
+    return m_driveAccel;
   }
 
   public void setModuleStates(ChassisSpeeds chassisSpeeds) {

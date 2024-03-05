@@ -1,0 +1,186 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.5013930170513679,
+      "y": 3.1952
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Shooter By Pose"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "S1"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Stop Drive"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.2
+                      }
+                    },
+                    {
+                      "type": "race",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Perpetual Intake Back"
+                            }
+                          },
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.2
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "S2"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Auto Intake Assisted"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "S3"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Stop Drive"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.2
+                      }
+                    },
+                    {
+                      "type": "race",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Perpetual Intake Back"
+                            }
+                          },
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.3
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "S4"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Auto Intake Assisted"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "S5"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Stop Drive"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.2
+                      }
+                    },
+                    {
+                      "type": "race",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Perpetual Intake Back"
+                            }
+                          },
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.3
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "S6"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Auto Intake Assisted"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

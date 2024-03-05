@@ -167,6 +167,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Auto Intake Assisted", new AutoIntakeAimAssist(m_drive).raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true)).alongWith(new InstantCommand(()->m_elevator.setPose(1.0)))));
     NamedCommands.registerCommand("Limelight Pipeline 1", switchLimelightPipeline("limelight-april", 1));
     NamedCommands.registerCommand("Limelight Pipeline 0", switchLimelightPipeline("limelight-april", 0));
+    NamedCommands.registerCommand("Stop Drive", new InstantCommand(()->m_drive.stop()));
   }
 
   public void configureAutoBuilder() {

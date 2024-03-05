@@ -30,6 +30,7 @@ public class AutoIntakeAimAssist extends Command {
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
+        m_pid.reset();
         ty_check = 25.0;
         m_detectedOnce = false;
         m_slewX.reset(m_drive.getChassisSpeed().vxMetersPerSecond);

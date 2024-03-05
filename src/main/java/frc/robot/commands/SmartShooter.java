@@ -25,7 +25,7 @@ public class SmartShooter extends Command {
     private final Drivetrain m_robotDrive;
     private final Pitcher m_pitcher;
 
-    private final PIDController  m_pid = new PIDController(0.1,0.0,0.0);
+    private final PIDController  m_pid = new PIDController(0.085,0.02,0.0);
     private InterpolatingDoubleTreeMap m_pitchTable = new InterpolatingDoubleTreeMap();
     private InterpolatingDoubleTreeMap m_velocityTable = new InterpolatingDoubleTreeMap();
     private InterpolatingDoubleTreeMap m_timeTable = new InterpolatingDoubleTreeMap();
@@ -43,13 +43,13 @@ public class SmartShooter extends Command {
     private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(20.0);
     private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(300.0);
 
-    public SmartShooter(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher, /* Feeder feeder, Indexer indexer, */CommandXboxController controller){
+    public SmartShooter(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher, CommandXboxController controller){
         m_shooter = shooter;
         m_robotDrive = robotDrive;
         m_pitcher = pitcher;
-/*         m_indexer = indexer;
-        m_feeder = feeder; */
         m_controller = controller;
+
+        m_pid.setIntegratorRange(-0.15, 0.15);
 
         m_distTable = MathUtils.pointsToTreeMap(ShooterConstants.kDistTable);
 
@@ -66,6 +66,7 @@ public class SmartShooter extends Command {
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
+        m_pid.reset();
         SmartDashboard.putBoolean("Manual Velocity Override", manualVelocityOverride);
         SmartDashboard.putNumber("Set Velocity Adjust", manualVelocityValue);
 
@@ -200,8 +201,8 @@ public class SmartShooter extends Command {
         SmartDashboard.putNumber("Rel Goal X", goalRelPose.getX());
         SmartDashboard.putNumber("Rel Goal Y", goalRelPose.getY());
 
-        double rx = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
-        double ry = m_robotDrive.getChassisSpeed().vyMetersPerSecond;
+        double rx = m_robotDrive.getChassisSpeed().vxMetersPerSecond+m_robotDrive.getChassisAccel().ax*0.025;
+        double ry = m_robotDrive.getChassisSpeed().vyMetersPerSecond+m_robotDrive.getChassisAccel().ay*0.025;
 
         double shotTime = m_timeTable.get(distToGoal);
 

@@ -1,0 +1,195 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.8221644973960404,
+      "y": 6.792285196553275
+    },
+    "rotation": -134.21517539700807
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.6
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "4B1"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Shooter By Pose"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.35
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Perpetual Intake Back"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "race",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Auto Shooter By Pose"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "4B2"
+                            }
+                          },
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.2
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "5-4"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Intake Assisted"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "5-5"
+                            }
+                          },
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.2
+                            }
+                          },
+                          {
+                            "type": "race",
+                            "data": {
+                              "commands": [
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Perpetual Intake Back"
+                                  }
+                                },
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 0.2
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "5-6"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Intake Assisted"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "5-7"
+                            }
+                          },
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.2
+                            }
+                          },
+                          {
+                            "type": "race",
+                            "data": {
+                              "commands": [
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Perpetual Intake Back"
+                                  }
+                                },
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 0.2
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
