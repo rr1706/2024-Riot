@@ -84,6 +84,8 @@ public class RobotContainer {
   private final Command m_aimFromPodium = new ShootByPose(m_shooter, m_pitcher, new Translation2d(2.77,4.24));
   private final Command m_aimFromSubwoofer = new ShootByPose(m_shooter, m_pitcher,  new Translation2d(1.34,5.55));
 
+  private final Command m_teleInitCommand = new InstantCommand(()->{m_shooter.stop(); m_pitcher.pitchToAngle(2.0);});
+
 
 
   /**
@@ -197,6 +199,10 @@ public class RobotContainer {
 
   public Command getTestCommand() {
     return new ZeroClimber(m_climber).alongWith(new ZeroElevator(m_elevator));
+  }
+
+  public Command getTeleInitCommand(){
+    return m_teleInitCommand;
   }
 
   public Command switchLimelightPipeline(String name, int pipeline) {
