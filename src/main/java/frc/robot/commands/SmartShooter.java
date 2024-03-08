@@ -135,7 +135,7 @@ public class SmartShooter extends Command {
             m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance*39.37))); 
             }
             else{
-            m_pitcher.pitchToAngle(2.0);
+            m_pitcher.pitchToAngle(20.0);
             m_shooter.run(m_velocityFilter.calculate(50.0));
             }
         }
