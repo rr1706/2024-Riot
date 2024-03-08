@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.402414958676073,
+        "y": 6.729254996971533
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.787225728297611,
+        "y": 6.847658310701237
+      },
+      "isLocked": false,
+      "linkedName": "W1 end"
+    },
+    {
+      "anchor": {
+        "x": 5.823254723432524,
+        "y": 6.60098474043102
+      },
+      "prevControl": {
+        "x": 5.333459578072502,
+        "y": 6.764867903583321
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 2.5,
+    "rotation": 161.56505117707803,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Wendy's 4 for 4",
+  "previewStartingState": {
+    "rotation": -164.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

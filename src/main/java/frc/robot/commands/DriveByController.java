@@ -4,7 +4,6 @@ import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utilities.MathUtils;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -58,21 +57,7 @@ public class DriveByController extends Command {
 
     double desiredRot = -MathUtils.inputTransform(m_controller.getRightX())* DriveConstants.kMaxAngularSpeed;
 
-    //Translation2d rotAdj= desiredTranslation.rotateBy(new Rotation2d(-Math.PI/2.0)).times(desiredRot*0.05);
-
-    //desiredTranslation = desiredTranslation.plus(rotAdj);
-
     m_robotDrive.drive(desiredTrans[0], desiredTrans[1],desiredRot,true,true);
-
-/*     m_robotDrive.drive(m_slewX.calculate(
-        -inputTransform(m_controller.getLeftY()))
-        * DriveConstants.kMaxSpeedMetersPerSecond,
-        m_slewY.calculate(
-            -inputTransform(m_controller.getLeftX()))
-            * DriveConstants.kMaxSpeedMetersPerSecond,
-        m_slewRot.calculate(-inputTransform(m_controller.getRightX()))
-            * DriveConstants.kMaxAngularSpeed,
-        fieldOrient); */
 
         SmartDashboard.putBoolean("DrivingByController", true);
   }

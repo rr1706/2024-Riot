@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CurrentLimit;
 import frc.robot.Constants.GlobalConstants;
-import frc.robot.commands.SmartShooter;
 
 public class Feeder extends SubsystemBase{
     private final CANSparkMax m_motor = new CANSparkMax(6, MotorType.kBrushless);

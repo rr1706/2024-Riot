@@ -27,17 +27,16 @@ import frc.robot.commands.AutoShooter;
 import frc.robot.commands.AutoShooterByPose;
 import frc.robot.commands.BiDirectionalIntake;
 import frc.robot.commands.DriveByController;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Handoff;
 import frc.robot.commands.PerpetualIntake;
 import frc.robot.commands.ReverseFeed;
+import frc.robot.commands.ShootByPose;
 import frc.robot.commands.SmartShooter;
 import frc.robot.commands.ZeroClimber;
 import frc.robot.commands.ZeroElevator;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
@@ -57,7 +56,6 @@ import frc.robot.subsystems.Shooter;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -80,6 +78,13 @@ public class RobotContainer {
   private final CommandGenericHID m_operatorPanel = new CommandGenericHID(1);
 
   private final DriveByController m_driveByController = new DriveByController(m_drive, m_driverController);
+
+  private final Command m_aimFromChain = new ShootByPose(m_shooter, m_pitcher,  new Translation2d(4.11,4.83));
+  private final Command m_aimFromAmp = new ShootByPose(m_shooter, m_pitcher, new Translation2d(3.83,7.59));
+  private final Command m_aimFromPodium = new ShootByPose(m_shooter, m_pitcher, new Translation2d(2.77,4.24));
+  private final Command m_aimFromSubwoofer = new ShootByPose(m_shooter, m_pitcher,  new Translation2d(1.34,5.55));
+
+
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -109,13 +114,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
-    // pressed,
-    // cancelling on release.
 
     m_driverController.pov(0).onTrue(
         new InstantCommand(() -> m_poseEstimator.resetOdometry(new Pose2d(new Translation2d(15.17, 5.55), new Rotation2d()))));
@@ -153,6 +151,10 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> m_elevator.setPose(2.0)));
 
     m_operatorPanel.button(2).whileTrue(new AutoIntakeAimAssist(m_drive).raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true)).alongWith(new InstantCommand(()->m_elevator.setPose(1.0))))).onFalse(new InstantCommand(()->m_elevator.setPose(2.5)));
+    m_operatorPanel.button(5).whileTrue(m_aimFromAmp);
+    m_operatorPanel.button(7).whileTrue(m_aimFromChain);
+    m_operatorPanel.button(9).whileTrue(m_aimFromPodium);
+    m_operatorPanel.button(11).whileTrue(m_aimFromSubwoofer);
 
   }
 

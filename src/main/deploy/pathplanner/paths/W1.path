@@ -1,0 +1,74 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.4916668294875064,
+        "y": 7.341005451241672
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.4916668294875064,
+        "y": 7.676481506809169
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.277583478243881,
+        "y": 7.637013735565933
+      },
+      "prevControl": {
+        "x": 2.7492363784192775,
+        "y": 7.639819118396858
+      },
+      "nextControl": {
+        "x": 3.9744363142579373,
+        "y": 7.6333136320118795
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.402414958676073,
+        "y": 6.729254996971533
+      },
+      "prevControl": {
+        "x": 4.42214884429769,
+        "y": 7.449541822160568
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "W1 end"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": -90.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -164.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Wendy's 4 for 4",
+  "previewStartingState": {
+    "rotation": -90.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

@@ -273,7 +273,6 @@ public class Drivetrain extends SubsystemBase {
 
   public Pose2d getAutoPose() {
     updateAutoOdometry();
-    Pose2d pose = m_autoOdometry.getPoseMeters();
     return m_autoOdometry.getPoseMeters();
   }
 

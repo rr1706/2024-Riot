@@ -2,15 +2,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.utilities.MathUtils;
 
 public class AutoIntakeAimAssist extends Command {
     private final Drivetrain m_drive;

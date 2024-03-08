@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -14,8 +13,6 @@ import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Feeder;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Pitcher;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.MathUtils;
@@ -35,7 +32,6 @@ public class SmartShooter extends Command {
     private boolean manualHoodOverride = false;
     private double manualVelocityValue = 70.0;
     private boolean manualVelocityOverride = false;
-    private boolean m_feedStarted = false;
 
     private final Timer m_timer = new Timer();
 
@@ -72,7 +68,6 @@ public class SmartShooter extends Command {
 
         SmartDashboard.putBoolean("Manual Hood Override", manualHoodOverride);
         SmartDashboard.putNumber("Set Hood Adjust", manualHoodValue);
-        m_feedStarted = false;
         m_timer.reset();
         m_timer.start();
     }
@@ -190,7 +185,7 @@ public class SmartShooter extends Command {
         m_shooter.stop();
 /*                         m_indexer.stop();
                 m_feeder.stop(); */
-        m_pitcher.pitchToAngle(3.0);
+        m_pitcher.pitchToAngle(2.0);
     }
 
     public Translation2d compRelGoalPose(double ty, double tx){

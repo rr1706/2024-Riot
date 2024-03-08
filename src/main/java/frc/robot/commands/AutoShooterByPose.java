@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
@@ -10,11 +9,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.LimelightHelpers;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pitcher;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.MathUtils;
@@ -23,7 +19,7 @@ public class AutoShooterByPose extends Command {
     private final Shooter m_shooter;
     private final Pitcher m_pitcher;
     private final Supplier<Pose2d> getPose;
-    private final PIDController  m_pid = new PIDController(0.1,0.0,0.0);
+    //private final PIDController  m_pid = new PIDController(0.1,0.0,0.0);
     private final Timer m_timer = new Timer();
     private final InterpolatingDoubleTreeMap m_pitchTable = MathUtils.pointsToTreeMap(ShooterConstants.kPitchTable);
     private final InterpolatingDoubleTreeMap m_velocityTable = MathUtils.pointsToTreeMap(ShooterConstants.kVelocityTable);
@@ -55,7 +51,6 @@ public class AutoShooterByPose extends Command {
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stud
         var alliance = DriverStation.getAlliance();
 
         Translation2d goal = new Translation2d();
@@ -69,9 +64,7 @@ public class AutoShooterByPose extends Command {
 
         boolean tv = LimelightHelpers.getTV("limelight-april");
 
-        double tx = LimelightHelpers.getTX("limelight-april");
-
-        double distance = (getPose.get().getTranslation().getDistance(goal))*39.37;
+        double distance = (getPose.get().getTranslation().getDistance(goal)-16.0)*39.37;
 
         if(tv){
             distance = m_distTable.get(LimelightHelpers.getTY("limelight-april"));
@@ -107,7 +100,6 @@ public class AutoShooterByPose extends Command {
     
     @Override
     public void end(boolean interrupted) {
-        // TODO Auto-generated method stub
         m_shooter.run(50.0);
         m_pitcher.pitchToAngle(8.0);
         m_timer.stop();
