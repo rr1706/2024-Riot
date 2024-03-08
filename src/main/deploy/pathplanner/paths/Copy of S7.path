@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7167669684840067,
-        "y": 6.640044321458116
+        "x": 8.317099886696207,
+        "y": 2.459275674614116
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.0772552314335413,
-        "y": 6.926593853187707
+        "x": 6.525341895191635,
+        "y": 4.087081954477746
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.748207342568533,
-        "y": 7.1239327094038805
+        "x": 3.7906645044059335,
+        "y": 2.8614134151345225
       },
       "prevControl": {
-        "x": 1.383130458568611,
-        "y": 7.094331880971454
+        "x": 6.129428072689133,
+        "y": 2.5612662832568067
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "4B1 End"
+      "linkedName": "S1J"
     }
   ],
   "rotationTargets": [],
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -138.0,
+    "rotation": 150.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 BIG NOTES",
+  "folder": "Source Auto (John)",
   "previewStartingState": {
-    "rotation": -136.0,
+    "rotation": 129.38779677067518,
     "velocity": 0
   },
   "useDefaultConstraints": true

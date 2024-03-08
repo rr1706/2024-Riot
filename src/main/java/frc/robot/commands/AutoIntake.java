@@ -50,7 +50,7 @@ public void execute(){
         m_indexer.run(.2);
         m_intake.run(.2);
         m_feeder.setZero();
-        m_feeder.setPose(3.5);
+        m_feeder.setPose(3.0);
     }
     if (m_currentSpiked && m_feeder.atSetpoint()){
         m_finishedIntake = true;

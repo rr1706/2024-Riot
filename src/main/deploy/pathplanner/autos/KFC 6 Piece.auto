@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3633965729469937,
-      "y": 5.564955745296107
+      "x": 1.4521990582442719,
+      "y": 5.555088802485298
     },
     "rotation": 180.0
   },
@@ -117,15 +117,40 @@
                             }
                           },
                           {
-                            "type": "named",
+                            "type": "race",
                             "data": {
-                              "name": "Auto Intake Assisted"
+                              "commands": [
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Auto Intake Assisted"
+                                  }
+                                },
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 1.5
+                                  }
+                                }
+                              ]
                             }
                           },
                           {
                             "type": "path",
                             "data": {
                               "pathName": "5-5"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Stop Drive"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Limelight Pipeline 1"
                             }
                           },
                           {
@@ -154,21 +179,52 @@
                             }
                           },
                           {
+                            "type": "named",
+                            "data": {
+                              "name": "Limelight Pipeline 0"
+                            }
+                          },
+                          {
                             "type": "path",
                             "data": {
                               "pathName": "5-6"
                             }
                           },
                           {
-                            "type": "named",
+                            "type": "race",
                             "data": {
-                              "name": "Auto Intake Assisted"
+                              "commands": [
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Auto Intake Assisted"
+                                  }
+                                },
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 1.5
+                                  }
+                                }
+                              ]
                             }
                           },
                           {
                             "type": "path",
                             "data": {
                               "pathName": "5-7"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Stop Drive"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Limelight Pipeline 1"
                             }
                           },
                           {

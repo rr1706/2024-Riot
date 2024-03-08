@@ -3,32 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7167669684840067,
-        "y": 6.640044321458116
+        "x": 3.7906645044059335,
+        "y": 2.8614134151345225
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.0772552314335413,
-        "y": 6.926593853187707
+        "x": 4.372814130243646,
+        "y": 1.5984447353510094
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "S1J"
     },
     {
       "anchor": {
-        "x": 1.748207342568533,
-        "y": 7.1239327094038805
+        "x": 5.904667558265215,
+        "y": 1.2296378373070591
       },
       "prevControl": {
-        "x": 1.383130458568611,
-        "y": 7.094331880971454
+        "x": 4.589886872081437,
+        "y": 1.233367851351088
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "4B1 End"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4,
+      "rotationDegrees": -153.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -38,14 +44,14 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -138.0,
+    "velocity": 2.5,
+    "rotation": -153.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 BIG NOTES",
+  "folder": "Source Auto (John)",
   "previewStartingState": {
-    "rotation": -136.0,
+    "rotation": 145.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

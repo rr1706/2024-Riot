@@ -3,38 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.9060784275414722,
-        "y": 7.005529395674177
+        "x": 1.748207342568533,
+        "y": 7.1239327094038805
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.626365252728711,
-        "y": 5.416951603133681
+        "x": 2.271155311541394,
+        "y": 6.788456653836385
       },
       "isLocked": false,
       "linkedName": "4B1 End"
     },
     {
       "anchor": {
-        "x": 3.820265332836564,
-        "y": 7.005529395674177
+        "x": 2.7250346808385935,
+        "y": 6.90685996756609
       },
       "prevControl": {
-        "x": 2.9815751939178248,
-        "y": 8.317832789511439
+        "x": 2.182352826244115,
+        "y": 6.887126081944472
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4B2 End"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": -142.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -45,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -157.83365417791367,
+    "rotation": -154.5,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "4 BIG NOTES",
   "previewStartingState": {
-    "rotation": -142.0,
+    "rotation": -138.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

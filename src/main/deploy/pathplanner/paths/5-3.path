@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4388933393251415,
-        "y": 5.54522185967449
+        "x": 2.803970223325064,
+        "y": 5.870830972431175
       },
       "isLocked": false,
       "linkedName": "End 5-2"
@@ -20,8 +20,8 @@
         "y": 6.82792442507962
       },
       "prevControl": {
-        "x": 1.9159453703522806,
-        "y": 6.4233797698364645
+        "x": 2.0442156268927936,
+        "y": 6.531916140755359
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Pose 5 Piece",
+  "folder": "KFC Bucket",
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

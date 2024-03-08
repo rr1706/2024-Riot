@@ -28,20 +28,26 @@ public class PoseEstimator extends SubsystemBase {
              VecBuilder.fill(0.229, 0.229, 0.0), 
              VecBuilder.fill(10, 10, 10));
              SmartDashboard.putData("Field", m_field);
+             SmartDashboard.putBoolean("Reset Pose",false);
     }
     @Override
     public void periodic() {
-        updatePoseEstimator();
+        updatePoseEstimator(false);
         updateShuffleboard();
     }
 
-    private void updatePoseEstimator() {
+    private void updatePoseEstimator(boolean force) {
         double limelightLatency = LimelightHelpers.getLatency_Pipeline("limelight-april") + LimelightHelpers.getLatency_Capture("limelight-april");
         limelightLatency = limelightLatency/1000.0;
         double timestamp =  Timer.getFPGATimestamp() - limelightLatency;
         double velocity = MathUtils.pythagorean(m_drivetrain.getChassisSpeed().vxMetersPerSecond, m_drivetrain.getChassisSpeed().vyMetersPerSecond);
         double angularVelocity = m_drivetrain.getChassisSpeed().omegaRadiansPerSecond;
         Pose2d limelightBotPose = LimelightHelpers.getBotPose2d_wpiBlue("limelight-april");
+
+        double yAdj = 0.945*(limelightBotPose.getY())+.305;
+
+        limelightBotPose = new Pose2d(limelightBotPose.getX(), yAdj, limelightBotPose.getRotation());
+
         Pose2d currentPose = getPose();
         boolean validSolution = LimelightHelpers.getTV("limelight-april");
 
@@ -61,7 +67,7 @@ public class PoseEstimator extends SubsystemBase {
         //boolean m_overide = SmartDashboard.getBoolean("Set Pose Est", false);
 
         m_poseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_drivetrain.getGyro(), m_drivetrain.getModulePositions());
-        if ((updatePose && validTagCount == 3) || (updatePose && withinZOne && validTagCount == 2.0)) {
+        if ((updatePose && validTagCount == 3) || (updatePose && withinZOne && validTagCount == 2.0)||force) {
                     m_poseEstimator.addVisionMeasurement(limelightBotPose, timestamp, VecBuilder.fill(10.0, 10.0, 10.0));
         } 
     }
@@ -72,6 +78,11 @@ public class PoseEstimator extends SubsystemBase {
         SmartDashboard.putNumber("PoseEstX", pose.getX());
         SmartDashboard.putNumber("PoseEstY", pose.getY());
         SmartDashboard.putNumber("PoseEstRot", pose.getRotation().getRadians());
+
+
+        if(SmartDashboard.getBoolean("Reset Pose", false)){
+            updatePoseEstimator(true);
+        }
 
         m_field.setRobotPose(pose);
     }

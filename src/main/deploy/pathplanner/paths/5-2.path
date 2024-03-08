@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8237041089466803,
-        "y": 4.084914323674802
+        "x": 2.6607658350837373,
+        "y": 4.180768646843998
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4586272249467593,
-        "y": 4.459858150485532
+        "x": 2.5226286357324157,
+        "y": 4.743184387060094
       },
       "isLocked": false,
       "linkedName": "5-1 END"
@@ -20,8 +20,8 @@
         "y": 5.495887145620446
       },
       "prevControl": {
-        "x": 1.649537914460446,
-        "y": 5.495887145620446
+        "x": 1.8271428850550027,
+        "y": 5.6438912877825755
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Pose 5 Piece",
+  "folder": "KFC Bucket",
   "previewStartingState": {
     "rotation": 155.0,
     "velocity": 0

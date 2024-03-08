@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 5.053633184189446,
-        "y": 6.571383911998593
+        "y": 6.75
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.833121666243333,
-        "y": 6.7193880541607225
+        "x": 5.320040640081282,
+        "y": 6.808190539458002
       },
       "isLocked": false,
       "linkedName": "5-5 END"
     },
     {
       "anchor": {
-        "x": 6.198198550243255,
-        "y": 6.304976456106759
+        "x": 5.939800067902559,
+        "y": 6.5463576290918635
       },
       "prevControl": {
-        "x": 5.221371211973196,
-        "y": 6.67005334010668
+        "x": 5.658739990803804,
+        "y": 6.663465994549679
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 2.5,
-    "rotation": 170.0,
+    "rotation": 161.91655461695143,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Pose 5 Piece",
+  "folder": "KFC Bucket",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": -166.5,
     "velocity": 0
   },
   "useDefaultConstraints": true

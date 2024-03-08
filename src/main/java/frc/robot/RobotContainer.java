@@ -134,7 +134,7 @@ public class RobotContainer {
     //    .onFalse(new InstantCommand(() -> m_feeder.run(-0.4)).andThen(new WaitCommand(0.06))
     //        .andThen(new InstantCommand(() -> m_feeder.stop()).alongWith(new InstantCommand(() -> m_indexer.stop()))));
 
-    m_driverController.rightBumper().whileTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -17.0, m_elevator));
+    m_driverController.rightBumper().whileTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -14.0, m_elevator));
 
     m_driverController.b().onTrue(new InstantCommand(() -> m_manipulator.run(.4)))
         .onFalse(new InstantCommand(() -> m_manipulator.stop()));
@@ -144,13 +144,13 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> m_climber.setPose(68.0)).alongWith(new ZeroElevator(m_elevator)));
 
     m_driverController.pov(270)
-        .onTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -20.5, m_elevator).withTimeout(2.0));
+        .onTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -17.0, m_elevator).withTimeout(2.0));
 
     m_driverController.a().onTrue(new InstantCommand(() -> m_elevator.setPose(16.0)))
-        .onFalse(new InstantCommand(() -> m_elevator.setPose(2.5)).andThen(new WaitCommand(0.5))
+        .onFalse(new InstantCommand(() -> m_elevator.setPose(2.0)).andThen(new WaitCommand(0.5))
             .andThen(new ZeroElevator(m_elevator)));
     m_driverController.y().onTrue(new InstantCommand(() -> m_elevator.setPose(24.5)))
-        .onFalse(new InstantCommand(() -> m_elevator.setPose(2.5)));
+        .onFalse(new InstantCommand(() -> m_elevator.setPose(2.0)));
 
     m_operatorPanel.button(2).whileTrue(new AutoIntakeAimAssist(m_drive).raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true)).alongWith(new InstantCommand(()->m_elevator.setPose(1.0))))).onFalse(new InstantCommand(()->m_elevator.setPose(2.5)));
 

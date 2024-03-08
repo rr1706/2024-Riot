@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.8237041089466803,
-        "y": 4.084914323674802
+        "x": 2.6607658350837373,
+        "y": 4.180768646843998
       },
       "prevControl": {
-        "x": 2.29088919716301,
-        "y": 4.390789550809872
+        "x": 2.127950923300067,
+        "y": 4.486643873979069
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Pose 5 Piece",
+  "folder": "KFC Bucket",
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

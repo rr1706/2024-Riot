@@ -51,7 +51,7 @@ public class ZeroClimber extends Command {
     @Override
     public void end(boolean interrupted) {
         SmartDashboard.putBoolean("Zeroing Climber", false);
-        m_climber.setPose(2.0);
+        m_climber.setPose(0.0);
         m_timer.stop();
     }
     

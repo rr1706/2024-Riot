@@ -45,7 +45,7 @@ public class ZeroElevator extends Command {
     @Override
     public void end(boolean interrupted) {
         SmartDashboard.putBoolean("Zeroing Elevator", false);
-        m_elevator.setPose(2.5);
+        m_elevator.setPose(2.0);
         m_timer.stop();
     }
     
