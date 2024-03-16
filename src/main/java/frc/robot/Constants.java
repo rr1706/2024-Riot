@@ -10,6 +10,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
@@ -34,12 +35,14 @@ public final class Constants {
   }
 
   public static final class CurrentLimit {
-    public static final int kDriveStator = 80;
-    public static final int kDriveSupply = 45;
+    public static final int kDriveStator = 120;
+    public static final int kDriveSupply = 60;
     public static final int kAzimuth = 20;
-    public static final int kShooter = 55;
+    public static final int kShooterSupply = 40;
+    public static final int kShooterStator = 80;
     public static final int kFeeder = 40;
-    public static final int kIntaker = 40;
+    public static final int kIntakerSupply = 30;
+    public static final int kIntakerStator = 60;
     public static final int kKicker = 20;
     public static final int kIndexer = 40;
     public static final int kElevator = 40;
@@ -73,6 +76,13 @@ public final class Constants {
   public static final class VisionConstants {
     public static final double kPoseErrorAcceptance = 2.0; // How much error there can be between current stimated pose
                                                            // and vision pose in meters
+  }
+
+  public static final class GoalConstants{
+    public static final Translation2d kRedGoal = new Translation2d(643.23/39.37, 218.42/39.37);
+    public static final Translation2d kBlueGoal = new Translation2d(8.00/39.37, 218.42/39.37);
+    public static final Translation2d kRedFeed = new Translation2d(606.23/39.37, 218.42/39.37);
+    public static final Translation2d kBlueFeed = new Translation2d(45.0/39.37, 218.42/39.37);
   }
 
   public static final class DriveConstants {
@@ -154,6 +164,10 @@ public final class Constants {
     public static final double kP = 0.1;
   }
 
+  public static final class ElevatorConstants {
+    public static final double kRest = 2.7;
+  }
+
   public static final class ShooterConstants {
     public static final Point2D[] kDistTable = {
         new Point2D.Double(0.20,38.0),//.3B
@@ -175,47 +189,66 @@ public final class Constants {
     };
 
     public static final Point2D[] kPitchTable = {
-        new Point2D.Double(38.0, 20.0),
-        new Point2D.Double(38.0+12.0, 20.0),
-        new Point2D.Double(38.0+24.0, 18.97),
-        new Point2D.Double(38.0+36.0, 16.59),
-        new Point2D.Double(38.0+48.0, 15.24),
-        new Point2D.Double(38.0+60.0, 13.88),
-        new Point2D.Double(38.0+72.0, 12.53),
-        new Point2D.Double(38.0+84.0, 11.57),
-        new Point2D.Double(38.0+96.0, 10.28),
-        new Point2D.Double(38.0+108, 9.57),
-        new Point2D.Double(38.0+120.0, 8.86),
-        new Point2D.Double(38.0+132.0, 8.22),
-        new Point2D.Double(38.0+144.0, 7.25),
-        new Point2D.Double(38.0+156.0, 6.55),
-        new Point2D.Double(38.0+168.0, 6.16),
-        new Point2D.Double(38.0+180.0, 5.71)
+        new Point2D.Double(42.0, 20.0),
+        new Point2D.Double(42.0+12.0, 20.0),
+        new Point2D.Double(42.0+24.0, 18.97),
+        new Point2D.Double(42.0+36.0, 16.59),
+        new Point2D.Double(42.0+48.0, 15.0),
+        new Point2D.Double(42.0+60.0, 13.7),
+        new Point2D.Double(42.0+72.0, 12.3),
+        new Point2D.Double(42.0+84.0, 11.5),
+        new Point2D.Double(42.0+96.0, 10.4),
+        new Point2D.Double(42.0+108.0, 9.5),
+        new Point2D.Double(42.0+120.0, 8.86),
+        new Point2D.Double(42.0+132.0, 8.25),
+        new Point2D.Double(42.0+144.0, 7.5),
+        new Point2D.Double(42.0+156.0, 6.70),
+        new Point2D.Double(42.0+168.0, 6.69),
+        new Point2D.Double(42.0+180.0, 6.30), 
+        new Point2D.Double(236.0,6.0),
+        new Point2D.Double(260.0,5.81),
+        new Point2D.Double(283.0,5.38)
     };
 
     public static final Point2D[] kVelocityTable = {
-        new Point2D.Double(38.0, 52.06),
-        new Point2D.Double(38.0+12.0, 40.15),
-        new Point2D.Double(38.0+24.0, 40.15),
-        new Point2D.Double(38.0+36.0, 41.27),
-        new Point2D.Double(38.0+48.0, 42.94),
-        new Point2D.Double(38.0+60.0, 44.89),
-        new Point2D.Double(38.0+72.0, 50.19),
-        new Point2D.Double(38.0+84.0, 51.20),
-        new Point2D.Double(38.0+96.0, 55.94),
-        new Point2D.Double(38.0+108.0, 58.73),
-        new Point2D.Double(38.0+120.0, 61.35),
-        new Point2D.Double(38.0+132.0, 64.14),
-        new Point2D.Double(38.0+144.0, 68.05),
-        new Point2D.Double(38.0+156.0, 75.58),
-        new Point2D.Double(38.0+168.0, 82.83),
-        new Point2D.Double(38.0+180.0, 89.81)
+        new Point2D.Double(42.0, 52.06),
+        new Point2D.Double(42.0+12.0, 40.15),
+        new Point2D.Double(42.0+24.0, 40.15),
+        new Point2D.Double(42.0+36.0, 41.27),
+        new Point2D.Double(42.0+48.0, 45.0),
+        new Point2D.Double(42.0+60.0, 48.0),
+        new Point2D.Double(42.0+72.0, 51.0),
+        new Point2D.Double(42.0+84.0, 52.48),
+        new Point2D.Double(42.0+96.0, 56.0),
+        new Point2D.Double(42.0+108.0, 60.0),
+        new Point2D.Double(42.0+120.0, 61.35),
+        new Point2D.Double(42.0+132.0, 65.23),
+        new Point2D.Double(42.0+144.0, 70.0),
+        new Point2D.Double(42.0+156.0, 75.00),
+        new Point2D.Double(42.0+168.0, 75.00),
+        new Point2D.Double(42.0+180.0, 75.00)
     };
 
     public static final Point2D[] kTimeTable = {
-        new Point2D.Double(1.0, 0.3),
-        new Point2D.Double(3.0, 0.35),
-        new Point2D.Double(5.0, 0.4)
+        new Point2D.Double(1.0, 0.18),
+        new Point2D.Double(3.0, 0.23),
+        new Point2D.Double(5.0, 0.3)
+    };
+
+        public static final Point2D[] kFeedPitch = {
+        new Point2D.Double(320.0, 20.0),
+        new Point2D.Double(380.0, 13.0)
+    };
+
+    public static final Point2D[] kFeedVelocity = {
+        new Point2D.Double(320.0, 40.0),
+        new Point2D.Double(380.0, 50.0)
+    };
+
+    public static final Point2D[] kFeedTime = {
+        new Point2D.Double(6.0, 1.0),
+        new Point2D.Double(8.0, 1.25),
+        new Point2D.Double(10.0, 1.5)
     };
 
   }

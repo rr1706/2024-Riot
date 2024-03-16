@@ -15,10 +15,12 @@ public class AutoIntakeAimAssist extends Command {
     private final SlewRateLimiter m_slewRot = new SlewRateLimiter(6.0);
     private boolean m_detectedOnce = false;
     private double ty_check = 25.0;
+    private final double m_speed;
 
-    public AutoIntakeAimAssist(Drivetrain drive) {
+    public AutoIntakeAimAssist(Drivetrain drive, double speed) {
         m_drive = drive;
         m_pid.setIntegratorRange(-0.5, 0.5);
+        m_speed = speed;
         addRequirements(drive);
     }
 
@@ -40,7 +42,7 @@ public class AutoIntakeAimAssist extends Command {
         boolean tv = LimelightHelpers.getTV("limelight-note");
         double ty = LimelightHelpers.getTY("limelight-note");
 
-         double xInput = -2.5;
+         double xInput = -m_speed;
 
         if(!tv){
             xInput = -0.3;

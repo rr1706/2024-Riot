@@ -23,6 +23,8 @@ import frc.robot.Constants.DriveConstants.KeepAngle;
 import frc.robot.Constants.DriveConstants.RearLeft;
 import frc.robot.Constants.DriveConstants.RearRight;
 import frc.robot.utilities.ChassisAccel;
+import frc.robot.utilities.FieldRelativeAccel;
+import frc.robot.utilities.FieldRelativeSpeed;
 
 /**
  * Implements a swerve Drivetrain Subsystem for the Robot
@@ -40,6 +42,10 @@ public class Drivetrain extends SubsystemBase {
 
   private ChassisSpeeds m_lastDriveSpeed = new ChassisSpeeds();
   private ChassisAccel m_driveAccel = new ChassisAccel();
+
+  private FieldRelativeSpeed m_fieldRelVel = new FieldRelativeSpeed();
+  private FieldRelativeSpeed m_lastFieldRelVel = new FieldRelativeSpeed();
+  private FieldRelativeAccel m_fieldRelAccel = new FieldRelativeAccel();
 
   private SlewRateLimiter m_slewX = new SlewRateLimiter(DriveConstants.kTransSlewRate);
   private SlewRateLimiter m_slewY = new SlewRateLimiter(DriveConstants.kTransSlewRate);
@@ -143,6 +149,14 @@ public class Drivetrain extends SubsystemBase {
     setModuleStates(chassisSpeeds);
   }
 
+    public FieldRelativeSpeed getFieldRelativeSpeed() {
+    return m_fieldRelVel;
+  }
+
+  public FieldRelativeAccel getFieldRelativeAccel() {
+    return m_fieldRelAccel;
+  }
+
   @Override
   public void periodic() {
 
@@ -151,6 +165,10 @@ public class Drivetrain extends SubsystemBase {
     m_driveAccel = new ChassisAccel(m_speeds,m_lastDriveSpeed,GlobalConstants.kLoopTime);
 
     m_lastDriveSpeed = m_speeds;
+
+    m_fieldRelVel = new FieldRelativeSpeed(getChassisSpeed(), getGyro());
+    m_fieldRelAccel = new FieldRelativeAccel(m_fieldRelVel, m_lastFieldRelVel, GlobalConstants.kLoopTime);
+    m_lastFieldRelVel = m_fieldRelVel;
 
     double xSpeed = getChassisSpeed().vxMetersPerSecond;
     double ySpeed = getChassisSpeed().vyMetersPerSecond;

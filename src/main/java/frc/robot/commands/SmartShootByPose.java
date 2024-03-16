@@ -1,7 +1,10 @@
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -11,22 +14,28 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.GlobalConstants;
+import frc.robot.Constants.GoalConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pitcher;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.MathUtils;
 
-public class SmartShooter extends Command {
+public class SmartShootByPose extends Command {
     private final Shooter m_shooter;
     private final Drivetrain m_robotDrive;
     private final Pitcher m_pitcher;
+    private Supplier<Pose2d> getPose;
 
-    private final PIDController  m_pid = new PIDController(0.085,0.02,0.0);
+    private final PIDController  m_pid = new PIDController(0.110,0.0
+    ,0.0);
     private InterpolatingDoubleTreeMap m_pitchTable = new InterpolatingDoubleTreeMap();
     private InterpolatingDoubleTreeMap m_velocityTable = new InterpolatingDoubleTreeMap();
     private InterpolatingDoubleTreeMap m_timeTable = new InterpolatingDoubleTreeMap();
-    private InterpolatingDoubleTreeMap m_distTable = new InterpolatingDoubleTreeMap();
+        private InterpolatingDoubleTreeMap m_feedPitch = new InterpolatingDoubleTreeMap();
+    private InterpolatingDoubleTreeMap m_feedVelocity = new InterpolatingDoubleTreeMap();
+    private InterpolatingDoubleTreeMap m_feedTime = new InterpolatingDoubleTreeMap();
     private final CommandXboxController m_controller;
     private double manualHoodValue = 5.0;
     private boolean manualHoodOverride = false;
@@ -35,26 +44,25 @@ public class SmartShooter extends Command {
 
     private final Timer m_timer = new Timer();
 
-    private final SlewRateLimiter m_rotFilter = new SlewRateLimiter(12.0);
-    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(20.0);
-    private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(300.0);
+    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(30.0);
+    private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(400.0);
 
-    public SmartShooter(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher, CommandXboxController controller){
+    public SmartShootByPose(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher, CommandXboxController controller, Supplier<Pose2d> getPose){
         m_shooter = shooter;
         m_robotDrive = robotDrive;
         m_pitcher = pitcher;
         m_controller = controller;
 
-        m_pid.setIntegratorRange(-0.15, 0.15);
+        this.getPose = getPose;
 
-        m_distTable = MathUtils.pointsToTreeMap(ShooterConstants.kDistTable);
+        m_pid.setIntegratorRange(-0.07, 0.07);
 
         m_pitchTable = MathUtils.pointsToTreeMap(ShooterConstants.kPitchTable);
-
+        m_feedPitch = MathUtils.pointsToTreeMap(ShooterConstants.kFeedPitch);
         m_velocityTable = MathUtils.pointsToTreeMap(ShooterConstants.kVelocityTable);
-
+        m_feedVelocity = MathUtils.pointsToTreeMap(ShooterConstants.kFeedVelocity);
         m_timeTable = MathUtils.pointsToTreeMap(ShooterConstants.kTimeTable);
-        
+        m_feedTime = MathUtils.pointsToTreeMap(ShooterConstants.kFeedTime);
         addRequirements(m_robotDrive, m_shooter);
 
     }
@@ -74,44 +82,40 @@ public class SmartShooter extends Command {
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        double tx = LimelightHelpers.getTX("limelight-april");
-        double ty = LimelightHelpers.getTY("limelight-april");
-        boolean tv = LimelightHelpers.getTV("limelight-april");
-        double desiredRot = -MathUtils.inputTransform(m_controller.getRightX())* DriveConstants.kMaxAngularSpeed;
+        var alliance = DriverStation.getAlliance();
 
-        SmartDashboard.putNumber("Limelight Ty", ty);
-
-        Translation2d relGoalPose = compRelGoalPose(ty, tx);
-
-        double pidAngle = (relGoalPose.getAngle().getDegrees());
-        
-        double goalDistance = relGoalPose.getDistance(new Translation2d())*39.37;
-
-        boolean ready = m_timer.get() >= 0.05;
-
-        if(tv && ready){
-            desiredRot = m_pid.calculate(pidAngle);
-        }
-/*             if(goodToShoot && !m_feedStarted){
-                m_indexer.run(0.4);
-                m_feeder.run(0.4);
-                m_feedStarted = true;
-            }
-            else if(m_feedStarted){
-                m_indexer.run(0.4);
-                m_feeder.run(0.4);
-            }
-            else{
-                m_indexer.stop();
-                m_feeder.stop();
+        Translation2d goalLocation;
+        boolean feedShot = false;
+    
+        if(alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
+            goalLocation = GoalConstants.kRedGoal;
+            if(goalLocation.getDistance(getPose.get().getTranslation())*39.37 >=280.0){
+                goalLocation = GoalConstants.kRedFeed;
+                feedShot = true;
             }
         }
         else{
-            m_indexer.stop();
-            m_feeder.stop();
+            goalLocation = GoalConstants.kBlueGoal;
+            if(goalLocation.getDistance(getPose.get().getTranslation())*39.37 >=280.0){
+                goalLocation = GoalConstants.kBlueFeed;
+                feedShot = true;
+            }
         }
- */
+
+        goalLocation = compForMovement(goalLocation, feedShot);
+
+        double desiredRot = -MathUtils.inputTransform(m_controller.getRightX())* DriveConstants.kMaxAngularSpeed;
+
+        Translation2d toGoal = goalLocation.minus(getPose.get().getTranslation());
+
+        double pidAngle = -1.0*toGoal.getAngle().minus(getPose.get().getRotation()).getDegrees();
+        
+        double goalDistance = toGoal.getDistance(new Translation2d())*39.37;
+
+        SmartDashboard.putNumber("Pose Distance", goalDistance);
+
+        desiredRot = m_pid.calculate(pidAngle);
+        
         manualHoodOverride = SmartDashboard.getBoolean("Manual Hood Override", false);
         manualVelocityOverride = SmartDashboard.getBoolean("Manual Velocity Override", false);
 
@@ -129,18 +133,16 @@ public class SmartShooter extends Command {
             manualVelocityValue = SmartDashboard.getNumber("Set Velocity Adjust", 70.0);
             m_shooter.run(manualVelocityValue);
         }
-        else if(ready){
-            if(tv){
-            m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance*39.37)));
-            m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance*39.37))); 
+        else{
+            if(feedShot){
+                m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_feedPitch.get(goalDistance)));
+                m_shooter.run(m_velocityFilter.calculate(m_feedVelocity.get(goalDistance))); 
             }
             else{
-            m_pitcher.pitchToAngle(20.0);
-            m_shooter.run(m_velocityFilter.calculate(50.15));
+                m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)));
+                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance))); 
             }
         }
-
-            var alliance = DriverStation.getAlliance();
 
     double xInput = -m_controller.getLeftY();
     double yInput =  -m_controller.getLeftX();
@@ -163,7 +165,7 @@ public class SmartShooter extends Command {
 
         //desiredTranslation = desiredTranslation.plus(rotAdj);
 
-        m_robotDrive.drive(desiredTrans[0], desiredTrans[1],m_rotFilter.calculate(desiredRot),true,true);
+        m_robotDrive.drive(desiredTrans[0], desiredTrans[1],(desiredRot),true,true);
         
 
 /*     m_robotDrive.drive(m_slewX.calculate(
@@ -178,6 +180,23 @@ public class SmartShooter extends Command {
 
         SmartDashboard.putBoolean("DrivingByController", true);
     }
+
+    Translation2d compForMovement(Translation2d goalLocation, boolean feedShot){
+
+        Translation2d toGoal = goalLocation.minus(getPose.get().getTranslation());
+
+        double rx = m_robotDrive.getChassisSpeed().vxMetersPerSecond+m_robotDrive.getChassisAccel().ax*0.025;
+        double ry = m_robotDrive.getChassisSpeed().vyMetersPerSecond+m_robotDrive.getChassisAccel().ay*0.025;
+
+        double shotTime;
+        if(feedShot){
+            shotTime = m_feedTime.get(toGoal.getDistance(new Translation2d()));
+        }
+        else{
+            shotTime = m_timeTable.get(toGoal.getDistance(new Translation2d()));
+        }
+        return new Translation2d(goalLocation.getX()-rx*shotTime, goalLocation.getY()-ry*shotTime);
+    }
     
     @Override
     public void end(boolean interrupted) {
@@ -187,23 +206,6 @@ public class SmartShooter extends Command {
                 m_feeder.stop(); */
         m_pitcher.pitchToAngle(2.0);
     }
-
-    public Translation2d compRelGoalPose(double ty, double tx){
-        double distToGoal = m_distTable.get(ty)/39.37;
-
-        Translation2d goalRelPose = new Translation2d(distToGoal*Math.cos(Math.toRadians(tx)),distToGoal*Math.sin(Math.toRadians(tx)));
-
-        SmartDashboard.putNumber("Rel Goal X", goalRelPose.getX());
-        SmartDashboard.putNumber("Rel Goal Y", goalRelPose.getY());
-
-        double rx = m_robotDrive.getChassisSpeed().vxMetersPerSecond+m_robotDrive.getChassisAccel().ax*0.025;
-        double ry = m_robotDrive.getChassisSpeed().vyMetersPerSecond+m_robotDrive.getChassisAccel().ay*0.025;
-
-        double shotTime = m_timeTable.get(distToGoal);
-
-        return new Translation2d(goalRelPose.getX()-rx*shotTime,goalRelPose.getY()+ry*shotTime);
-    }
-    
 
 
 }

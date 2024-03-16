@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Indexer;
@@ -40,7 +41,7 @@ public class Handoff extends Command {
         m_intake.run(.4);
         m_indexer.run(-.4);
         m_manipulator.run(-.3);
-        m_elevator.setPose(2.3);
+        m_elevator.setPose(ElevatorConstants.kRest);
         
     }
 

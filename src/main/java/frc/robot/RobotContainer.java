@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants.Auto;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoIntakeAimAssist;
@@ -31,6 +32,7 @@ import frc.robot.commands.Handoff;
 import frc.robot.commands.PerpetualIntake;
 import frc.robot.commands.ReverseFeed;
 import frc.robot.commands.ShootByPose;
+import frc.robot.commands.SmartShootByPose;
 import frc.robot.commands.SmartShooter;
 import frc.robot.commands.ZeroClimber;
 import frc.robot.commands.ZeroElevator;
@@ -122,8 +124,8 @@ public class RobotContainer {
     m_driverController.pov(180).onTrue(new InstantCommand(() -> m_drive.resetOdometry(new Pose2d(new Translation2d(0.0, 0.0),new Rotation2d(Math.PI)))));
 
     m_driverController.leftTrigger(0.25)
-        .whileTrue(new SmartShooter(m_shooter, m_drive, m_pitcher, m_driverController))
-        .onTrue(switchLimelightPipeline("limelight-april", 1))
+        .whileTrue(new SmartShootByPose(m_shooter, m_drive, m_pitcher, m_driverController, m_poseEstimator::getPose))
+        .onTrue(switchLimelightPipeline("limelight-april", 0))
         .onFalse(switchLimelightPipeline("limelight-april", 0));
 
     m_driverController.rightTrigger(0.25)
@@ -147,12 +149,26 @@ public class RobotContainer {
         .onTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -17.0, m_elevator).withTimeout(2.0));
 
     m_driverController.a().onTrue(new InstantCommand(() -> m_elevator.setPose(16.0)))
-        .onFalse(new InstantCommand(() -> m_elevator.setPose(2.0)).andThen(new WaitCommand(0.5))
+        .onFalse(new InstantCommand(() -> m_elevator.setPose(ElevatorConstants.kRest)).andThen(new WaitCommand(0.5))
             .andThen(new ZeroElevator(m_elevator)));
     m_driverController.y().onTrue(new InstantCommand(() -> m_elevator.setPose(24.5)))
-        .onFalse(new InstantCommand(() -> m_elevator.setPose(2.0)));
+        .onFalse(new InstantCommand(() -> m_elevator.setPose(ElevatorConstants.kRest)));
 
-    m_operatorPanel.button(2).whileTrue(new AutoIntakeAimAssist(m_drive).raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true)).alongWith(new InstantCommand(()->m_elevator.setPose(1.0))))).onFalse(new InstantCommand(()->m_elevator.setPose(2.5)));
+    m_operatorPanel.button(2).whileTrue(new AutoIntakeAimAssist(m_drive, 1.5).raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true)).alongWith(new InstantCommand(()->m_elevator.setPose(1.0))))).onFalse(new InstantCommand(()->m_elevator.setPose(2.5)));
+    m_operatorPanel.button(3).onTrue(
+
+new InstantCommand(()->{
+  m_intaker.runIndividual(-.2*.66, -.2);
+  m_feeder.run(-0.4);
+  m_indexer.run(-.4);
+})).onFalse(
+  new InstantCommand(()->{
+    m_intaker.stop();
+    m_feeder.stop();
+    m_indexer.stop();
+  })
+);
+
     m_operatorPanel.button(5).whileTrue(m_aimFromAmp);
     m_operatorPanel.button(7).whileTrue(m_aimFromChain);
     m_operatorPanel.button(9).whileTrue(m_aimFromPodium);
@@ -168,7 +184,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Auto Intake Forward", new AutoIntake(m_intaker, m_indexer, m_feeder, false));
     NamedCommands.registerCommand("Start Feed", new InstantCommand(() -> m_feeder.run(0.4)).alongWith(new InstantCommand(() -> m_indexer.run(0.4))).alongWith(new InstantCommand(() -> m_intaker.run(0.4))));
     NamedCommands.registerCommand("End Feed", new InstantCommand(() -> m_feeder.stop()).alongWith(new InstantCommand(() -> m_indexer.stop())).alongWith(new InstantCommand(() -> m_indexer.stop())));
-    NamedCommands.registerCommand("Auto Intake Assisted", new AutoIntakeAimAssist(m_drive).raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true)).alongWith(new InstantCommand(()->m_elevator.setPose(1.0)))));
+    NamedCommands.registerCommand("Auto Intake Assisted", new AutoIntakeAimAssist(m_drive, 2.5).raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true)).alongWith(new InstantCommand(()->m_elevator.setPose(1.0)))));
     NamedCommands.registerCommand("Limelight Pipeline 1", switchLimelightPipeline("limelight-april", 1));
     NamedCommands.registerCommand("Limelight Pipeline 0", switchLimelightPipeline("limelight-april", 0));
     NamedCommands.registerCommand("Stop Drive", new InstantCommand(()->m_drive.stop()));

@@ -24,7 +24,7 @@ public class PoseEstimator extends SubsystemBase {
              drivetrain.getGyro(), 
              drivetrain.getModulePositions(), 
              new Pose2d(),
-             VecBuilder.fill(0.229, 0.229, 0.0), 
+             VecBuilder.fill(0.229, 0.229, 0.229), 
              VecBuilder.fill(10, 10, 10));
              SmartDashboard.putData("Field", m_field);
              SmartDashboard.putBoolean("Reset Pose",false);
@@ -43,9 +43,9 @@ public class PoseEstimator extends SubsystemBase {
         double angularVelocity = m_drivetrain.getChassisSpeed().omegaRadiansPerSecond;
         Pose2d limelightBotPose = LimelightHelpers.getBotPose2d_wpiBlue("limelight-april");
 
-        double yAdj = 0.945*(limelightBotPose.getY())+.305;
+        //double yAdj = 0.945*(limelightBotPose.getY())+.305;
 
-        limelightBotPose = new Pose2d(limelightBotPose.getX(), yAdj, limelightBotPose.getRotation());
+        //limelightBotPose = new Pose2d(limelightBotPose.getX(), yAdj, limelightBotPose.getRotation());
 
         Pose2d currentPose = getPose();
         boolean validSolution = LimelightHelpers.getTV("limelight-april");

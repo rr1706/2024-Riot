@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Elevator;
 
 public class ZeroElevator extends Command {
@@ -45,7 +46,7 @@ public class ZeroElevator extends Command {
     @Override
     public void end(boolean interrupted) {
         SmartDashboard.putBoolean("Zeroing Elevator", false);
-        m_elevator.setPose(2.0);
+        m_elevator.setPose(ElevatorConstants.kRest);
         m_timer.stop();
     }
     

@@ -38,7 +38,7 @@ public class ShootByPose extends Command {
     public void execute() {
         Translation2d goal = new Translation2d(-1.50/39.37, 218.42/39.37);
 
-        double distance = (m_location.getDistance(goal)-14.5)*39.37;
+        double distance = (m_location.getDistance(goal))*39.37-14.5;
 
         SmartDashboard.putNumber("Pose Distance", distance);
 

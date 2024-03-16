@@ -39,7 +39,7 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
     private double m_referenceAngleRadians = 0;
     private Slot0Configs slot0Configs = new Slot0Configs();
     private final VelocityVoltage m_request = new VelocityVoltage(0.0).withSlot(0);
-
+    private boolean m_useNEOEncoder = false;
 
       private final PIDController m_azimuthRioPID = 
         new PIDController(Aziumth.rioKp,Aziumth.rioKi,Aziumth.rioKd);
@@ -57,8 +57,11 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         configurePID();
         m_driveMotor = new TalonFX(moduleID);
         m_driveMotor.getConfigurator().apply(slot0Configs);
-        m_driveMotor.getConfigurator().apply(new CurrentLimitsConfigs().withStatorCurrentLimit(CurrentLimit.kDriveStator));
-        m_driveMotor.getConfigurator().apply(new CurrentLimitsConfigs().withSupplyCurrentLimit(CurrentLimit.kDriveSupply));
+        m_driveMotor.getConfigurator()
+            .apply(new CurrentLimitsConfigs().withSupplyCurrentLimit(CurrentLimit.kDriveSupply)
+            .withStatorCurrentLimit(CurrentLimit.kDriveStator)
+            .withSupplyCurrentLimitEnable(true)
+            .withStatorCurrentLimitEnable(true));
         m_driveMotor.setNeutralMode(NeutralModeValue.Brake);
 
         m_azimuthMotor = new CANSparkMax(moduleID, MotorType.kBrushless);
@@ -84,6 +87,7 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         m_azimuthEnc.setPosition(getAbsEncoder());
 
         m_azimuthMotor.burnFlash();
+        SmartDashboard.putBoolean("Use NEO Encoder", m_useNEOEncoder);
     }
 
     /**
@@ -137,11 +141,17 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         SmartDashboard.putNumber("Module"+moduleID, state.speedMetersPerSecond);
         SmartDashboard.putNumber("Kraken"+moduleID, getDriveVelocity());
         m_driveMotor.setControl(m_request.withVelocity(metersToRotations).withSlot(0));
-        m_azimuthMotor.set(m_azimuthRioPID.calculate(getAbsEncoder(),state.angle.getRadians()));
 
+        m_useNEOEncoder = SmartDashboard.getBoolean("Use NEO Encoder", false);
 
+        if(m_useNEOEncoder){
+            setReferenceAngle(state.angle.getRadians());
+        }
+        else{
+            m_azimuthMotor.set(m_azimuthRioPID.calculate(getAbsEncoder(),state.angle.getRadians()));
+        }
 
-        //setReferenceAngle(state.angle.getRadians());
+        
 
     }
 
