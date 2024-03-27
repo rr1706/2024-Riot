@@ -3,49 +3,55 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.317099886696207,
-        "y": 2.459275674614116
+        "x": 4.628186374775031,
+        "y": 6.183321696172636
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.525341895191635,
-        "y": 4.087081954477746
+        "x": 5.201637326351578,
+        "y": 6.699654168539107
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "5-5 END"
     },
     {
       "anchor": {
-        "x": 3.7906645044059335,
-        "y": 2.8614134151345225
+        "x": 6.661944862351264,
+        "y": 5.624157402160958
       },
       "prevControl": {
-        "x": 6.129428072689133,
-        "y": 2.5612662832568067
+        "x": 5.5568472675406895,
+        "y": 6.729254996971533
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "S1J"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.8,
+      "rotationDegrees": 137.54,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 4.5,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 150.0,
+    "velocity": 2.5,
+    "rotation": 137.54,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Source Auto (John)",
+  "folder": "Caniac Combo",
   "previewStartingState": {
-    "rotation": 129.38779677067518,
+    "rotation": -172.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

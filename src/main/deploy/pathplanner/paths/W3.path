@@ -3,43 +3,49 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.132119341161761,
-        "y": 7.419940993728142
+        "x": 8.28012348332389,
+        "y": 7.400207108106525
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.332896973486255,
-        "y": 7.3114046228092455
+        "x": 7.4809011156483844,
+        "y": 7.291670737187628
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.402414958676073,
-        "y": 6.729254996971533
+        "x": 4.628186374775031,
+        "y": 6.464381773271393
       },
       "prevControl": {
-        "x": 5.280572868838047,
-        "y": 6.887126081944472
+        "x": 5.504029219605066,
+        "y": 6.634628376205514
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "W1 end"
+      "linkedName": "Wendys"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.8,
+      "rotationDegrees": -169.81,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 4.5,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -164.0,
+    "rotation": -168.16,
     "rotateFast": false
   },
   "reversed": false,

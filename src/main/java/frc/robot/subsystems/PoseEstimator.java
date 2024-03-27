@@ -18,17 +18,20 @@ public class PoseEstimator extends SubsystemBase {
     private final SwerveDrivePoseEstimator m_poseEstimator;
     private final Drivetrain m_drivetrain;
     private final Field2d m_field = new Field2d();
-    public PoseEstimator(Drivetrain drivetrain){
+    private boolean m_auto = true;
+
+    public PoseEstimator(Drivetrain drivetrain) {
         m_drivetrain = drivetrain;
         m_poseEstimator = new SwerveDrivePoseEstimator(DriveConstants.kSwerveKinematics,
-             drivetrain.getGyro(), 
-             drivetrain.getModulePositions(), 
-             new Pose2d(),
-             VecBuilder.fill(0.229, 0.229, 0.229), 
-             VecBuilder.fill(10, 10, 10));
-             SmartDashboard.putData("Field", m_field);
-             SmartDashboard.putBoolean("Reset Pose",false);
+                drivetrain.getGyro(),
+                drivetrain.getModulePositions(),
+                new Pose2d(),
+                VecBuilder.fill(0.229, 0.229, 0.229),
+                VecBuilder.fill(10, 10, 10));
+        SmartDashboard.putData("Field", m_field);
+        SmartDashboard.putBoolean("Reset Pose", false);
     }
+
     @Override
     public void periodic() {
         updatePoseEstimator(false);
@@ -36,16 +39,19 @@ public class PoseEstimator extends SubsystemBase {
     }
 
     private void updatePoseEstimator(boolean force) {
-        double limelightLatency = LimelightHelpers.getLatency_Pipeline("limelight-april") + LimelightHelpers.getLatency_Capture("limelight-april");
-        limelightLatency = limelightLatency/1000.0;
-        double timestamp =  Timer.getFPGATimestamp() - limelightLatency;
-        double velocity = MathUtils.pythagorean(m_drivetrain.getChassisSpeed().vxMetersPerSecond, m_drivetrain.getChassisSpeed().vyMetersPerSecond);
+        double limelightLatency = LimelightHelpers.getLatency_Pipeline("limelight-april")
+                + LimelightHelpers.getLatency_Capture("limelight-april");
+        limelightLatency = limelightLatency / 1000.0;
+        double timestamp = Timer.getFPGATimestamp() - limelightLatency;
+        double velocity = MathUtils.pythagorean(m_drivetrain.getChassisSpeed().vxMetersPerSecond,
+                m_drivetrain.getChassisSpeed().vyMetersPerSecond);
         double angularVelocity = m_drivetrain.getChassisSpeed().omegaRadiansPerSecond;
         Pose2d limelightBotPose = LimelightHelpers.getBotPose2d_wpiBlue("limelight-april");
 
-        //double yAdj = 0.945*(limelightBotPose.getY())+.305;
+        // double yAdj = 0.945*(limelightBotPose.getY())+.305;
 
-        //limelightBotPose = new Pose2d(limelightBotPose.getX(), yAdj, limelightBotPose.getRotation());
+        // limelightBotPose = new Pose2d(limelightBotPose.getX(), yAdj,
+        // limelightBotPose.getRotation());
 
         Pose2d currentPose = getPose();
         boolean validSolution = LimelightHelpers.getTV("limelight-april");
@@ -53,24 +59,30 @@ public class PoseEstimator extends SubsystemBase {
         LimelightResults results = LimelightHelpers.getLatestResults("limelight-april");
         int validTagCount = results.targetingResults.targets_Fiducials.length;
 
-        SmartDashboard.putNumber("Tags Visible", validTagCount);
+        SmartDashboard.putBoolean("Auto Pose", m_auto);
 
-        SmartDashboard.putNumber("VisionX", limelightBotPose.getX());
-        SmartDashboard.putNumber("VisionY", limelightBotPose.getY());
+        boolean updatePose = ((currentPose.getTranslation()
+                .getDistance(limelightBotPose.getTranslation()) <= VisionConstants.kPoseErrorAcceptance)
+                && validSolution && limelightBotPose.getTranslation().getDistance(currentPose.getTranslation()) >= 0.05
+                && velocity <= 4.0 && angularVelocity <= 0.5 * Math.PI);
 
-        boolean updatePose = ((currentPose.getTranslation().getDistance(limelightBotPose.getTranslation()) <= VisionConstants.kPoseErrorAcceptance) && validSolution  && limelightBotPose.getTranslation().getDistance(currentPose.getTranslation()) >= 0.05 && velocity <= 4.0 && angularVelocity <= 0.5 * Math.PI);
+        // boolean m_overide = SmartDashboard.getBoolean("Set Pose Est", false);
 
-        boolean withinZOne = true;
-
-
-        //boolean m_overide = SmartDashboard.getBoolean("Set Pose Est", false);
-
-        m_poseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_drivetrain.getGyro(), m_drivetrain.getModulePositions());
-        if ((updatePose && validTagCount == 3) || (updatePose && withinZOne && validTagCount == 2.0)||force) {
+        m_poseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_drivetrain.getGyro(),
+                m_drivetrain.getModulePositions());
+        if ((validTagCount >= 2.0) || force) {
+            if (m_auto) {
+                if(updatePose){
                     m_poseEstimator.addVisionMeasurement(limelightBotPose, timestamp, VecBuilder.fill(10.0, 10.0, 10.0));
-        } 
+                }
+            } else {
+                m_poseEstimator.addVisionMeasurement(limelightBotPose, timestamp, VecBuilder.fill(1.0, 1.0, 1.0));
+
+            }
+        } else if ((updatePose && validTagCount == 1) && !m_auto) {
+            m_poseEstimator.addVisionMeasurement(limelightBotPose, timestamp, VecBuilder.fill(10.0, 10.0, 10.0));
+        }
     }
-        
 
     private void updateShuffleboard() {
         Pose2d pose = getPose();
@@ -78,8 +90,7 @@ public class PoseEstimator extends SubsystemBase {
         SmartDashboard.putNumber("PoseEstY", pose.getY());
         SmartDashboard.putNumber("PoseEstRot", pose.getRotation().getRadians());
 
-
-        if(SmartDashboard.getBoolean("Reset Pose", false)){
+        if (SmartDashboard.getBoolean("Reset Pose", false)) {
             updatePoseEstimator(true);
         }
 
@@ -90,17 +101,21 @@ public class PoseEstimator extends SubsystemBase {
         return m_poseEstimator.getEstimatedPosition();
     }
 
+    public void setAuto(boolean auto) {
+        m_auto = auto;
+    }
+
     public boolean inside(Translation2d[] bounds, boolean onEdge) {
         Pose2d currentPose = getPose();
         double xMin = Math.min(bounds[0].getX(), bounds[1].getX());
         double xMax = Math.max(bounds[0].getX(), bounds[1].getX());
         double yMin = Math.min(bounds[0].getY(), bounds[1].getY());
         double yMax = Math.max(bounds[0].getY(), bounds[1].getY());
-        return (
-            (currentPose.getX() > xMin && currentPose.getX() < xMax) || (onEdge && (currentPose.getX() >= xMin && currentPose.getX() <= xMax)) 
-            && 
-            (currentPose.getY() > yMin && currentPose.getY() < yMax) || (onEdge && (currentPose.getY() >= yMin && currentPose.getY() <= yMax))
-        );
+        return ((currentPose.getX() > xMin && currentPose.getX() < xMax)
+                || (onEdge && (currentPose.getX() >= xMin && currentPose.getX() <= xMax))
+                        &&
+                        (currentPose.getY() > yMin && currentPose.getY() < yMax)
+                || (onEdge && (currentPose.getY() >= yMin && currentPose.getY() <= yMax)));
     }
 
     public void resetOdometry(Pose2d pose) {

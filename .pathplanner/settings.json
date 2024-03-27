@@ -3,16 +3,18 @@
   "robotLength": 0.813,
   "holonomicMode": true,
   "pathFolders": [
-    "4 BIG NOTES",
-    "KFC Bucket",
     "Wendy's 4 for 4",
-    "Pose 4 Piece",
+    "Spicy Sushi Source",
+    "Source Auto (John)",
     "Source Auto",
-    "Source Auto (John)"
+    "Pose 4 Piece",
+    "Caniac Combo",
+    "KFC Bucket",
+    "4 BIG NOTES"
   ],
   "autoFolders": [],
   "defaultMaxVel": 5.0,
-  "defaultMaxAccel": 4.5,
+  "defaultMaxAccel": 5.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "maxModuleSpeed": 5.0

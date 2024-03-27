@@ -16,12 +16,6 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Auto Shooter By Pose"
-                }
-              },
-              {
                 "type": "sequential",
                 "data": {
                   "commands": [
@@ -32,15 +26,22 @@
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "Copy of S1"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Stop Drive"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "Copy of S1"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -50,25 +51,45 @@
                       }
                     },
                     {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.4
-                      }
-                    },
-                    {
                       "type": "race",
                       "data": {
                         "commands": [
                           {
                             "type": "named",
                             "data": {
-                              "name": "Perpetual Intake Back"
+                              "name": "Aim Shooter"
                             }
                           },
                           {
-                            "type": "wait",
+                            "type": "sequential",
                             "data": {
-                              "waitTime": 0.2
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 0.4
+                                  }
+                                },
+                                {
+                                  "type": "race",
+                                  "data": {
+                                    "commands": [
+                                      {
+                                        "type": "named",
+                                        "data": {
+                                          "name": "Perpetual Intake Back"
+                                        }
+                                      },
+                                      {
+                                        "type": "wait",
+                                        "data": {
+                                          "waitTime": 0.2
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]
@@ -81,9 +102,22 @@
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "Copy of S2"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "Copy of S2"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -106,15 +140,22 @@
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "Copy of S3"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Stop Drive"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "Copy of S3"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -124,25 +165,45 @@
                       }
                     },
                     {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.25
-                      }
-                    },
-                    {
                       "type": "race",
                       "data": {
                         "commands": [
                           {
                             "type": "named",
                             "data": {
-                              "name": "Perpetual Intake Back"
+                              "name": "Aim Shooter"
                             }
                           },
                           {
-                            "type": "wait",
+                            "type": "sequential",
                             "data": {
-                              "waitTime": 0.3
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 0.25
+                                  }
+                                },
+                                {
+                                  "type": "race",
+                                  "data": {
+                                    "commands": [
+                                      {
+                                        "type": "named",
+                                        "data": {
+                                          "name": "Perpetual Intake Back"
+                                        }
+                                      },
+                                      {
+                                        "type": "wait",
+                                        "data": {
+                                          "waitTime": 0.3
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]
@@ -155,9 +216,22 @@
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "Copy of S4"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "Copy of S4"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -180,15 +254,22 @@
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "Copy of S5"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Stop Drive"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "Copy of S5"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -198,25 +279,45 @@
                       }
                     },
                     {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.25
-                      }
-                    },
-                    {
                       "type": "race",
                       "data": {
                         "commands": [
                           {
                             "type": "named",
                             "data": {
-                              "name": "Perpetual Intake Back"
+                              "name": "Aim Shooter"
                             }
                           },
                           {
-                            "type": "wait",
+                            "type": "sequential",
                             "data": {
-                              "waitTime": 0.3
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 0.25
+                                  }
+                                },
+                                {
+                                  "type": "race",
+                                  "data": {
+                                    "commands": [
+                                      {
+                                        "type": "named",
+                                        "data": {
+                                          "name": "Perpetual Intake Back"
+                                        }
+                                      },
+                                      {
+                                        "type": "wait",
+                                        "data": {
+                                          "waitTime": 0.3
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]
@@ -229,9 +330,22 @@
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "Copy of S6"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "Copy of S6"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {

@@ -16,31 +16,38 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Auto Shooter By Pose"
-                }
-              },
-              {
                 "type": "sequential",
                 "data": {
                   "commands": [
                     {
                       "type": "named",
                       "data": {
-                        "name": "Limelight Pipeline 0"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "W1"
+                        "name": "AutoPose"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Stop Drive"
+                        "name": "Limelight Pipeline 0"
+                      }
+                    },
+                    {
+                      "type": "race",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "W1"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -50,25 +57,45 @@
                       }
                     },
                     {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.2
-                      }
-                    },
-                    {
                       "type": "race",
                       "data": {
                         "commands": [
                           {
                             "type": "named",
                             "data": {
-                              "name": "Perpetual Intake Back"
+                              "name": "Aim Shooter"
                             }
                           },
                           {
-                            "type": "wait",
+                            "type": "sequential",
                             "data": {
-                              "waitTime": 0.2
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 0.3
+                                  }
+                                },
+                                {
+                                  "type": "race",
+                                  "data": {
+                                    "commands": [
+                                      {
+                                        "type": "named",
+                                        "data": {
+                                          "name": "Perpetual Intake Back"
+                                        }
+                                      },
+                                      {
+                                        "type": "wait",
+                                        "data": {
+                                          "waitTime": 0.2
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]
@@ -81,9 +108,22 @@
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "W2"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "W2"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -101,20 +141,33 @@
                             "data": {
                               "waitTime": 2.0
                             }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
                           }
                         ]
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "W3"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Stop Drive"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "W3"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -124,25 +177,45 @@
                       }
                     },
                     {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.2
-                      }
-                    },
-                    {
                       "type": "race",
                       "data": {
                         "commands": [
                           {
                             "type": "named",
                             "data": {
-                              "name": "Perpetual Intake Back"
+                              "name": "Aim Shooter"
                             }
                           },
                           {
-                            "type": "wait",
+                            "type": "sequential",
                             "data": {
-                              "waitTime": 0.2
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 0.3
+                                  }
+                                },
+                                {
+                                  "type": "race",
+                                  "data": {
+                                    "commands": [
+                                      {
+                                        "type": "named",
+                                        "data": {
+                                          "name": "Perpetual Intake Back"
+                                        }
+                                      },
+                                      {
+                                        "type": "wait",
+                                        "data": {
+                                          "waitTime": 0.2
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]
@@ -155,9 +228,22 @@
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "W4"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "W4"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -175,20 +261,33 @@
                             "data": {
                               "waitTime": 2.0
                             }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
                           }
                         ]
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "W5"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Stop Drive"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "W5"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -198,25 +297,45 @@
                       }
                     },
                     {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.2
-                      }
-                    },
-                    {
                       "type": "race",
                       "data": {
                         "commands": [
                           {
                             "type": "named",
                             "data": {
-                              "name": "Perpetual Intake Back"
+                              "name": "Aim Shooter"
                             }
                           },
                           {
-                            "type": "wait",
+                            "type": "sequential",
                             "data": {
-                              "waitTime": 0.2
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 0.3
+                                  }
+                                },
+                                {
+                                  "type": "race",
+                                  "data": {
+                                    "commands": [
+                                      {
+                                        "type": "named",
+                                        "data": {
+                                          "name": "Perpetual Intake Back"
+                                        }
+                                      },
+                                      {
+                                        "type": "wait",
+                                        "data": {
+                                          "waitTime": 0.2
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]
@@ -229,9 +348,22 @@
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "W6"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "W6"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -247,22 +379,35 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 0.2
+                              "waitTime": 2.0
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
                             }
                           }
                         ]
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "W7"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Stop Drive"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "W7"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -272,25 +417,45 @@
                       }
                     },
                     {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.2
-                      }
-                    },
-                    {
                       "type": "race",
                       "data": {
                         "commands": [
                           {
                             "type": "named",
                             "data": {
-                              "name": "Perpetual Intake Back"
+                              "name": "Aim Shooter"
                             }
                           },
                           {
-                            "type": "wait",
+                            "type": "sequential",
                             "data": {
-                              "waitTime": 0.2
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 0.3
+                                  }
+                                },
+                                {
+                                  "type": "sequential",
+                                  "data": {
+                                    "commands": [
+                                      {
+                                        "type": "named",
+                                        "data": {
+                                          "name": "Perpetual Intake Back"
+                                        }
+                                      },
+                                      {
+                                        "type": "wait",
+                                        "data": {
+                                          "waitTime": 0.2
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]

@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.958402532189681,
+        "y": 2.7824778726480535
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.520818272405777,
+        "y": 2.298997674918426
+      },
+      "isLocked": false,
+      "linkedName": "SSS-Shoot"
+    },
+    {
+      "anchor": {
+        "x": 4.836560442351654,
+        "y": 2.1904613039995318
+      },
+      "prevControl": {
+        "x": 4.274144702135559,
+        "y": 2.7331431585940105
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 2.5,
+    "rotation": 144.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Spicy Sushi Source",
+  "previewStartingState": {
+    "rotation": 145.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

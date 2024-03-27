@@ -39,7 +39,7 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
     private double m_referenceAngleRadians = 0;
     private Slot0Configs slot0Configs = new Slot0Configs();
     private final VelocityVoltage m_request = new VelocityVoltage(0.0).withSlot(0);
-    private boolean m_useNEOEncoder = false;
+    private boolean m_useNEOEncoder = true;
 
       private final PIDController m_azimuthRioPID = 
         new PIDController(Aziumth.rioKp,Aziumth.rioKi,Aziumth.rioKd);
@@ -142,7 +142,7 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         SmartDashboard.putNumber("Kraken"+moduleID, getDriveVelocity());
         m_driveMotor.setControl(m_request.withVelocity(metersToRotations).withSlot(0));
 
-        m_useNEOEncoder = SmartDashboard.getBoolean("Use NEO Encoder", false);
+        m_useNEOEncoder = SmartDashboard.getBoolean("Use NEO Encoder", true);
 
         if(m_useNEOEncoder){
             setReferenceAngle(state.angle.getRadians());

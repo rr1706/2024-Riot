@@ -16,31 +16,38 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Auto Shooter By Pose"
-                }
-              },
-              {
                 "type": "sequential",
                 "data": {
                   "commands": [
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 0.2
+                        "name": "Limelight Pipeline 0"
                       }
                     },
                     {
-                      "type": "path",
+                      "type": "race",
                       "data": {
-                        "pathName": "4B1"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "4B1"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Stop Drive"
+                        "name": "Limelight Pipeline 1"
                       }
                     },
                     {
@@ -50,38 +57,77 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Perpetual Intake Back"
+                              "name": "Aim Shooter"
                             }
                           },
                           {
-                            "type": "sequential",
+                            "type": "race",
                             "data": {
                               "commands": [
                                 {
                                   "type": "wait",
                                   "data": {
-                                    "waitTime": 0.5
+                                    "waitTime": 0.2
                                   }
                                 },
                                 {
-                                  "type": "path",
+                                  "type": "race",
                                   "data": {
-                                    "pathName": "4B2"
-                                  }
-                                },
-                                {
-                                  "type": "named",
-                                  "data": {
-                                    "name": "Stop Drive"
-                                  }
-                                },
-                                {
-                                  "type": "wait",
-                                  "data": {
-                                    "waitTime": 0.5
+                                    "commands": [
+                                      {
+                                        "type": "sequential",
+                                        "data": {
+                                          "commands": [
+                                            {
+                                              "type": "named",
+                                              "data": {
+                                                "name": "Perpetual Intake Back"
+                                              }
+                                            },
+                                            {
+                                              "type": "wait",
+                                              "data": {
+                                                "waitTime": 0.2
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
                                   }
                                 }
                               ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Limelight Pipeline 0"
+                      }
+                    },
+                    {
+                      "type": "race",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "4B2"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Auto Shooter By Pose"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Perpetual Intake Back"
                             }
                           }
                         ]
@@ -102,19 +148,32 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
-                      "data": {
-                        "name": "Auto Shooter By Pose"
-                      }
-                    },
-                    {
                       "type": "sequential",
                       "data": {
                         "commands": [
                           {
-                            "type": "path",
+                            "type": "named",
                             "data": {
-                              "pathName": "4B3"
+                              "name": "Limelight Pipeline 0"
+                            }
+                          },
+                          {
+                            "type": "race",
+                            "data": {
+                              "commands": [
+                                {
+                                  "type": "path",
+                                  "data": {
+                                    "pathName": "4B3"
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Auto Shooter By Pose"
+                                  }
+                                }
+                              ]
                             }
                           },
                           {
@@ -137,21 +196,28 @@
                             }
                           },
                           {
-                            "type": "path",
+                            "type": "race",
                             "data": {
-                              "pathName": "4B4"
+                              "commands": [
+                                {
+                                  "type": "path",
+                                  "data": {
+                                    "pathName": "4B4"
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Auto Shooter By Pose"
+                                  }
+                                }
+                              ]
                             }
                           },
                           {
                             "type": "named",
                             "data": {
-                              "name": "Stop Drive"
-                            }
-                          },
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 0.2
+                              "name": "Limelight Pipeline 1"
                             }
                           },
                           {
@@ -161,22 +227,67 @@
                                 {
                                   "type": "named",
                                   "data": {
-                                    "name": "Perpetual Intake Back"
+                                    "name": "Aim Shooter"
                                   }
                                 },
                                 {
-                                  "type": "wait",
+                                  "type": "sequential",
                                   "data": {
-                                    "waitTime": 0.2
+                                    "commands": [
+                                      {
+                                        "type": "wait",
+                                        "data": {
+                                          "waitTime": 0.2
+                                        }
+                                      },
+                                      {
+                                        "type": "race",
+                                        "data": {
+                                          "commands": [
+                                            {
+                                              "type": "named",
+                                              "data": {
+                                                "name": "Perpetual Intake Back"
+                                              }
+                                            },
+                                            {
+                                              "type": "wait",
+                                              "data": {
+                                                "waitTime": 0.2
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
                                   }
                                 }
                               ]
                             }
                           },
                           {
-                            "type": "path",
+                            "type": "named",
                             "data": {
-                              "pathName": "4B5"
+                              "name": "Limelight Pipeline 0"
+                            }
+                          },
+                          {
+                            "type": "race",
+                            "data": {
+                              "commands": [
+                                {
+                                  "type": "path",
+                                  "data": {
+                                    "pathName": "4B5"
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Auto Shooter By Pose"
+                                  }
+                                }
+                              ]
                             }
                           },
                           {
@@ -199,21 +310,28 @@
                             }
                           },
                           {
-                            "type": "path",
+                            "type": "race",
                             "data": {
-                              "pathName": "4B6"
+                              "commands": [
+                                {
+                                  "type": "path",
+                                  "data": {
+                                    "pathName": "4B6"
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Auto Shooter By Pose"
+                                  }
+                                }
+                              ]
                             }
                           },
                           {
                             "type": "named",
                             "data": {
-                              "name": "Stop Drive"
-                            }
-                          },
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 0.2
+                              "name": "Limelight Pipeline 1"
                             }
                           },
                           {
@@ -223,13 +341,39 @@
                                 {
                                   "type": "named",
                                   "data": {
-                                    "name": "Perpetual Intake Back"
+                                    "name": "Aim Shooter"
                                   }
                                 },
                                 {
-                                  "type": "wait",
+                                  "type": "sequential",
                                   "data": {
-                                    "waitTime": 0.2
+                                    "commands": [
+                                      {
+                                        "type": "wait",
+                                        "data": {
+                                          "waitTime": 0.2
+                                        }
+                                      },
+                                      {
+                                        "type": "race",
+                                        "data": {
+                                          "commands": [
+                                            {
+                                              "type": "named",
+                                              "data": {
+                                                "name": "Perpetual Intake Back"
+                                              }
+                                            },
+                                            {
+                                              "type": "wait",
+                                              "data": {
+                                                "waitTime": 0.2
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
                                   }
                                 }
                               ]

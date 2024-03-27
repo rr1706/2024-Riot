@@ -24,18 +24,20 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoIntakeAimAssist;
-import frc.robot.commands.AutoShooter;
+import frc.robot.commands.AutoShooterAim;
 import frc.robot.commands.AutoShooterByPose;
 import frc.robot.commands.BiDirectionalIntake;
 import frc.robot.commands.DriveByController;
 import frc.robot.commands.Handoff;
 import frc.robot.commands.PerpetualIntake;
 import frc.robot.commands.ReverseFeed;
+import frc.robot.commands.RotateToAngle;
 import frc.robot.commands.ShootByPose;
 import frc.robot.commands.SmartShootByPose;
 import frc.robot.commands.SmartShooter;
 import frc.robot.commands.ZeroClimber;
 import frc.robot.commands.ZeroElevator;
+import frc.robot.commands.ZeroPitcher;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
@@ -81,14 +83,16 @@ public class RobotContainer {
 
   private final DriveByController m_driveByController = new DriveByController(m_drive, m_driverController);
 
-  private final Command m_aimFromChain = new ShootByPose(m_shooter, m_pitcher,  new Translation2d(4.11,4.83));
-  private final Command m_aimFromAmp = new ShootByPose(m_shooter, m_pitcher, new Translation2d(3.83,7.59));
-  private final Command m_aimFromPodium = new ShootByPose(m_shooter, m_pitcher, new Translation2d(2.77,4.24));
-  private final Command m_aimFromSubwoofer = new ShootByPose(m_shooter, m_pitcher,  new Translation2d(1.34,5.55));
+  private final Command m_aimFromChain = new ShootByPose(m_shooter, m_pitcher, new Translation2d(4.11, 4.83));
+  private final Command m_aimFromAmp = new ShootByPose(m_shooter, m_pitcher, new Translation2d(3.83, 7.59));
+  private final Command m_aimFromPodium = new ShootByPose(m_shooter, m_pitcher, new Translation2d(2.77, 4.24));
+  private final Command m_aimFromSubwoofer = new ShootByPose(m_shooter, m_pitcher, new Translation2d(1.34, 5.55));
 
-  private final Command m_teleInitCommand = new InstantCommand(()->{m_shooter.stop(); m_pitcher.pitchToAngle(2.0);});
-
-
+  private final Command m_teleInitCommand = new InstantCommand(() -> {
+    m_shooter.stop();
+    m_pitcher.pitchToAngle(2.0);
+    m_poseEstimator.setAuto(false);
+  });
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -120,23 +124,29 @@ public class RobotContainer {
   private void configureBindings() {
 
     m_driverController.pov(0).onTrue(
-        new InstantCommand(() -> m_poseEstimator.resetOdometry(new Pose2d(new Translation2d(15.17, 5.55), new Rotation2d()))));
-    m_driverController.pov(180).onTrue(new InstantCommand(() -> m_drive.resetOdometry(new Pose2d(new Translation2d(0.0, 0.0),new Rotation2d(Math.PI)))));
+        new InstantCommand(
+            () -> m_poseEstimator.resetOdometry(new Pose2d(new Translation2d(15.17, 5.55), new Rotation2d()))));
+    m_driverController.pov(180).onTrue(new InstantCommand(
+        () -> m_drive.resetOdometry(new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(Math.PI)))));
 
     m_driverController.leftTrigger(0.25)
         .whileTrue(new SmartShootByPose(m_shooter, m_drive, m_pitcher, m_driverController, m_poseEstimator::getPose))
-        .onTrue(switchLimelightPipeline("limelight-april", 0))
+        .onTrue(switchLimelightPipeline("limelight-april", 1).alongWith(new InstantCommand(() -> m_poseEstimator.setAuto(false))))
         .onFalse(switchLimelightPipeline("limelight-april", 0));
 
     m_driverController.rightTrigger(0.25)
         .onTrue(new InstantCommand(() -> m_feeder.run(0.4)).alongWith(new InstantCommand(() -> m_indexer.run(0.4))))
         .onFalse(new InstantCommand(() -> m_feeder.stop()).alongWith(new InstantCommand(() -> m_indexer.stop())));
 
-    m_driverController.leftBumper().whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder)).onFalse(new ReverseFeed(m_feeder, m_indexer).withTimeout(0.100));
-    //    .onFalse(new InstantCommand(() -> m_feeder.run(-0.4)).andThen(new WaitCommand(0.06))
-    //        .andThen(new InstantCommand(() -> m_feeder.stop()).alongWith(new InstantCommand(() -> m_indexer.stop()))));
+    m_driverController.leftBumper().whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder))
+        .onFalse(new ReverseFeed(m_feeder, m_indexer).withTimeout(0.100));
+    // .onFalse(new InstantCommand(() -> m_feeder.run(-0.4)).andThen(new
+    // WaitCommand(0.06))
+    // .andThen(new InstantCommand(() -> m_feeder.stop()).alongWith(new
+    // InstantCommand(() -> m_indexer.stop()))));
 
-    m_driverController.rightBumper().whileTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -14.0, m_elevator));
+    m_driverController.rightBumper()
+        .whileTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -14.0, m_elevator));
 
     m_driverController.b().onTrue(new InstantCommand(() -> m_manipulator.run(.4)))
         .onFalse(new InstantCommand(() -> m_manipulator.stop()));
@@ -145,49 +155,78 @@ public class RobotContainer {
     m_driverController.back()
         .onTrue(new InstantCommand(() -> m_climber.setPose(68.0)).alongWith(new ZeroElevator(m_elevator)));
 
+    m_driverController.pov(90).onTrue(new RotateToAngle(new Rotation2d(-Math.PI/2.0), m_drive));
+
     m_driverController.pov(270)
-        .onTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -17.0, m_elevator).withTimeout(2.0));
+        .onTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -19.0, m_elevator).withTimeout(2.0));
 
     m_driverController.a().onTrue(new InstantCommand(() -> m_elevator.setPose(16.0)))
-        .onFalse(new InstantCommand(() -> m_elevator.setPose(ElevatorConstants.kRest)).andThen(new WaitCommand(0.5))
+        .onFalse(new InstantCommand(() -> m_elevator.setPose(1.0)).andThen(new WaitCommand(0.5))
             .andThen(new ZeroElevator(m_elevator)));
     m_driverController.y().onTrue(new InstantCommand(() -> m_elevator.setPose(24.5)))
         .onFalse(new InstantCommand(() -> m_elevator.setPose(ElevatorConstants.kRest)));
 
-    m_operatorPanel.button(2).whileTrue(new AutoIntakeAimAssist(m_drive, 1.5).raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true)).alongWith(new InstantCommand(()->m_elevator.setPose(1.0))))).onFalse(new InstantCommand(()->m_elevator.setPose(2.5)));
+    m_operatorPanel.button(2)
+        .whileTrue(new AutoIntakeAimAssist(m_drive, 1.5)
+            .raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true))
+                .alongWith(new InstantCommand(() -> m_elevator.setPose(1.0))).alongWith(switchLimelightPipeline("limelight-note", 0))))
+        .onFalse(new InstantCommand(() -> m_elevator.setPose(2.5)));
     m_operatorPanel.button(3).onTrue(
 
-new InstantCommand(()->{
-  m_intaker.runIndividual(-.2*.66, -.2);
-  m_feeder.run(-0.4);
-  m_indexer.run(-.4);
-})).onFalse(
-  new InstantCommand(()->{
-    m_intaker.stop();
-    m_feeder.stop();
-    m_indexer.stop();
-  })
-);
+        new InstantCommand(() -> {
+          m_intaker.runIndividual(-.2 * .66, -.2);
+          m_feeder.run(-0.4);
+          m_indexer.run(-.4);
+        })).onFalse(
+            new InstantCommand(() -> {
+              m_intaker.stop();
+              m_feeder.stop();
+              m_indexer.stop();
+            }));
 
     m_operatorPanel.button(5).whileTrue(m_aimFromAmp);
     m_operatorPanel.button(7).whileTrue(m_aimFromChain);
     m_operatorPanel.button(9).whileTrue(m_aimFromPodium);
     m_operatorPanel.button(11).whileTrue(m_aimFromSubwoofer);
 
+    m_operatorPanel.button(12).whileTrue(new ZeroPitcher(m_pitcher));
+
   }
 
   public void configureNamedCommands() {
-    NamedCommands.registerCommand("Auto Shooter", new AutoShooter(m_shooter, m_pitcher, m_drive));
-    NamedCommands.registerCommand("Auto Shooter By Pose", new AutoShooterByPose(m_shooter, m_pitcher, m_poseEstimator::getPose));
+    NamedCommands.registerCommand("TelePose", new InstantCommand(() -> m_poseEstimator.setAuto(false)));
+    NamedCommands.registerCommand("AutoPose", new InstantCommand(() -> m_poseEstimator.setAuto(true)));
+    NamedCommands.registerCommand("Auto Shooter By Pose",
+        new AutoShooterByPose(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose));
     NamedCommands.registerCommand("Perpetual Intake Back", new PerpetualIntake(m_intaker, m_indexer, m_feeder));
+    NamedCommands.registerCommand("Perpetual Intake Assisted",
+        new AutoIntakeAimAssist(m_drive, 2.5)
+            .raceWith(new WaitCommand(0.1).andThen(new PerpetualIntake(m_intaker, m_indexer, m_feeder))
+                .alongWith(new InstantCommand(() -> m_elevator.setPose(1.0)))));
     NamedCommands.registerCommand("Auto Intake Back", new AutoIntake(m_intaker, m_indexer, m_feeder, true));
     NamedCommands.registerCommand("Auto Intake Forward", new AutoIntake(m_intaker, m_indexer, m_feeder, false));
-    NamedCommands.registerCommand("Start Feed", new InstantCommand(() -> m_feeder.run(0.4)).alongWith(new InstantCommand(() -> m_indexer.run(0.4))).alongWith(new InstantCommand(() -> m_intaker.run(0.4))));
-    NamedCommands.registerCommand("End Feed", new InstantCommand(() -> m_feeder.stop()).alongWith(new InstantCommand(() -> m_indexer.stop())).alongWith(new InstantCommand(() -> m_indexer.stop())));
-    NamedCommands.registerCommand("Auto Intake Assisted", new AutoIntakeAimAssist(m_drive, 2.5).raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true)).alongWith(new InstantCommand(()->m_elevator.setPose(1.0)))));
-    NamedCommands.registerCommand("Limelight Pipeline 1", switchLimelightPipeline("limelight-april", 1));
-    NamedCommands.registerCommand("Limelight Pipeline 0", switchLimelightPipeline("limelight-april", 0));
-    NamedCommands.registerCommand("Stop Drive", new InstantCommand(()->m_drive.stop()));
+    NamedCommands.registerCommand("Start Feed",
+        new InstantCommand(() -> m_feeder.run(0.4)).alongWith(new InstantCommand(() -> m_indexer.run(0.4)))
+            .alongWith(new InstantCommand(() -> m_intaker.run(0.4))));
+    NamedCommands.registerCommand("End Feed", new InstantCommand(() -> m_feeder.stop())
+        .alongWith(new InstantCommand(() -> m_indexer.stop())).alongWith(new InstantCommand(() -> m_indexer.stop())));
+    NamedCommands.registerCommand("Auto Intake Assisted",
+        new AutoIntakeAimAssist(m_drive, 2.5)
+            .raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true))
+                .alongWith(new InstantCommand(() -> m_elevator.setPose(1.0)))));
+    NamedCommands.registerCommand("Limelight Pipeline 1", switchLimelightPipeline("limelight-april", 1)
+        .alongWith(new InstantCommand(() -> m_poseEstimator.setAuto(false))));
+    NamedCommands.registerCommand("Limelight Pipeline 0", switchLimelightPipeline("limelight-april", 0)
+        .alongWith(new InstantCommand(() -> m_poseEstimator.setAuto(true))));
+    NamedCommands.registerCommand("Stop Drive", new InstantCommand(() -> m_drive.stop()));
+    NamedCommands.registerCommand("Aim Shooter",
+        new AutoShooterAim(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose));
+    NamedCommands.registerCommand("Soft Shoot", new InstantCommand(() -> {
+      m_shooter.run(19);
+    }));
+    NamedCommands.registerCommand("NoteFar", switchLimelightPipeline("limelight-note", 0));
+    NamedCommands.registerCommand("NoteClose", switchLimelightPipeline("limelight-note", 1));
+    NamedCommands.registerCommand("AimAtCenter", new RotateToAngle(new Rotation2d(-Math.PI/2.0), m_drive));
   }
 
   public void configureAutoBuilder() {
@@ -214,10 +253,10 @@ new InstantCommand(()->{
   }
 
   public Command getTestCommand() {
-    return new ZeroClimber(m_climber).alongWith(new ZeroElevator(m_elevator));
+    return new ZeroClimber(m_climber).alongWith(new ZeroElevator(m_elevator)).alongWith(new ZeroPitcher(m_pitcher));
   }
 
-  public Command getTeleInitCommand(){
+  public Command getTeleInitCommand() {
     return m_teleInitCommand;
   }
 

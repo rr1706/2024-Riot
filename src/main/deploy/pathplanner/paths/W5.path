@@ -16,30 +16,36 @@
     },
     {
       "anchor": {
-        "x": 4.402414958676073,
-        "y": 6.729254996971533
+        "x": 4.628186374775031,
+        "y": 6.464381773271393
       },
       "prevControl": {
-        "x": 5.32990758289209,
-        "y": 6.985795510052559
+        "x": 5.555684451185923,
+        "y": 6.720902573755656
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "W1 end"
+      "linkedName": "Wendys"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.8,
+      "rotationDegrees": -169.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 4.5,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -164.0,
+    "rotation": -168.15565994522686,
     "rotateFast": false
   },
   "reversed": false,

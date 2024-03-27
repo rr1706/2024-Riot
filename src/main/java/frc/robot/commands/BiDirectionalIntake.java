@@ -32,10 +32,10 @@ public void initialize(){
     SmartDashboard.putNumber("Velocity", m_robotDrive.getChassisSpeed().vxMetersPerSecond);
     m_timer.reset();
     m_timer.start();
-    m_indexer.run(0.8);
+    m_indexer.run(0.6);
     m_feeder.run(0.4);
     double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
-    m_intake.run(1.0, robotVelocity);
+    m_intake.run(0.8, robotVelocity);
 }
 
 @Override

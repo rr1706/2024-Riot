@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.402414958676073,
-        "y": 6.729254996971533
+        "x": 4.628186374775031,
+        "y": 6.464381773271393
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.945096813270551,
-        "y": 6.729254996971533
+        "x": 5.170868229369509,
+        "y": 6.464381773271393
       },
       "isLocked": false,
-      "linkedName": "W1 end"
+      "linkedName": "Wendys"
     },
     {
       "anchor": {
@@ -33,7 +33,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 4.5,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -45,7 +45,7 @@
   "reversed": false,
   "folder": "Wendy's 4 for 4",
   "previewStartingState": {
-    "rotation": -164.0,
+    "rotation": -169.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

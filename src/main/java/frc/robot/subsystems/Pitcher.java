@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,8 +15,10 @@ import frc.robot.Constants.PitcherConstants;
 
 public class Pitcher extends SubsystemBase{
     private final CANSparkMax m_motor = new CANSparkMax(5,MotorType.kBrushless);
+    private final RelativeEncoder m_encoder = m_motor.getEncoder();
     private final SparkPIDController m_pid = m_motor.getPIDController();
-    private double m_angle = 3.0;
+    private double m_angle = 5.0;
+    private boolean m_PIDEnabled = true;
 
     public Pitcher(){
         m_motor.setSmartCurrentLimit(CurrentLimit.kPitcher);
@@ -28,12 +31,33 @@ public class Pitcher extends SubsystemBase{
     }
 
     public void pitchToAngle(double angle){
+        m_PIDEnabled = true;
         m_angle = angle;
+    }
+
+    public void stop(){
+        m_motor.stopMotor();
+    }
+
+    public void setZero(){
+        m_encoder.setPosition(-0.4);
+    }
+
+    public void zero(){
+        m_PIDEnabled = false;
+        m_motor.set(-0.1);
+    }
+
+    public double getCurrent(){
+        return m_motor.getOutputCurrent();
     }
 
     @Override
     public void periodic() {
-        m_pid.setReference(m_angle, ControlType.kPosition);
+        if(m_PIDEnabled){
+            m_pid.setReference(m_angle, ControlType.kPosition);
+        }
+        
         SmartDashboard.putNumber("Pitcher", m_motor.getEncoder().getPosition());
     }
 

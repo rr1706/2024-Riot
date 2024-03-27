@@ -1,3 +1,4 @@
+
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -21,7 +22,7 @@ public class Elevator extends SubsystemBase{
     private final RelativeEncoder m_encoderR = m_motorR.getEncoder();
 
     private final ProfiledPIDController m_pid = new ProfiledPIDController(0.05,0.01
-    ,0.00, new Constraints(25, 100));
+    ,0.00, new Constraints(35, 100));
 
     private final ElevatorFeedforward m_ff = new ElevatorFeedforward(0.025, 0.025, 1.0/100.0);
 
