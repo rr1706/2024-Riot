@@ -83,6 +83,14 @@ public class Shooter extends SubsystemBase {
 
     }
 
+    public void run(double velocity, double spinDiff) {
+        m_desriedVel = velocity;
+        spinDiff = 0.01*spinDiff*velocity;
+        m_motor1.setControl(m_request.withVelocity(velocity+spinDiff/2.0).withSlot(0));
+        m_motor2.setControl(m_request.withVelocity(-1.0 * (velocity-spinDiff/2.0)).withSlot(0));
+
+    }
+
     public void stop() {
         m_motor1.stopMotor();
         m_motor2.stopMotor();

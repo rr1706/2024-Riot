@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.277583478243881,
-        "y": 6.946327738809324
+        "x": 3.74132979035189,
+        "y": 6.956194681620133
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.761063675973507,
-        "y": 6.9660616244309415
+        "x": 4.224809988081512,
+        "y": 6.97592856724175
       },
       "isLocked": false,
       "linkedName": null
@@ -46,7 +46,7 @@
   "folder": "KFC Bucket",
   "previewStartingState": {
     "rotation": -155.0,
-    "velocity": 0
+    "velocity": 0.5
   },
   "useDefaultConstraints": true
 }

@@ -1,11 +1,13 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -31,18 +33,12 @@ import frc.robot.Constants.ModuleConstants.Drive;
 public class NEOKrakenSwerveModule extends SubsystemBase {
     private final CANSparkMax m_azimuthMotor;
     private final TalonFX m_driveMotor;
-    private final RelativeEncoder m_azimuthEnc;
-    private final AnalogEncoder m_absEncoder;
-    private final double m_offset;
+    private final AbsoluteEncoder m_azimuthEnc;
     private final SparkPIDController m_azimuthPID;
     private double moduleID;
-    private double m_referenceAngleRadians = 0;
     private Slot0Configs slot0Configs = new Slot0Configs();
     private final VelocityVoltage m_request = new VelocityVoltage(0.0).withSlot(0);
     private boolean m_useNEOEncoder = true;
-
-      private final PIDController m_azimuthRioPID = 
-        new PIDController(Aziumth.rioKp,Aziumth.rioKi,Aziumth.rioKd);
 
   /**
    * Create a new FRC 1706 NEOKrakenSwerveModule Object
@@ -63,31 +59,33 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
             .withSupplyCurrentLimitEnable(true)
             .withStatorCurrentLimitEnable(true));
         m_driveMotor.setNeutralMode(NeutralModeValue.Brake);
-
+        
         m_azimuthMotor = new CANSparkMax(moduleID, MotorType.kBrushless);
+        //m_azimuthMotor.restoreFactoryDefaults();
         m_azimuthMotor.setSmartCurrentLimit(CurrentLimit.kAzimuth);
         m_azimuthMotor.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
         m_azimuthMotor.setInverted(true);
         m_azimuthMotor.setIdleMode(IdleMode.kBrake);
 
-        m_azimuthEnc = m_azimuthMotor.getEncoder();
+        m_azimuthEnc = m_azimuthMotor.getAbsoluteEncoder(Type.kDutyCycle);
         m_azimuthEnc.setPositionConversionFactor(Aziumth.kPositionFactor);
         m_azimuthEnc.setVelocityConversionFactor(Aziumth.kVelocityFactor);
-        m_azimuthEnc.setAverageDepth(4);
-        m_azimuthEnc.setMeasurementPeriod(16);
+
+        //m_azimuthEnc.setZeroOffset(offset);
+
+        m_azimuthEnc.setInverted(true);
 
         m_azimuthPID = m_azimuthMotor.getPIDController();
+
+        m_azimuthPID.setFeedbackDevice(m_azimuthEnc);
+
+        m_azimuthPID.setPositionPIDWrappingEnabled(true);
+        m_azimuthPID.setPositionPIDWrappingMinInput(0.0);
+        m_azimuthPID.setPositionPIDWrappingMaxInput(2.0*Math.PI);
+
         m_azimuthPID.setP(Aziumth.kp);
 
-        m_azimuthRioPID.enableContinuousInput(-Math.PI, Math.PI);
-
-        m_absEncoder = new AnalogEncoder(moduleID-1);
-        m_offset = offset;
-
-        m_azimuthEnc.setPosition(getAbsEncoder());
-
         m_azimuthMotor.burnFlash();
-        SmartDashboard.putBoolean("Use NEO Encoder", m_useNEOEncoder);
     }
 
     /**
@@ -141,68 +139,11 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         SmartDashboard.putNumber("Module"+moduleID, state.speedMetersPerSecond);
         SmartDashboard.putNumber("Kraken"+moduleID, getDriveVelocity());
         m_driveMotor.setControl(m_request.withVelocity(metersToRotations).withSlot(0));
-
-        m_useNEOEncoder = SmartDashboard.getBoolean("Use NEO Encoder", true);
-
-        if(m_useNEOEncoder){
-            setReferenceAngle(state.angle.getRadians());
-        }
-        else{
-            m_azimuthMotor.set(m_azimuthRioPID.calculate(getAbsEncoder(),state.angle.getRadians()));
-        }
-
-        
-
-    }
-
-    /**
-     * Sets the reference angle for the azimuth.
-     *
-     * @param referenceAngleRadians Desired reference angle.
-     */
-    public void setReferenceAngle(double referenceAngleRadians) {
-        double currentAngleRadians = m_azimuthEnc.getPosition();
-
-        double currentAngleRadiansMod = currentAngleRadians % (2.0 * Math.PI);
-        if (currentAngleRadiansMod < 0.0) {
-            currentAngleRadiansMod += 2.0 * Math.PI;
-        }
-
-        // The reference angle has the range [0, 2pi) but the Neo's encoder can go above
-        // that
-        double adjustedReferenceAngleRadians = referenceAngleRadians + currentAngleRadians - currentAngleRadiansMod;
-        if (referenceAngleRadians - currentAngleRadiansMod > Math.PI) {
-            adjustedReferenceAngleRadians -= 2.0 * Math.PI;
-        } else if (referenceAngleRadians - currentAngleRadiansMod < -Math.PI) {
-            adjustedReferenceAngleRadians += 2.0 * Math.PI;
-        }
-
-        m_referenceAngleRadians = referenceAngleRadians;
-        m_azimuthPID.setReference(adjustedReferenceAngleRadians, ControlType.kPosition);
-    }
-
-    /**
-     * Gets the reference angle for the azimuth.
-     *
-     * @return reference angle.
-     */
-    public double getReferenceAngle() {
-        return m_referenceAngleRadians;
+        m_azimuthPID.setReference(state.angle.getRadians(), ControlType.kPosition);
     }
 
     public double getStateAngle() {
-        double motorAngleRadians = m_azimuthEnc.getPosition();
-        motorAngleRadians %= 2.0 * Math.PI;
-        if (motorAngleRadians < 0.0) {
-            motorAngleRadians += 2.0 * Math.PI;
-        }
-        return getAbsEncoder();
-        //return motorAngleRadians;
-    }
-
-    public double getAbsEncoder() {
-        double absEnc = m_absEncoder.getAbsolutePosition() * 2 * Math.PI + m_offset;
-        return absEnc;
+        return m_azimuthEnc.getPosition();
     }
 
 

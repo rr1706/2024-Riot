@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.LimelightHelpers;
@@ -13,9 +14,12 @@ public class AutoIntakeAimAssist extends Command {
     private final SlewRateLimiter m_slewX = new SlewRateLimiter(6.0);
     private final SlewRateLimiter m_slewY = new SlewRateLimiter(6.0);
     private final SlewRateLimiter m_slewRot = new SlewRateLimiter(6.0);
+    private final Timer m_timer = new Timer();
     private boolean m_detectedOnce = false;
+    private boolean m_finished = false;
     private double ty_check = 25.0;
     private final double m_speed;
+
 
     public AutoIntakeAimAssist(Drivetrain drive, double speed) {
         m_drive = drive;
@@ -27,9 +31,12 @@ public class AutoIntakeAimAssist extends Command {
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
+        m_timer.reset();
+        m_timer.start();
         m_pid.reset();
         ty_check = 25.0;
         m_detectedOnce = false;
+        m_finished = false;
         m_slewX.reset(m_drive.getChassisSpeed().vxMetersPerSecond);
         m_slewY.reset(m_drive.getChassisSpeed().vyMetersPerSecond);
         m_slewRot.reset(m_drive.getChassisSpeed().omegaRadiansPerSecond);
@@ -38,11 +45,18 @@ public class AutoIntakeAimAssist extends Command {
     @Override
     public void execute() {
 
+        double time = m_timer.get();
+
+        if(time > 0.20 && !m_detectedOnce){
+            m_finished = true;
+        }
+
+
         double tx = LimelightHelpers.getTX("limelight-note");
         boolean tv = LimelightHelpers.getTV("limelight-note");
         double ty = LimelightHelpers.getTY("limelight-note");
 
-         double xInput = -m_speed;
+        double xInput = -m_speed;
 
         if(!tv){
             xInput = -0.3;
@@ -100,6 +114,12 @@ public class AutoIntakeAimAssist extends Command {
          */
 
         SmartDashboard.putBoolean("DrivingByController", true);
+    }
+
+    @Override
+    public boolean isFinished() {
+        // TODO Auto-generated method stub
+        return m_finished;
     }
 
     @Override

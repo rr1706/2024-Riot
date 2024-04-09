@@ -111,8 +111,8 @@ public class AutoShooterByPose extends Command {
         }
         else{
 
-                m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)));
-                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance))); 
+            m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)));
+            m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),-25.0);
             
         }
 

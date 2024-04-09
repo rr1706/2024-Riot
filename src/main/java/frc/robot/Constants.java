@@ -37,9 +37,10 @@ public final class Constants {
     public static final int kDriveStator = 120;
     public static final int kDriveSupply = 60;
     public static final int kAzimuth = 20;
-    public static final int kShooterSupply = 40;
-    public static final int kShooterStator = 80;
-    public static final int kFeeder = 40;
+    public static final int kShooterSupply = 50;
+    public static final int kShooterStator = 100;
+    public static final int kFeederStator = 80;
+    public static final int kFeederSupply = 40;
     public static final int kIntakerSupply = 30;
     public static final int kIntakerStator = 60;
     public static final int kKicker = 20;
@@ -61,7 +62,7 @@ public final class Constants {
 
     public static final class Aziumth {
       public static final double kGearRatio = (50.0 / 12.0) * (72.0 / 12.0);
-      public static final double kPositionFactor = 1 / (kGearRatio) * 2 * Math.PI;
+      public static final double kPositionFactor = 2 * Math.PI;
       public static final double kVelocityFactor = kPositionFactor / 60.0;
       public static final double kp = 1.0;
       public static final double rioKp = 0.8;
@@ -80,8 +81,8 @@ public final class Constants {
   public static final class GoalConstants{
     public static final Translation2d kRedGoal = new Translation2d(643.23/39.37, 218.42/39.37);
     public static final Translation2d kBlueGoal = new Translation2d(8.00/39.37, 218.42/39.37);
-    public static final Translation2d kRedFeed = new Translation2d(594.23/39.37, 236.42/39.37);
-    public static final Translation2d kBlueFeed = new Translation2d(57.0/39.37, 236.42/39.37);
+    public static final Translation2d kRedFeed = new Translation2d(618.23/39.37, 250.42/39.37);
+    public static final Translation2d kBlueFeed = new Translation2d(33.0/39.37, 250.42/39.37);
   }
 
   public static final class DriveConstants {
@@ -93,25 +94,25 @@ public final class Constants {
 
     public static final class FrontLeft {
       public static final int kModuleID = 4;
-      public static final double kOffset = -4.217;
+      public static final double kOffset = 2*Math.PI-0.957574069499969;//5.295623302459717;
       public static final Translation2d kLocation = new Translation2d(kWheelBaseLength / 2, kWheelBaseWidth / 2);
     }
 
     public static final class FrontRight {
       public static final int kModuleID = 1;
-      public static final double kOffset = -5.191;
+      public static final double kOffset = 2*Math.PI-2.058273077011108;//4.239565849304199;
       public static final Translation2d kLocation = new Translation2d(kWheelBaseLength / 2, -kWheelBaseWidth / 2);
     }
 
     public static final class RearLeft {
       public static final int kModuleID = 3;
-      public static final double kOffset = -3.136+0.5236;
+      public static final double kOffset = 2*Math.PI-0.037144355475903;//6.257627487182617;
       public static final Translation2d kLocation = new Translation2d(-kWheelBaseLength / 2, kWheelBaseWidth / 2);
     }
 
     public static final class RearRight {
       public static final int kModuleID = 2;
-      public static final double kOffset = -2.264;
+      public static final double kOffset = 2*Math.PI-5.337879180908203;//0.91804438829422;
       public static final Translation2d kLocation = new Translation2d(-kWheelBaseLength / 2, -kWheelBaseWidth / 2);
     }
 
@@ -158,9 +159,10 @@ public final class Constants {
   }
 
   public static final class PitcherConstants {
+    public static final double kHome = 3.5;
     public static final float kMax = (float) 20.0;
     public static final float kMin = (float) 2.0;
-    public static final double kP = 0.1;
+    public static final double kP = 0.13;
   }
 
   public static final class ElevatorConstants {
@@ -204,11 +206,14 @@ public final class Constants {
         new Point2D.Double(42.0+132.0, 8.05 + kPitchOffset),
         new Point2D.Double(42.0+144.0, 7.3 + kPitchOffset),
         new Point2D.Double(42.0+156.0, 6.50 + kPitchOffset),
-        new Point2D.Double(42.0+168.0, 6.49 + kPitchOffset),
-        new Point2D.Double(42.0+180.0, 6.15 + kPitchOffset), 
-        new Point2D.Double(236.0,5.9 + kPitchOffset),
-        new Point2D.Double(260.0,5.7 + kPitchOffset),
-        new Point2D.Double(283.0,5.4 + kPitchOffset)
+        new Point2D.Double(42.0+168.0, 6.45 + kPitchOffset),
+        new Point2D.Double(230.0, 5.85 + kPitchOffset), 
+        new Point2D.Double(250.0, 5.26 + kPitchOffset),
+        new Point2D.Double(275.0, 4.90 + kPitchOffset),
+        new Point2D.Double(300.0, 4.61 + kPitchOffset),
+        new Point2D.Double(321.0, 4.20 + kPitchOffset),
+        new Point2D.Double(345.0, 4.15 + kPitchOffset),
+        new Point2D.Double(380.0, 3.95 + kPitchOffset)
     };
 
     public static final Point2D[] kAutoPitchTable = {
@@ -226,11 +231,13 @@ public final class Constants {
         new Point2D.Double(42.0+132.0, 8.05 + kPitchOffset),
         new Point2D.Double(42.0+144.0, 7.3 + kPitchOffset),
         new Point2D.Double(42.0+156.0, 6.50 + kPitchOffset),
-        new Point2D.Double(42.0+168.0, 6.49 + kPitchOffset),
-        new Point2D.Double(42.0+180.0, 6.15 + kPitchOffset), 
-        new Point2D.Double(236.0,5.9 + kPitchOffset),
-        new Point2D.Double(260.0,5.7 + kPitchOffset),
-        new Point2D.Double(283.0,5.4 + kPitchOffset)
+        new Point2D.Double(42.0+168.0, 6.45 + kPitchOffset),
+        new Point2D.Double(230.0, 5.95 + kPitchOffset), 
+        new Point2D.Double(250.0, 5.46 + kPitchOffset),
+        new Point2D.Double(275.0, 5.06 + kPitchOffset),
+        new Point2D.Double(300.0, 4.81 + kPitchOffset),
+        new Point2D.Double(321.0, 4.4 + kPitchOffset),
+        new Point2D.Double(345.0, 4.36 + kPitchOffset)
     };
 
     public static final Point2D[] kVelocityTable = {
@@ -248,8 +255,14 @@ public final class Constants {
         new Point2D.Double(42.0+132.0, 65.23+ kpowerOffset),
         new Point2D.Double(42.0+144.0, 70.0+ kpowerOffset),
         new Point2D.Double(42.0+156.0, 75.00+ kpowerOffset),
-        new Point2D.Double(42.0+168.0, 75.00+ kpowerOffset),
-        new Point2D.Double(42.0+180.0, 75.00+ kpowerOffset)
+        new Point2D.Double(42.0+168.0, 67.00+ kpowerOffset),
+        new Point2D.Double(230.0, 74.00 + kpowerOffset),
+        new Point2D.Double(250.0, 78.00+ kpowerOffset),
+        new Point2D.Double(275.0, 80.00 + kpowerOffset),
+        new Point2D.Double(300.0, 80.00 + kpowerOffset),
+        new Point2D.Double(321.0, 80.00 +kpowerOffset),
+        new Point2D.Double(345.0, 82.12 + kpowerOffset),
+        new Point2D.Double(380.0, 82.12 + kpowerOffset)
     };
 
         public static final Point2D[] kAutoVelocityTable = {
@@ -267,8 +280,13 @@ public final class Constants {
         new Point2D.Double(42.0+132.0, 65.23+ kpowerOffset),
         new Point2D.Double(42.0+144.0, 70.0+ kpowerOffset),
         new Point2D.Double(42.0+156.0, 75.00+ kpowerOffset),
-        new Point2D.Double(42.0+168.0, 75.00+ kpowerOffset),
-        new Point2D.Double(42.0+180.0, 75.00+ kpowerOffset)
+        new Point2D.Double(42.0+168.0, 67.00+ kpowerOffset),
+        new Point2D.Double(230.0, 74.00 + kpowerOffset),
+        new Point2D.Double(250.0, 78.00+ kpowerOffset),
+        new Point2D.Double(275.0, 80.00 + kpowerOffset),
+        new Point2D.Double(300.0, 80.00 + kpowerOffset),
+        new Point2D.Double(321.0, 80.00 +kpowerOffset),
+        new Point2D.Double(345.0, 82.12 + kpowerOffset)
     };
 
     public static final Point2D[] kTimeTable = {

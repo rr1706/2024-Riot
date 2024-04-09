@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
@@ -26,6 +28,8 @@ import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoIntakeAimAssist;
 import frc.robot.commands.AutoShooterAim;
 import frc.robot.commands.AutoShooterByPose;
+import frc.robot.commands.AutoSmartShootNoPath;
+import frc.robot.commands.AutoSmartShooter;
 import frc.robot.commands.BiDirectionalIntake;
 import frc.robot.commands.DriveByController;
 import frc.robot.commands.Handoff;
@@ -105,6 +109,7 @@ public class RobotContainer {
     SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure the trigger bindings
     configureBindings();
+
   }
 
   /**
@@ -135,10 +140,12 @@ public class RobotContainer {
         .onFalse(switchLimelightPipeline("limelight-april", 0));
 
     m_driverController.rightTrigger(0.25)
+        //.whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder, m_driverController))
+        //.onFalse(new ReverseFeed(m_feeder, m_indexer).withTimeout(0.100));
         .onTrue(new InstantCommand(() -> m_feeder.run(0.4)).alongWith(new InstantCommand(() -> m_indexer.run(0.4))))
         .onFalse(new InstantCommand(() -> m_feeder.stop()).alongWith(new InstantCommand(() -> m_indexer.stop())));
 
-    m_driverController.leftBumper().whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder))
+    m_driverController.leftBumper().whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder, m_driverController))
         .onFalse(new ReverseFeed(m_feeder, m_indexer).withTimeout(0.100));
     // .onFalse(new InstantCommand(() -> m_feeder.run(-0.4)).andThen(new
     // WaitCommand(0.06))
@@ -194,6 +201,13 @@ public class RobotContainer {
   }
 
   public void configureNamedCommands() {
+    Command autoIntakeAssist = new AutoIntakeAimAssist(m_drive, 2.5);
+
+    NamedCommands.registerCommand("SmartIntake", autoIntakeAssist
+            .raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true))
+                .alongWith(new InstantCommand(() -> m_elevator.setPose(1.0)))));
+    NamedCommands.registerCommand("PathDecider", new ConditionalCommand(new WaitCommand(0.0), new WaitCommand(15.0), autoIntakeAssist::isFinished));
+    NamedCommands.registerCommand("AntiPathDecider", new ConditionalCommand(new WaitCommand(15.0), new WaitCommand(0.0), autoIntakeAssist::isFinished));
     NamedCommands.registerCommand("TelePose", new InstantCommand(() -> m_poseEstimator.setAuto(false)));
     NamedCommands.registerCommand("AutoPose", new InstantCommand(() -> m_poseEstimator.setAuto(true)));
     NamedCommands.registerCommand("Auto Shooter By Pose",
@@ -220,13 +234,18 @@ public class RobotContainer {
         .alongWith(new InstantCommand(() -> m_poseEstimator.setAuto(true))));
     NamedCommands.registerCommand("Stop Drive", new InstantCommand(() -> m_drive.stop()));
     NamedCommands.registerCommand("Aim Shooter",
-        new AutoShooterAim(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose));
+        new SmartShootByPose(m_shooter, m_drive, m_pitcher,m_driverController, m_poseEstimator::getPose));
     NamedCommands.registerCommand("Soft Shoot", new InstantCommand(() -> {
       m_shooter.run(19);
     }));
     NamedCommands.registerCommand("NoteFar", switchLimelightPipeline("limelight-note", 0));
     NamedCommands.registerCommand("NoteClose", switchLimelightPipeline("limelight-note", 1));
     NamedCommands.registerCommand("AimAtCenter", new RotateToAngle(new Rotation2d(-Math.PI/2.0), m_drive));
+    NamedCommands.registerCommand("AimAtNote", new RotateToAngle(new Rotation2d(Math.PI/4.0), m_drive));
+    NamedCommands.registerCommand("Step Back", new AutoSmartShootNoPath(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, 2.0, 0.0));
+    NamedCommands.registerCommand("Pull Up", new AutoSmartShootNoPath(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, -1.732, 1.0));
+    NamedCommands.registerCommand("Pull Up2", new AutoSmartShootNoPath(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, -2.0, 0.0));
+
   }
 
   public void configureAutoBuilder() {
@@ -253,7 +272,7 @@ public class RobotContainer {
   }
 
   public Command getTestCommand() {
-    return new ZeroClimber(m_climber).alongWith(new ZeroElevator(m_elevator)).alongWith(new ZeroPitcher(m_pitcher));
+    return new ZeroClimber(m_climber).alongWith(new ZeroElevator(m_elevator));
   }
 
   public Command getTeleInitCommand() {

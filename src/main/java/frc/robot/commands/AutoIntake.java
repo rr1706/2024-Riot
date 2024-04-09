@@ -44,7 +44,7 @@ public void initialize(){
 
 @Override
 public void execute(){
-    if(m_feeder.getCurrent() > 10.0 && !m_currentSpiked && m_timer.get() > 0.4){
+    if(m_feeder.getCurrent() > 8.0 && !m_currentSpiked && m_timer.get() > 0.4){
         m_currentSpiked = true;
         m_indexer.run(.2);
         m_intake.run(.2);

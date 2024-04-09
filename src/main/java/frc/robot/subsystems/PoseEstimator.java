@@ -1,17 +1,30 @@
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import javax.naming.LimitExceededException;
+import javax.swing.text.StyledEditorKit.BoldAction;
+
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.GoalConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.LimelightHelpers.LimelightResults;
+import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.utilities.MathUtils;
 
 public class PoseEstimator extends SubsystemBase {
@@ -19,8 +32,12 @@ public class PoseEstimator extends SubsystemBase {
     private final Drivetrain m_drivetrain;
     private final Field2d m_field = new Field2d();
     private boolean m_auto = true;
+    private boolean m_autoRotate = false;
+    private InterpolatingDoubleTreeMap m_timeTable = new InterpolatingDoubleTreeMap();
+
 
     public PoseEstimator(Drivetrain drivetrain) {
+        m_timeTable = MathUtils.pointsToTreeMap(ShooterConstants.kTimeTable);
         m_drivetrain = drivetrain;
         m_poseEstimator = new SwerveDrivePoseEstimator(DriveConstants.kSwerveKinematics,
                 drivetrain.getGyro(),
@@ -39,48 +56,75 @@ public class PoseEstimator extends SubsystemBase {
     }
 
     private void updatePoseEstimator(boolean force) {
-        double limelightLatency = LimelightHelpers.getLatency_Pipeline("limelight-april")
-                + LimelightHelpers.getLatency_Capture("limelight-april");
-        limelightLatency = limelightLatency / 1000.0;
-        double timestamp = Timer.getFPGATimestamp() - limelightLatency;
-        double velocity = MathUtils.pythagorean(m_drivetrain.getChassisSpeed().vxMetersPerSecond,
-                m_drivetrain.getChassisSpeed().vyMetersPerSecond);
-        double angularVelocity = m_drivetrain.getChassisSpeed().omegaRadiansPerSecond;
-        Pose2d limelightBotPose = LimelightHelpers.getBotPose2d_wpiBlue("limelight-april");
+
+        //double velocity = MathUtils.pythagorean(m_drivetrain.getChassisSpeed().vxMetersPerSecond,
+                //m_drivetrain.getChassisSpeed().vyMetersPerSecond;
+        //double angularVelocity = m_drivetrain.getChassisSpeed().omegaRadiansPerSecond;
 
         // double yAdj = 0.945*(limelightBotPose.getY())+.305;
 
         // limelightBotPose = new Pose2d(limelightBotPose.getX(), yAdj,
         // limelightBotPose.getRotation());
 
-        Pose2d currentPose = getPose();
-        boolean validSolution = LimelightHelpers.getTV("limelight-april");
-
-        LimelightResults results = LimelightHelpers.getLatestResults("limelight-april");
-        int validTagCount = results.targetingResults.targets_Fiducials.length;
+        //Pose2d currentPose = getPose();
 
         SmartDashboard.putBoolean("Auto Pose", m_auto);
-
-        boolean updatePose = ((currentPose.getTranslation()
-                .getDistance(limelightBotPose.getTranslation()) <= VisionConstants.kPoseErrorAcceptance)
-                && validSolution && limelightBotPose.getTranslation().getDistance(currentPose.getTranslation()) >= 0.05
-                && velocity <= 4.0 && angularVelocity <= 0.5 * Math.PI);
 
         // boolean m_overide = SmartDashboard.getBoolean("Set Pose Est", false);
 
         m_poseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_drivetrain.getGyro(),
                 m_drivetrain.getModulePositions());
-        if ((validTagCount >= 2.0) || force) {
+        updateWithVision("limelight-april");
+        
+        if(!m_auto){
+            //updateWithVision("limelight-back");
+        }
+
+    }
+
+    private void updateWithVision(String limelightName) {
+        double ta = LimelightHelpers.getTA(limelightName);
+        PoseEstimate limelightBotPose = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
+        int validTagCount = limelightBotPose.tagCount;
+        boolean slowRotate = m_drivetrain.getChassisSpeed().omegaRadiansPerSecond <= 4*Math.PI;
+        if ((validTagCount >= 2.0 && ta >= 0.030) && slowRotate) {
             if (m_auto) {
-                if(updatePose){
-                    m_poseEstimator.addVisionMeasurement(limelightBotPose, timestamp, VecBuilder.fill(10.0, 10.0, 10.0));
-                }
+                double antiTrust = 10.0;
+                m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds, VecBuilder.fill(antiTrust, antiTrust, antiTrust));
             } else {
-                m_poseEstimator.addVisionMeasurement(limelightBotPose, timestamp, VecBuilder.fill(1.0, 1.0, 1.0));
+                double antiTrust = -150.0*ta+10.0;
+                if(antiTrust <= 0.5){antiTrust = 0.5;}
+                m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds, VecBuilder.fill(antiTrust, antiTrust, antiTrust));
 
             }
-        } else if ((updatePose && validTagCount == 1) && !m_auto) {
-            m_poseEstimator.addVisionMeasurement(limelightBotPose, timestamp, VecBuilder.fill(10.0, 10.0, 10.0));
+        } else if ((validTagCount == 1 && ta >= 0.070) && !m_auto && slowRotate) {
+                double antiTrust = -69.0*ta+14.83;
+            m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds, VecBuilder.fill(antiTrust, antiTrust, antiTrust));
+        }
+    }
+
+        private void updateWithVision2(String limelightName) {
+        LimelightHelpers.SetRobotOrientation(limelightName, m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        double limelightLatency = LimelightHelpers.getLatency_Pipeline(limelightName)
+                + LimelightHelpers.getLatency_Capture(limelightName);
+        limelightLatency = limelightLatency / 1000.0;
+        double ta = LimelightHelpers.getTA(limelightName);
+        PoseEstimate limelightBotPose = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+        int validTagCount = limelightBotPose.tagCount;
+        if ((validTagCount >= 2.0)) {
+            if (m_auto) {
+                double antiTrust = -300.0*ta+22.0;
+                if(antiTrust <= 5.0){antiTrust = 5.0;}
+                m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds, VecBuilder.fill(antiTrust, antiTrust, 999999));
+            } else {
+                double antiTrust = -150.0*ta+10.0;
+                if(antiTrust <= 0.5){antiTrust = 0.5;}
+                m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds, VecBuilder.fill(antiTrust, antiTrust, 999999));
+
+            }
+        } else if ((validTagCount == 1) && !m_auto) {
+                double antiTrust = -69.0*ta+14.83;
+            m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds, VecBuilder.fill(antiTrust, antiTrust, 999999));
         }
     }
 
@@ -100,6 +144,18 @@ public class PoseEstimator extends SubsystemBase {
     public Pose2d getPose() {
         return m_poseEstimator.getEstimatedPosition();
     }
+
+Translation2d compForMovement(Translation2d goalLocation) {
+
+    Translation2d toGoal = goalLocation.minus(getPose().getTranslation());
+
+    double rx = m_drivetrain.getFieldRelativeSpeed().vx + m_drivetrain.getFieldRelativeAccel().ax * 0.030;
+    double ry = m_drivetrain.getFieldRelativeSpeed().vy + m_drivetrain.getFieldRelativeAccel().ay * 0.030;
+        
+    double shotTime = m_timeTable.get(toGoal.getDistance(new Translation2d()));
+
+    return new Translation2d(goalLocation.getX() - rx * shotTime, goalLocation.getY() - ry * shotTime);
+}
 
     public void setAuto(boolean auto) {
         m_auto = auto;

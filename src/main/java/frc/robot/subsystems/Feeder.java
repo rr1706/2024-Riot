@@ -1,47 +1,55 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CurrentLimit;
-import frc.robot.Constants.GlobalConstants;
 
 public class Feeder extends SubsystemBase{
-    private final CANSparkMax m_motor = new CANSparkMax(6, MotorType.kBrushless);
-    private final RelativeEncoder m_encoder = m_motor.getEncoder();
-    private final SparkPIDController m_pid = m_motor.getPIDController();
     private boolean m_PIDEnabled = false;
     private double m_desiredPose = 0.0;
 
-    public Feeder(){
-        m_motor.setSmartCurrentLimit(CurrentLimit.kFeeder);
-        m_motor.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
-        m_motor.setIdleMode(IdleMode.kBrake);
-        m_pid.setP(0.175);
+    private final TalonFX m_motor = new TalonFX(7);
+    private Slot0Configs slot0Configs = new Slot0Configs();
 
-        m_motor.setInverted(false);
-        m_motor.burnFlash();
+    public Feeder(){
+        configurePID();
+        m_motor.getConfigurator().apply(slot0Configs);
+        m_motor.getConfigurator().apply(new CurrentLimitsConfigs()
+                .withStatorCurrentLimit(CurrentLimit.kFeederStator)
+                .withStatorCurrentLimitEnable(true)
+                .withSupplyCurrentLimit(CurrentLimit.kFeederSupply)
+                .withSupplyCurrentLimitEnable(true));
+        m_motor.setNeutralMode(NeutralModeValue.Brake);
+
     }
 
     @Override
     public void periodic() {
         if(m_PIDEnabled){
-            m_pid.setReference(m_desiredPose, ControlType.kPosition);
+            m_motor.setControl(new MotionMagicVoltage(m_desiredPose));
         }
         SmartDashboard.putNumber("Manipulator Pose", getEncoder());
         SmartDashboard.putNumber("Feeder Current", getCurrent());
-        SmartDashboard.putNumber("Feeder Power", getPower());
+    }
+
+    public void configurePID() {
+        slot0Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
+        slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+        slot0Configs.kP = 0.01; // An error of 1 rps results in 0.11 V output
+        slot0Configs.kI = 0; // no output for integrated error
+        slot0Configs.kD = 0; // no output for error derivative
     }
 
     public void run(double speed){
         m_PIDEnabled = false;
-        m_motor.set(speed);
+        m_motor.setControl(new DutyCycleOut(speed));
     }
 
     public void stop(){
@@ -50,11 +58,11 @@ public class Feeder extends SubsystemBase{
     }
 
     public void setZero(){
-        m_encoder.setPosition(0.0);
+        m_motor.setPosition(0.0);
     }
 
     public double getEncoder(){
-        return m_encoder.getPosition();
+        return m_motor.getPosition().getValueAsDouble();
     }
 
     public boolean atSetpoint(){
@@ -67,10 +75,6 @@ public class Feeder extends SubsystemBase{
     }
 
     public double getCurrent(){
-        return m_motor.getOutputCurrent();
-    }
-
-        public double getPower(){
-        return m_motor.getOutputCurrent()*m_motor.getAppliedOutput()*m_motor.getBusVoltage();
+        return m_motor.getStatorCurrent().getValueAsDouble();
     }
 }

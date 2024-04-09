@@ -11,6 +11,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import java.util.Optional;
+
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -177,10 +179,10 @@ public class Drivetrain extends SubsystemBase {
 
     SmartDashboard.putNumber("Speed", speed);
 
-    SmartDashboard.putNumber("Front Left Encoder", m_FLModule.getAbsEncoder());
-    SmartDashboard.putNumber("Front Right Encoder", m_FRModule.getAbsEncoder());
-    SmartDashboard.putNumber("Rear Left Encoder", m_RLModule.getAbsEncoder());
-    SmartDashboard.putNumber("Rear Right Encoder", m_RRModule.getAbsEncoder());
+    SmartDashboard.putNumber("Front Left Encoder", m_FLModule.getStateAngle());
+    SmartDashboard.putNumber("Front Right Encoder", m_FRModule.getStateAngle());
+    SmartDashboard.putNumber("Rear Left Encoder", m_RLModule.getStateAngle());
+    SmartDashboard.putNumber("Rear Right Encoder", m_RRModule.getStateAngle());
 
     updateOdometry();
 
@@ -397,4 +399,6 @@ public class Drivetrain extends SubsystemBase {
     m_slewY = new SlewRateLimiter(translation, -translation, m_latestSlew[1]);
     m_slewRot = new SlewRateLimiter(rotation, -rotation, m_latestSlew[2]);
   }
+
+
 }

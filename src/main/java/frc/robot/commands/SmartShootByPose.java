@@ -3,10 +3,13 @@ package frc.robot.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,6 +19,7 @@ import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.GlobalConstants;
 import frc.robot.Constants.GoalConstants;
+import frc.robot.Constants.PitcherConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pitcher;
@@ -37,9 +41,9 @@ public class SmartShootByPose extends Command {
     private InterpolatingDoubleTreeMap m_feedTime = new InterpolatingDoubleTreeMap();
     private final CommandXboxController m_controller;
     private double manualHoodValue = 5.0;
-    private boolean manualHoodOverride = false;
+    private boolean manualOverride = false;
     private double manualVelocityValue = 70.0;
-    private boolean manualVelocityOverride = false;
+    private double manualSpinDiff = 0.0;
 
     private final Timer m_timer = new Timer();
 
@@ -71,11 +75,11 @@ public class SmartShootByPose extends Command {
     public void initialize() {
         // TODO Auto-generated method stub
         m_pid.reset();
-        SmartDashboard.putBoolean("Manual Velocity Override", manualVelocityOverride);
-        SmartDashboard.putNumber("Set Velocity Adjust", manualVelocityValue);
-
-        SmartDashboard.putBoolean("Manual Hood Override", manualHoodOverride);
         SmartDashboard.putNumber("Set Hood Adjust", manualHoodValue);
+        SmartDashboard.putNumber("Set Velocity Adjust", manualVelocityValue);
+        SmartDashboard.putNumber("Set Spin Diff", manualSpinDiff);
+
+        SmartDashboard.putBoolean("Manual Override", manualOverride);
         m_timer.reset();
         m_timer.start();
     }
@@ -89,13 +93,13 @@ public class SmartShootByPose extends Command {
 
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
             goalLocation = GoalConstants.kRedGoal;
-            if (goalLocation.getDistance(getPose.get().getTranslation()) * 39.37 >= 280.0) {
+            if (goalLocation.getDistance(getPose.get().getTranslation()) * 39.37 >= 325.0) {
                 goalLocation = GoalConstants.kRedFeed;
                 feedShot = true;
             }
         } else {
             goalLocation = GoalConstants.kBlueGoal;
-            if (goalLocation.getDistance(getPose.get().getTranslation()) * 39.37 >= 280.0) {
+            if (goalLocation.getDistance(getPose.get().getTranslation()) * 39.37 >= 325.0) {
                 goalLocation = GoalConstants.kBlueFeed;
                 feedShot = true;
             }
@@ -126,27 +130,21 @@ public class SmartShootByPose extends Command {
 
         desiredRot = m_pid.calculate(pidAngle);
 
-        manualHoodOverride = SmartDashboard.getBoolean("Manual Hood Override", false);
-        manualVelocityOverride = SmartDashboard.getBoolean("Manual Velocity Override", false);
+        manualOverride = SmartDashboard.getBoolean("Manual Override", false);
 
-        if (manualHoodOverride && manualVelocityOverride) {
+        if (manualOverride) {
             manualHoodValue = SmartDashboard.getNumber("Set Hood Adjust", 0);
             manualVelocityValue = SmartDashboard.getNumber("Set Velocity Adjust", 70.0);
+            manualSpinDiff = SmartDashboard.getNumber("Set Spin Diff", 0.0);
             m_pitcher.pitchToAngle(manualHoodValue);
-            m_shooter.run(manualVelocityValue);
-        } else if (manualHoodOverride) {
-            manualHoodValue = SmartDashboard.getNumber("Set Hood Adjust", 0);
-            m_pitcher.pitchToAngle(manualHoodValue);
-        } else if (manualVelocityOverride) {
-            manualVelocityValue = SmartDashboard.getNumber("Set Velocity Adjust", 70.0);
-            m_shooter.run(manualVelocityValue);
-        } else {
+            m_shooter.run(manualVelocityValue, manualSpinDiff);
+        }else {
             if (feedShot) {
                 m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_feedPitch.get(goalDistance)));
-                m_shooter.run(m_velocityFilter.calculate(m_feedVelocity.get(goalDistance)));
+                m_shooter.run(m_velocityFilter.calculate(m_feedVelocity.get(goalDistance)),0.0);
             } else {
                 m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)) + offset);
-                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)));
+                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),-30.0);
             }
         }
 
@@ -201,6 +199,7 @@ public class SmartShootByPose extends Command {
         if (feedShot) {
             shotTime = m_feedTime.get(toGoal.getDistance(new Translation2d()));
         } else {
+            
             shotTime = m_timeTable.get(toGoal.getDistance(new Translation2d()));
         }
         return new Translation2d(goalLocation.getX() - rx * shotTime, goalLocation.getY() - ry * shotTime);
@@ -214,7 +213,7 @@ public class SmartShootByPose extends Command {
          * m_indexer.stop();
          * m_feeder.stop();
          */
-        m_pitcher.pitchToAngle(2.0);
+        m_pitcher.pitchToAngle(PitcherConstants.kHome);
     }
 
 }

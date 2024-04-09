@@ -1,0 +1,58 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.5238076629999435,
+        "y": 7.3706062796740985
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.62591586721635,
+        "y": 7.439674879349759
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.165158945702509,
+        "y": 6.531916140755359
+      },
+      "prevControl": {
+        "x": 6.790215118891776,
+        "y": 6.778589711025576
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 145.0,
+      "rotateFast": true
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 2.5,
+    "rotation": 145.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "KFC Bucket",
+  "previewStartingState": {
+    "rotation": -172.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

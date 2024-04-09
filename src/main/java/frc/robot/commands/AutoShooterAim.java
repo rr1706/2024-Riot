@@ -128,7 +128,7 @@ public class AutoShooterAim extends Command {
             m_shooter.run(manualVelocityValue);
         } else {
                 m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)) + offset);
-                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)));
+                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),-25.0);
             
         }
 
