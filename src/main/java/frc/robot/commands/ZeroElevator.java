@@ -27,7 +27,7 @@ public class ZeroElevator extends Command {
     @Override
     public void execute() {
         SmartDashboard.putBoolean("Zeroing Elevator", true);
-        if(m_timer.get() > 0.2){
+        if(m_timer.get() > 0.1){
             if(m_elevator.getLeftCurrent()+m_elevator.getRightCurrent() > 60.0){
                 m_elevator.stop();
                 m_elevator.setZero();

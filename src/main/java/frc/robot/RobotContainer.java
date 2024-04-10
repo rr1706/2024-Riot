@@ -146,14 +146,14 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> m_feeder.stop()).alongWith(new InstantCommand(() -> m_indexer.stop())));
 
     m_driverController.leftBumper().whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder, m_driverController))
-        .onFalse(new ReverseFeed(m_feeder, m_indexer).withTimeout(0.100));
+        .onFalse(new ReverseFeed(m_feeder, m_indexer).withTimeout(0.130));
     // .onFalse(new InstantCommand(() -> m_feeder.run(-0.4)).andThen(new
     // WaitCommand(0.06))
     // .andThen(new InstantCommand(() -> m_feeder.stop()).alongWith(new
     // InstantCommand(() -> m_indexer.stop()))));
 
     m_driverController.rightBumper()
-        .whileTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -14.0, m_elevator));
+        .whileTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -14.0, m_elevator, m_drive, true));
 
     m_driverController.b().onTrue(new InstantCommand(() -> m_manipulator.run(.4)))
         .onFalse(new InstantCommand(() -> m_manipulator.stop()));
@@ -165,10 +165,10 @@ public class RobotContainer {
     m_driverController.pov(90).onTrue(new RotateToAngle(new Rotation2d(-Math.PI/2.0), m_drive));
 
     m_driverController.pov(270)
-        .onTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -19.0, m_elevator).withTimeout(2.0));
+        .onTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -19.0, m_elevator, m_drive, false).withTimeout(2.0));
 
     m_driverController.a().onTrue(new InstantCommand(() -> m_elevator.setPose(16.0)))
-        .onFalse(new InstantCommand(() -> m_elevator.setPose(1.0)).andThen(new WaitCommand(0.5))
+        .onFalse(new InstantCommand(() -> m_elevator.setPose(1.0)).andThen(new WaitCommand(0.25))
             .andThen(new ZeroElevator(m_elevator)));
     m_driverController.y().onTrue(new InstantCommand(() -> m_elevator.setPose(24.5)))
         .onFalse(new InstantCommand(() -> m_elevator.setPose(ElevatorConstants.kRest)));

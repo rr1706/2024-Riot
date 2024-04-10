@@ -93,13 +93,23 @@ public class SmartShootByPose extends Command {
 
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
             goalLocation = GoalConstants.kRedGoal;
-            if (goalLocation.getDistance(getPose.get().getTranslation()) * 39.37 >= 325.0) {
+            if (getPose.get().getTranslation().getX() <= 6.0) {
+                goalLocation = GoalConstants.kMidFeed;
+                feedShot = true;
+            }
+            else if(getPose.get().getTranslation().getX() <= 9.0) {
+                
                 goalLocation = GoalConstants.kRedFeed;
                 feedShot = true;
             }
         } else {
             goalLocation = GoalConstants.kBlueGoal;
-            if (goalLocation.getDistance(getPose.get().getTranslation()) * 39.37 >= 325.0) {
+            if (getPose.get().getTranslation().getX() >= 10.5) {
+                goalLocation = GoalConstants.kMidFeed;
+                feedShot = true;
+            }
+            else if(getPose.get().getTranslation().getX() >= 7.5) {
+                
                 goalLocation = GoalConstants.kBlueFeed;
                 feedShot = true;
             }
@@ -143,10 +153,11 @@ public class SmartShootByPose extends Command {
                 m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_feedPitch.get(goalDistance)));
                 m_shooter.run(m_velocityFilter.calculate(m_feedVelocity.get(goalDistance)),0.0);
             } else {
-                m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)) + offset);
-                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),-30.0);
+                m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)) + 0);
+                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),30.0);
             }
         }
+
 
         double xInput = -m_controller.getLeftY();
         double yInput = -m_controller.getLeftX();

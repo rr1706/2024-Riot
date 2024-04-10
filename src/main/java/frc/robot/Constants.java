@@ -81,8 +81,10 @@ public final class Constants {
   public static final class GoalConstants{
     public static final Translation2d kRedGoal = new Translation2d(643.23/39.37, 218.42/39.37);
     public static final Translation2d kBlueGoal = new Translation2d(8.00/39.37, 218.42/39.37);
-    public static final Translation2d kRedFeed = new Translation2d(618.23/39.37, 250.42/39.37);
+    public static final Translation2d kRedFeed = new Translation2d(618.23/39.37, 290.42/39.37);
     public static final Translation2d kBlueFeed = new Translation2d(33.0/39.37, 250.42/39.37);
+    public static final Translation2d kMidFeed = new Translation2d(8.2705, 250.42/39.37);
+
   }
 
   public static final class DriveConstants {
@@ -171,7 +173,7 @@ public final class Constants {
 
   public static final class ShooterConstants {
     private static final double kpowerOffset = 0.0;
-    private static final double kPitchOffset = 0.2;
+    private static final double kPitchOffset = 0.3;
     public static final Point2D[] kDistTable = {
         new Point2D.Double(0.20,38.0),//.3B
         new Point2D.Double(-3.36, 38.0+12.0),

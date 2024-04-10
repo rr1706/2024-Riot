@@ -22,7 +22,7 @@ public class Elevator extends SubsystemBase{
     private final RelativeEncoder m_encoderR = m_motorR.getEncoder();
 
     private final ProfiledPIDController m_pid = new ProfiledPIDController(0.05,0.01
-    ,0.00, new Constraints(35, 100));
+    ,0.00, new Constraints(50, 100));
 
     private final ElevatorFeedforward m_ff = new ElevatorFeedforward(0.025, 0.025, 1.0/100.0);
 
@@ -72,8 +72,8 @@ public class Elevator extends SubsystemBase{
 
     public void zero(){
         m_PIDEnabled = false;
-        m_motorL.set(-0.1);
-        m_motorR.set(-0.1);
+        m_motorL.set(-0.25);
+        m_motorR.set(-0.25);
     }
 
     public void set(double power){

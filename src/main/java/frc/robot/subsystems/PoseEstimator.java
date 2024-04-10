@@ -77,7 +77,7 @@ public class PoseEstimator extends SubsystemBase {
         updateWithVision("limelight-april");
         
         if(!m_auto){
-            //updateWithVision("limelight-back");
+            updateWithVision("limelight-back");
         }
 
     }
@@ -87,18 +87,20 @@ public class PoseEstimator extends SubsystemBase {
         PoseEstimate limelightBotPose = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
         int validTagCount = limelightBotPose.tagCount;
         boolean slowRotate = m_drivetrain.getChassisSpeed().omegaRadiansPerSecond <= 4*Math.PI;
+
         if ((validTagCount >= 2.0 && ta >= 0.030) && slowRotate) {
             if (m_auto) {
                 double antiTrust = 10.0;
                 m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds, VecBuilder.fill(antiTrust, antiTrust, antiTrust));
             } else {
                 double antiTrust = -150.0*ta+10.0;
-                if(antiTrust <= 0.5){antiTrust = 0.5;}
+                if(antiTrust <= 2.0){antiTrust = 2.0;}
                 m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds, VecBuilder.fill(antiTrust, antiTrust, antiTrust));
 
             }
         } else if ((validTagCount == 1 && ta >= 0.070) && !m_auto && slowRotate) {
                 double antiTrust = -69.0*ta+14.83;
+            if(antiTrust <= 5.0){antiTrust = 5.0;}
             m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds, VecBuilder.fill(antiTrust, antiTrust, antiTrust));
         }
     }
