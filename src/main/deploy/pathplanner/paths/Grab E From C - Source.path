@@ -1,0 +1,86 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.9880033606221077,
+        "y": 5.229479689728611
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.988003360622108,
+        "y": 5.229479689728611
+      },
+      "isLocked": false,
+      "linkedName": "3M-0C-DCE SOURCE C-SPOT"
+    },
+    {
+      "anchor": {
+        "x": 4.747757957054377,
+        "y": 2.486469588323793
+      },
+      "prevControl": {
+        "x": 4.196435904338944,
+        "y": 3.6257108871619335
+      },
+      "nextControl": {
+        "x": 5.29908000976981,
+        "y": 1.3472282894856593
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.013716027432057,
+        "y": 0.7597545964322702
+      },
+      "prevControl": {
+        "x": 7.013716027432057,
+        "y": 0.7597545964322702
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.4,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Perpetual Intake Back"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "SOURCE",
+  "previewStartingState": {
+    "rotation": 176.5198469744841,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

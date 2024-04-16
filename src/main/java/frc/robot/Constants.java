@@ -42,9 +42,9 @@ public final class Constants {
     public static final int kFeederStator = 80;
     public static final int kFeederSupply = 40;
     public static final int kIntakerSupply = 30;
-    public static final int kIntakerStator = 60;
-    public static final int kKicker = 20;
-    public static final int kIndexer = 40;
+    public static final int kIntakerStator = 90;
+    public static final int kKicker = 30;
+    public static final int kIndexer = 30;
     public static final int kElevator = 40;
     public static final int kClimber = 60;
     public static final int kManipulator = 30;
@@ -81,8 +81,8 @@ public final class Constants {
   public static final class GoalConstants{
     public static final Translation2d kRedGoal = new Translation2d(643.23/39.37, 218.42/39.37);
     public static final Translation2d kBlueGoal = new Translation2d(8.00/39.37, 218.42/39.37);
-    public static final Translation2d kRedFeed = new Translation2d(618.23/39.37, 290.42/39.37);
-    public static final Translation2d kBlueFeed = new Translation2d(33.0/39.37, 250.42/39.37);
+    public static final Translation2d kRedFeed = new Translation2d(581.0/39.37, 275.00/39.37);
+    public static final Translation2d kBlueFeed = new Translation2d(69.0/39.37, 275.00/39.37);
     public static final Translation2d kMidFeed = new Translation2d(8.2705, 250.42/39.37);
 
   }
@@ -143,8 +143,8 @@ public final class Constants {
                                                                                                     // likely live in
                                                                                                     // your
           // Constants class
-          new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-          new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+          new PIDConstants(2.5, 0.0, 0.0), // Translation PID constants
+          new PIDConstants(2.5, 0.0, 0.0), // Rotation PID constants
           5.0, // Max module speed, in m/s
           DriveConstants.kWheelBaseRadius, // Drive base radius in meters. Distance from robot center to furthest
                                            // module.
@@ -206,10 +206,10 @@ public final class Constants {
         new Point2D.Double(42.0+108.0, 9.5 + kPitchOffset),
         new Point2D.Double(42.0+120.0, 8.70 + kPitchOffset),
         new Point2D.Double(42.0+132.0, 8.05 + kPitchOffset),
-        new Point2D.Double(42.0+144.0, 7.3 + kPitchOffset),
-        new Point2D.Double(42.0+156.0, 6.50 + kPitchOffset),
-        new Point2D.Double(42.0+168.0, 6.45 + kPitchOffset),
-        new Point2D.Double(230.0, 5.85 + kPitchOffset), 
+        new Point2D.Double(42.0+144.0, 7.45 + kPitchOffset),
+        new Point2D.Double(42.0+156.0, 6.75 + kPitchOffset),
+        new Point2D.Double(42.0+168.0, 6.70 + kPitchOffset),
+        new Point2D.Double(230.0, 5.95 + kPitchOffset), 
         new Point2D.Double(250.0, 5.26 + kPitchOffset),
         new Point2D.Double(275.0, 4.90 + kPitchOffset),
         new Point2D.Double(300.0, 4.61 + kPitchOffset),
@@ -292,19 +292,23 @@ public final class Constants {
     };
 
     public static final Point2D[] kTimeTable = {
-        new Point2D.Double(1.0, 0.28),
-        new Point2D.Double(3.0, 0.35),
-        new Point2D.Double(5.0, 0.40)
+        new Point2D.Double(1.0, 0.26),
+        new Point2D.Double(3.0, 0.29),
+        new Point2D.Double(5.0, 0.37)
     };
 
         public static final Point2D[] kFeedPitch = {
+        new Point2D.Double(220.0, 20.0),
+        new Point2D.Double(280.0, 20.0),
         new Point2D.Double(320.0, 20.0),
-        new Point2D.Double(380.0, 13.0)
+        new Point2D.Double(380.0, 15.0)
     };
 
     public static final Point2D[] kFeedVelocity = {
-        new Point2D.Double(320.0, 40.0),
-        new Point2D.Double(380.0, 50.0)
+        new Point2D.Double(220.0, 30.0),
+        new Point2D.Double(280.0, 39.0),
+        new Point2D.Double(320.0, 42.0),
+        new Point2D.Double(380.0, 45.0)
     };
 
     public static final Point2D[] kFeedTime = {

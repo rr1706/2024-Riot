@@ -44,7 +44,7 @@ public class AutoSmartShooter extends Command {
 
     private final Timer m_timer = new Timer();
 
-    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(30.0);
+    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(60.0);
     private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(400.0);
 
     public AutoSmartShooter(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher,
@@ -110,7 +110,7 @@ public class AutoSmartShooter extends Command {
         SmartDashboard.putNumber("Pose Distance", goalDistance);
 
         m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)) + offset);
-        m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),-25.0);
+        m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),30.0);
 
         
 

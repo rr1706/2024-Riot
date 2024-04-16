@@ -47,7 +47,7 @@ public class SmartShootByPose extends Command {
 
     private final Timer m_timer = new Timer();
 
-    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(30.0);
+    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(60.0);
     private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(400.0);
 
     public SmartShootByPose(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher, CommandXboxController controller,
@@ -93,7 +93,7 @@ public class SmartShootByPose extends Command {
 
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
             goalLocation = GoalConstants.kRedGoal;
-            if (getPose.get().getTranslation().getX() <= 6.0) {
+            if (getPose.get().getTranslation().getX() <= 4.0) {
                 goalLocation = GoalConstants.kMidFeed;
                 feedShot = true;
             }
@@ -104,7 +104,7 @@ public class SmartShootByPose extends Command {
             }
         } else {
             goalLocation = GoalConstants.kBlueGoal;
-            if (getPose.get().getTranslation().getX() >= 10.5) {
+            if (getPose.get().getTranslation().getX() >= 12.5) {
                 goalLocation = GoalConstants.kMidFeed;
                 feedShot = true;
             }

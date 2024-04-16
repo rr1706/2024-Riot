@@ -38,7 +38,7 @@ public class AutoShooterByPose extends Command {
 
     private final Timer m_timer = new Timer();
 
-    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(30.0);
+    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(60.0);
     private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(400.0);
 
     public AutoShooterByPose(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher, Supplier<Pose2d> getPose){
@@ -48,8 +48,8 @@ public class AutoShooterByPose extends Command {
 
         this.getPose = getPose;
 
-        m_pitchTable = MathUtils.pointsToTreeMap(ShooterConstants.kAutoPitchTable);
-        m_velocityTable = MathUtils.pointsToTreeMap(ShooterConstants.kAutoVelocityTable);
+        m_pitchTable = MathUtils.pointsToTreeMap(ShooterConstants.kPitchTable);
+        m_velocityTable = MathUtils.pointsToTreeMap(ShooterConstants.kVelocityTable);
         m_timeTable = MathUtils.pointsToTreeMap(ShooterConstants.kTimeTable);
         addRequirements(m_shooter);
 
@@ -82,7 +82,7 @@ public class AutoShooterByPose extends Command {
            
         }
 
-        //goalLocation = compForMovement(goalLocation);
+        goalLocation = compForMovement(goalLocation);
 
         Translation2d toGoal = goalLocation.minus(getPose.get().getTranslation());
 
@@ -112,7 +112,7 @@ public class AutoShooterByPose extends Command {
         else{
 
             m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)));
-            m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),-25.0);
+            m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),30.0);
             
         }
 
@@ -131,12 +131,24 @@ public class AutoShooterByPose extends Command {
         SmartDashboard.putBoolean("DrivingByController", true);
     }
 
+    Translation2d compForMovement(Translation2d goalLocation) {
+
+        Translation2d toGoal = goalLocation.minus(getPose.get().getTranslation());
+
+        double rx = m_robotDrive.getFieldRelativeSpeed().vx + m_robotDrive.getFieldRelativeAccel().ax * 0.030;
+        double ry = m_robotDrive.getFieldRelativeSpeed().vy + m_robotDrive.getFieldRelativeAccel().ay * 0.030;
+
+        double shotTime = m_timeTable.get(toGoal.getDistance(new Translation2d()));
+        return new Translation2d(goalLocation.getX() - rx * shotTime, goalLocation.getY() - ry * shotTime);
+    }
+
+
  
     
     @Override
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub
-       // m_shooter.stop();
+        //m_shooter.stop();
 /*                         m_indexer.stop();
                 m_feeder.stop(); */
     }

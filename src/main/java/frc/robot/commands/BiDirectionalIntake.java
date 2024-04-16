@@ -37,8 +37,8 @@ public void initialize(){
     SmartDashboard.putNumber("Velocity", m_robotDrive.getChassisSpeed().vxMetersPerSecond);
     m_timer.reset();
     m_timer.start();
-    m_indexer.run(0.6);
-    m_feeder.run(0.6);
+    m_indexer.run(0.7);
+    m_feeder.run(0.7);
     double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
     m_intake.run(1.0, robotVelocity);
 }
@@ -48,7 +48,7 @@ public void execute(){
     double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
     m_intake.run(1.0, robotVelocity);   
 
-    if(m_feeder.getCurrent() > 10.0 && m_timer.get() > 0.2){
+    if(m_feeder.getCurrent() > 14.0 && m_timer.get() > 0.2){
         m_controller.getHID().setRumble(RumbleType.kBothRumble, 1.0);
     }
 

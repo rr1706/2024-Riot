@@ -1,0 +1,76 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.438443953810986,
+        "y": 6.265508684863524
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.54010277251324,
+        "y": 6.818057482268811
+      },
+      "isLocked": false,
+      "linkedName": "5-5 END"
+    },
+    {
+      "anchor": {
+        "x": 8.378792911431978,
+        "y": 3.9369101815126717
+      },
+      "prevControl": {
+        "x": 8.161720169594187,
+        "y": 4.597995349836852
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 124.22,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.55,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Perpetual Intake Back"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 124.22,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "AMP",
+  "previewStartingState": {
+    "rotation": -171.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

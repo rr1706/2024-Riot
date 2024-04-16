@@ -41,10 +41,11 @@ public class AutoSmartShootNoPath extends Command {
     private double manualSpinDiff = 0.0;
     private double m_xInput = 0.0;
     private double m_yInput = 0.0;
+    private SlewRateLimiter m_slew = new SlewRateLimiter(4.0);
 
     private final Timer m_timer = new Timer();
 
-    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(30.0);
+    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(60.0);
     private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(400.0);
 
     public AutoSmartShootNoPath(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher, 
@@ -57,7 +58,7 @@ public class AutoSmartShootNoPath extends Command {
 
         this.getPose = getPose;
 
-        m_pid.setIntegratorRange(-0.1, 0.1);
+        m_pid.setIntegratorRange(-0.05, 0.05);
 
         m_pitchTable = MathUtils.pointsToTreeMap(ShooterConstants.kPitchTable);
         m_feedPitch = MathUtils.pointsToTreeMap(ShooterConstants.kFeedPitch);
@@ -73,11 +74,7 @@ public class AutoSmartShootNoPath extends Command {
     public void initialize() {
         // TODO Auto-generated method stub
         m_pid.reset();
-        SmartDashboard.putNumber("Set Hood Adjust", manualHoodValue);
-        SmartDashboard.putNumber("Set Velocity Adjust", manualVelocityValue);
-        SmartDashboard.putNumber("Set Spin Diff", manualSpinDiff);
-
-        SmartDashboard.putBoolean("Manual Override", manualOverride);
+        m_slew.reset(0.0);
         m_timer.reset();
         m_timer.start();
     }
@@ -87,88 +84,61 @@ public class AutoSmartShootNoPath extends Command {
         var alliance = DriverStation.getAlliance();
 
         Translation2d goalLocation;
-        boolean feedShot = false;
 
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
             goalLocation = GoalConstants.kRedGoal;
-            if (goalLocation.getDistance(getPose.get().getTranslation()) * 39.37 >= 325.0) {
-                goalLocation = GoalConstants.kRedFeed;
-                feedShot = true;
-            }
+
         } else {
             goalLocation = GoalConstants.kBlueGoal;
-            if (goalLocation.getDistance(getPose.get().getTranslation()) * 39.37 >= 325.0) {
-                goalLocation = GoalConstants.kBlueFeed;
-                feedShot = true;
-            }
+
         }
 
-        goalLocation = compForMovement(goalLocation, feedShot);
+        goalLocation = compForMovement(goalLocation);
 
         Translation2d toGoal = goalLocation.minus(getPose.get().getTranslation());
 
         SmartDashboard.putNumber("Goal Angle", toGoal.getAngle().getDegrees());
 
-        double angle = toGoal.getAngle().getRadians();
-
-        double offset = (0.2 / 0.7854) * Math.abs(Math.asin(Math.sin(angle)));
-
         double pidAngle = -1.0 * toGoal.getAngle().minus(getPose.get().getRotation()).getDegrees();
 
         double goalDistance = toGoal.getDistance(new Translation2d()) * 39.37;
-
-        offset *= -0.00385 * goalDistance + 1.69;
-
-        SmartDashboard.putNumber("Pitch offset", offset);
 
         SmartDashboard.putNumber("Pose Distance", goalDistance);
         SmartDashboard.putNumber("Shooter Angle Error", pidAngle);
 
         double desiredRot = m_pid.calculate(pidAngle);
 
-        manualOverride = SmartDashboard.getBoolean("Manual Override", false);
-
-        if (manualOverride) {
-            manualHoodValue = SmartDashboard.getNumber("Set Hood Adjust", 0);
-            manualVelocityValue = SmartDashboard.getNumber("Set Velocity Adjust", 70.0);
-            manualSpinDiff = SmartDashboard.getNumber("Set Spin Diff", 0.0);
-            m_pitcher.pitchToAngle(manualHoodValue);
-            m_shooter.run(manualVelocityValue, manualSpinDiff);
-        }else {
-            if (feedShot) {
-                m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_feedPitch.get(goalDistance)));
-                m_shooter.run(m_velocityFilter.calculate(m_feedVelocity.get(goalDistance)),0.0);
-            } else {
-                m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)) + offset);
-                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),-25.0);
-            }
-        }
+                m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)) + 0.0);
+                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),30.0);
+        
+        double xVal;
 
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            m_xInput = -m_xInput;
+            xVal = -m_xInput;
             m_yInput = -m_yInput;
         }
+        else{
+            xVal = m_xInput;
+        }
 
-        double desiredTrans[] = {m_xInput,m_yInput};
+        xVal = m_slew.calculate(xVal);
+
+        SmartDashboard.putNumber("Slew Output", xVal);
+
+        double desiredTrans[] = {xVal,m_yInput};
 
         m_robotDrive.drive(desiredTrans[0], desiredTrans[1], (desiredRot), true, true);
 
     }
 
-    Translation2d compForMovement(Translation2d goalLocation, boolean feedShot) {
+    Translation2d compForMovement(Translation2d goalLocation) {
 
         Translation2d toGoal = goalLocation.minus(getPose.get().getTranslation());
 
         double rx = m_robotDrive.getFieldRelativeSpeed().vx + m_robotDrive.getFieldRelativeAccel().ax * 0.030;
         double ry = m_robotDrive.getFieldRelativeSpeed().vy + m_robotDrive.getFieldRelativeAccel().ay * 0.030;
 
-        double shotTime;
-        if (feedShot) {
-            shotTime = m_feedTime.get(toGoal.getDistance(new Translation2d()));
-        } else {
-            
-            shotTime = m_timeTable.get(toGoal.getDistance(new Translation2d()));
-        }
+        double shotTime = m_timeTable.get(toGoal.getDistance(new Translation2d()));
         return new Translation2d(goalLocation.getX() - rx * shotTime, goalLocation.getY() - ry * shotTime);
     }
 

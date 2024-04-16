@@ -41,7 +41,7 @@ public class AutoShooterAim extends Command {
     private boolean manualVelocityOverride = false;
 
 
-    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(30.0);
+    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(60.0);
     private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(400.0);
 
     public AutoShooterAim(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher,
@@ -128,7 +128,7 @@ public class AutoShooterAim extends Command {
             m_shooter.run(manualVelocityValue);
         } else {
                 m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)) + offset);
-                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),-25.0);
+                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),30.0);
             
         }
 
