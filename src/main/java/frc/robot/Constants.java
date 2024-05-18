@@ -173,7 +173,7 @@ public final class Constants {
 
   public static final class ShooterConstants {
     private static final double kpowerOffset = 0.0;
-    private static final double kPitchOffset = 0.3;
+    private static final double kPitchOffset = 0.3+0.1;
     public static final Point2D[] kDistTable = {
         new Point2D.Double(0.20,38.0),//.3B
         new Point2D.Double(-3.36, 38.0+12.0),
@@ -292,9 +292,9 @@ public final class Constants {
     };
 
     public static final Point2D[] kTimeTable = {
-        new Point2D.Double(1.0, 0.26),
-        new Point2D.Double(3.0, 0.29),
-        new Point2D.Double(5.0, 0.37)
+        new Point2D.Double(1.0, 0.28),
+        new Point2D.Double(3.0, 0.32),
+        new Point2D.Double(5.0, 0.39)
     };
 
         public static final Point2D[] kFeedPitch = {

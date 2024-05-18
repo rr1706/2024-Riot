@@ -45,6 +45,8 @@ public class SmartShootByPose extends Command {
     private double manualVelocityValue = 70.0;
     private double manualSpinDiff = 0.0;
 
+    private double pitchOffset = 0.0;
+
     private final Timer m_timer = new Timer();
 
     private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(60.0);
@@ -88,17 +90,24 @@ public class SmartShootByPose extends Command {
     public void execute() {
         var alliance = DriverStation.getAlliance();
 
+        boolean redAlliance = alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red;
+
+        if (redAlliance) {
+            pitchOffset = 0.10;
+        } else {
+            pitchOffset = 0.0;
+        }
+
         Translation2d goalLocation;
         boolean feedShot = false;
 
-        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+        if (redAlliance) {
             goalLocation = GoalConstants.kRedGoal;
             if (getPose.get().getTranslation().getX() <= 4.0) {
                 goalLocation = GoalConstants.kMidFeed;
                 feedShot = true;
-            }
-            else if(getPose.get().getTranslation().getX() <= 9.0) {
-                
+            } else if (getPose.get().getTranslation().getX() <= 9.0) {
+
                 goalLocation = GoalConstants.kRedFeed;
                 feedShot = true;
             }
@@ -107,9 +116,8 @@ public class SmartShootByPose extends Command {
             if (getPose.get().getTranslation().getX() >= 12.5) {
                 goalLocation = GoalConstants.kMidFeed;
                 feedShot = true;
-            }
-            else if(getPose.get().getTranslation().getX() >= 7.5) {
-                
+            } else if (getPose.get().getTranslation().getX() >= 7.5) {
+
                 goalLocation = GoalConstants.kBlueFeed;
                 feedShot = true;
             }
@@ -148,16 +156,15 @@ public class SmartShootByPose extends Command {
             manualSpinDiff = SmartDashboard.getNumber("Set Spin Diff", 0.0);
             m_pitcher.pitchToAngle(manualHoodValue);
             m_shooter.run(manualVelocityValue, manualSpinDiff);
-        }else {
+        } else {
             if (feedShot) {
                 m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_feedPitch.get(goalDistance)));
-                m_shooter.run(m_velocityFilter.calculate(m_feedVelocity.get(goalDistance)),0.0);
+                m_shooter.run(m_velocityFilter.calculate(m_feedVelocity.get(goalDistance)), 0.0);
             } else {
-                m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)) + 0);
-                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)),30.0);
+                m_pitcher.pitchToAngle(m_pitchFilter.calculate(m_pitchTable.get(goalDistance)) + pitchOffset);
+                m_shooter.run(m_velocityFilter.calculate(m_velocityTable.get(goalDistance)), 30.0);
             }
         }
-
 
         double xInput = -m_controller.getLeftY();
         double yInput = -m_controller.getLeftX();
@@ -169,7 +176,7 @@ public class SmartShootByPose extends Command {
 
         double desiredTrans[] = MathUtils.inputTransform(xInput, yInput);
 
-        double maxLinear = DriveConstants.kMaxSpeedMetersPerSecond*0.4;
+        double maxLinear = DriveConstants.kMaxSpeedMetersPerSecond * 0.4;
 
         desiredTrans[0] *= maxLinear;
         desiredTrans[1] *= maxLinear;
@@ -210,7 +217,7 @@ public class SmartShootByPose extends Command {
         if (feedShot) {
             shotTime = m_feedTime.get(toGoal.getDistance(new Translation2d()));
         } else {
-            
+
             shotTime = m_timeTable.get(toGoal.getDistance(new Translation2d()));
         }
         return new Translation2d(goalLocation.getX() - rx * shotTime, goalLocation.getY() - ry * shotTime);
