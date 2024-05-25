@@ -4,9 +4,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.LimelightHelpers;
 
-public class CheckForB extends Command {
+public class CheckForNote extends Command {
     private boolean sawNote = true;
-    public CheckForB(){
+
+    public CheckForNote() {
     }
 
     @Override
@@ -17,15 +18,14 @@ public class CheckForB extends Command {
 
     @Override
     public void execute() {
-        if(LimelightHelpers.getTV("limelight-note")){
+        if (LimelightHelpers.getTV("limelight-note")) {
             sawNote = true;
         }
         SmartDashboard.putBoolean("SawNote", sawNote);
     }
 
-    public boolean sawNote(){
+    public boolean sawNote() {
         return sawNote;
     }
 
 }
-

@@ -25,9 +25,7 @@ public class Climber extends SubsystemBase {
     private boolean m_leftPIDEnabled = true;
     private boolean m_rightPIDEnabled = true;
 
-
-
-    public Climber(){
+    public Climber() {
         m_climberL.setSmartCurrentLimit(CurrentLimit.kClimber);
         m_climberL.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
         m_climberL.setIdleMode(IdleMode.kBrake);
@@ -45,70 +43,70 @@ public class Climber extends SubsystemBase {
         m_climberR.burnFlash();
     }
 
-    public void zero(){
+    public void zero() {
         m_leftPIDEnabled = false;
         m_rightPIDEnabled = false;
         m_climberL.set(-0.2);
         m_climberR.set(-0.2);
     }
 
-    public void setPose(double pose){
+    public void setPose(double pose) {
         m_leftPIDEnabled = true;
         m_rightPIDEnabled = true;
         m_leftPose = pose;
         m_rightPose = pose;
     }
 
-    public void setPose(double left, double right){
+    public void setPose(double left, double right) {
         m_leftPIDEnabled = true;
         m_rightPIDEnabled = true;
         m_leftPose = left;
         m_rightPose = right;
     }
 
-    public void setLeftZero(){
+    public void setLeftZero() {
         m_leftEncoder.setPosition(0.0);
     }
 
-    public void setRightZero(){
+    public void setRightZero() {
         m_rightEncoder.setPosition(0.0);
     }
 
-    public double getLeftCurrent(){
+    public double getLeftCurrent() {
         return m_climberL.getOutputCurrent();
     }
 
-    public double getRightCurrent(){
+    public double getRightCurrent() {
         return m_climberR.getOutputCurrent();
     }
 
-    public void stopLeft(){
+    public void stopLeft() {
         m_climberL.stopMotor();
     }
 
-    public void stopRight(){
+    public void stopRight() {
         m_climberR.stopMotor();
     }
 
-    public double getLeftPose(){
+    public double getLeftPose() {
         return m_leftEncoder.getPosition();
     }
-    public double getRightPose(){
+
+    public double getRightPose() {
         return m_rightEncoder.getPosition();
     }
-    
+
     @Override
     public void periodic() {
-        if(m_leftPIDEnabled){
+        if (m_leftPIDEnabled) {
             m_pidL.setReference(m_leftPose, ControlType.kPosition);
         }
-        if(m_rightPIDEnabled){
+        if (m_rightPIDEnabled) {
             m_pidR.setReference(m_rightPose, ControlType.kPosition);
         }
         SmartDashboard.putNumber("Left Climber", getLeftPose());
         SmartDashboard.putNumber("Right Climber", getRightPose());
 
     }
-
 
 }

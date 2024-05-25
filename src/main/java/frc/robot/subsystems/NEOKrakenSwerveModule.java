@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -14,11 +13,9 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CurrentLimit;
@@ -38,30 +35,29 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
     private double moduleID;
     private Slot0Configs slot0Configs = new Slot0Configs();
     private final VelocityVoltage m_request = new VelocityVoltage(0.0).withSlot(0);
-    private boolean m_useNEOEncoder = true;
 
-  /**
-   * Create a new FRC 1706 NEOKrakenSwerveModule Object
-   *
-   * @param drive The drive SparkMax CAN ID.
-   * @param azimuth The azimuth SparkMax CAN ID.
-   * @param absEnc The analog encoder port for the absolute encoder. 
-   * @param offset The offset for the analog encoder. 
-   */
+    /**
+     * Create a new FRC 1706 NEOKrakenSwerveModule Object
+     *
+     * @param drive   The drive SparkMax CAN ID.
+     * @param azimuth The azimuth SparkMax CAN ID.
+     * @param absEnc  The analog encoder port for the absolute encoder.
+     * @param offset  The offset for the analog encoder.
+     */
     public NEOKrakenSwerveModule(int moduleID, double offset) {
         this.moduleID = moduleID;
         configurePID();
         m_driveMotor = new TalonFX(moduleID);
         m_driveMotor.getConfigurator().apply(slot0Configs);
         m_driveMotor.getConfigurator()
-            .apply(new CurrentLimitsConfigs().withSupplyCurrentLimit(CurrentLimit.kDriveSupply)
-            .withStatorCurrentLimit(CurrentLimit.kDriveStator)
-            .withSupplyCurrentLimitEnable(true)
-            .withStatorCurrentLimitEnable(true));
+                .apply(new CurrentLimitsConfigs().withSupplyCurrentLimit(CurrentLimit.kDriveSupply)
+                        .withStatorCurrentLimit(CurrentLimit.kDriveStator)
+                        .withSupplyCurrentLimitEnable(true)
+                        .withStatorCurrentLimitEnable(true));
         m_driveMotor.setNeutralMode(NeutralModeValue.Brake);
-        
+
         m_azimuthMotor = new CANSparkMax(moduleID, MotorType.kBrushless);
-        //m_azimuthMotor.restoreFactoryDefaults();
+        // m_azimuthMotor.restoreFactoryDefaults();
         m_azimuthMotor.setSmartCurrentLimit(CurrentLimit.kAzimuth);
         m_azimuthMotor.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
         m_azimuthMotor.setInverted(true);
@@ -71,7 +67,7 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         m_azimuthEnc.setPositionConversionFactor(Aziumth.kPositionFactor);
         m_azimuthEnc.setVelocityConversionFactor(Aziumth.kVelocityFactor);
 
-        //m_azimuthEnc.setZeroOffset(offset);
+        // m_azimuthEnc.setZeroOffset(offset);
 
         m_azimuthEnc.setInverted(true);
 
@@ -81,7 +77,7 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
 
         m_azimuthPID.setPositionPIDWrappingEnabled(true);
         m_azimuthPID.setPositionPIDWrappingMinInput(0.0);
-        m_azimuthPID.setPositionPIDWrappingMaxInput(2.0*Math.PI);
+        m_azimuthPID.setPositionPIDWrappingMaxInput(2.0 * Math.PI);
 
         m_azimuthPID.setP(Aziumth.kp);
 
@@ -105,20 +101,20 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getStateAngle()));
     }
 
-    public void configurePID(){
+    public void configurePID() {
         slot0Configs.kS = 0.05; // Add 0.05 V output to overcome static friction
         slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-        slot0Configs.kP = 0.0001; // An error of 1 rps results in 0.11 V output
+        slot0Configs.kP = 0.1; // An error of 1 rps results in 0.1 V output
         slot0Configs.kI = 0; // no output for integrated error
         slot0Configs.kD = 0; // no output for error derivative
     }
 
-    public double getDriveVelocity(){
-       return m_driveMotor.getVelocity().getValueAsDouble()*Drive.kToMeters;
+    public double getDriveVelocity() {
+        return m_driveMotor.getVelocity().getValueAsDouble() * Drive.kToMeters;
     }
 
-    public double getDrivePosition(){
-       return m_driveMotor.getPosition().getValueAsDouble()*Drive.kToMeters;
+    public double getDrivePosition() {
+        return m_driveMotor.getPosition().getValueAsDouble() * Drive.kToMeters;
     }
 
     /**
@@ -136,8 +132,8 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         // Calculates the desired feedForward motor % from the current desired velocity
         // and the static and feedforward gains
         double metersToRotations = state.speedMetersPerSecond * Drive.kToRots;
-        SmartDashboard.putNumber("Module"+moduleID, state.speedMetersPerSecond);
-        SmartDashboard.putNumber("Kraken"+moduleID, getDriveVelocity());
+        SmartDashboard.putNumber("Module" + moduleID, state.speedMetersPerSecond);
+        SmartDashboard.putNumber("Kraken" + moduleID, getDriveVelocity());
         m_driveMotor.setControl(m_request.withVelocity(metersToRotations).withSlot(0));
         m_azimuthPID.setReference(state.angle.getRadians(), ControlType.kPosition);
     }
@@ -145,7 +141,6 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
     public double getStateAngle() {
         return m_azimuthEnc.getPosition();
     }
-
 
     public void stop() {
         m_driveMotor.stopMotor();

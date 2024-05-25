@@ -4,7 +4,6 @@ import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utilities.MathUtils;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -42,9 +41,9 @@ public class DriveByController extends Command {
     var alliance = DriverStation.getAlliance();
 
     double xInput = -m_controller.getLeftY();
-    double yInput =  -m_controller.getLeftX();
+    double yInput = -m_controller.getLeftX();
 
-    if(alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
       xInput = -xInput;
       yInput = -yInput;
     }
@@ -55,16 +54,14 @@ public class DriveByController extends Command {
     desiredTrans[0] *= maxLinear;
     desiredTrans[1] *= maxLinear;
 
-    double desiredRot = -MathUtils.inputTransform(m_controller.getRightX())* DriveConstants.kMaxAngularSpeed;
+    double desiredRot = -MathUtils.inputTransform(m_controller.getRightX()) * DriveConstants.kMaxAngularSpeed;
 
-    m_robotDrive.drive(desiredTrans[0], desiredTrans[1],desiredRot,true,true);
+    m_robotDrive.drive(desiredTrans[0], desiredTrans[1], desiredRot, true, true);
 
-        SmartDashboard.putBoolean("DrivingByController", true);
   }
 
   @Override
-  public void end(boolean interrupted){
-    SmartDashboard.putBoolean("DrivingByController", false);
+  public void end(boolean interrupted) {
 
   }
 

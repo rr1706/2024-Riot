@@ -1,42 +1,24 @@
 package frc.robot.subsystems;
 
-import java.util.Optional;
-
-import javax.naming.LimitExceededException;
-import javax.swing.text.StyledEditorKit.BoldAction;
-
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.GoalConstants;
-import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.VisionConstants;
-import frc.robot.LimelightHelpers.LimelightResults;
 import frc.robot.LimelightHelpers.PoseEstimate;
-import frc.robot.utilities.MathUtils;
 
 public class PoseEstimator extends SubsystemBase {
     private final SwerveDrivePoseEstimator m_poseEstimator;
     private final Drivetrain m_drivetrain;
     private final Field2d m_field = new Field2d();
     private boolean m_auto = true;
-    private boolean m_autoRotate = false;
-    private InterpolatingDoubleTreeMap m_timeTable = new InterpolatingDoubleTreeMap();
 
     public PoseEstimator(Drivetrain drivetrain) {
-        m_timeTable = MathUtils.pointsToTreeMap(ShooterConstants.kTimeTable);
         m_drivetrain = drivetrain;
         m_poseEstimator = new SwerveDrivePoseEstimator(DriveConstants.kSwerveKinematics,
                 drivetrain.getGyro(),
@@ -56,22 +38,7 @@ public class PoseEstimator extends SubsystemBase {
 
     private void updatePoseEstimator(boolean force) {
 
-        // double velocity =
-        // MathUtils.pythagorean(m_drivetrain.getChassisSpeed().vxMetersPerSecond,
-        // m_drivetrain.getChassisSpeed().vyMetersPerSecond;
-        // double angularVelocity =
-        // m_drivetrain.getChassisSpeed().omegaRadiansPerSecond;
-
-        // double yAdj = 0.945*(limelightBotPose.getY())+.305;
-
-        // limelightBotPose = new Pose2d(limelightBotPose.getX(), yAdj,
-        // limelightBotPose.getRotation());
-
-        // Pose2d currentPose = getPose();
-
         SmartDashboard.putBoolean("Auto Pose", m_auto);
-
-        // boolean m_overide = SmartDashboard.getBoolean("Set Pose Est", false);
 
         m_poseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_drivetrain.getGyro(),
                 m_drivetrain.getModulePositions());
@@ -115,53 +82,6 @@ public class PoseEstimator extends SubsystemBase {
 
                 m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds,
                         VecBuilder.fill(antiTrust, antiTrust, antiTrust));
-            }
-        }
-    }
-
-    private void updateWithVision2(String limelightName) {
-        LimelightHelpers.SetRobotOrientation(limelightName,
-                m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        double limelightLatency = LimelightHelpers.getLatency_Pipeline(limelightName)
-                + LimelightHelpers.getLatency_Capture(limelightName);
-        limelightLatency = limelightLatency / 1000.0;
-        double ta = LimelightHelpers.getTA(limelightName);
-        PoseEstimate limelightBotPose = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
-        int validTagCount = limelightBotPose.tagCount;
-        if ((validTagCount >= 2.0)) {
-            if (m_auto) {
-                double antiTrust = -300.0 * ta + 22.0;
-                if (antiTrust <= 5.0) {
-                    antiTrust = 5.0;
-                }
-                m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds,
-                        VecBuilder.fill(antiTrust, antiTrust, 999999));
-            } else {
-                double antiTrust = -150.0 * ta + 10.0;
-                if (antiTrust <= 0.5) {
-                    antiTrust = 0.5;
-                }
-                m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds,
-                        VecBuilder.fill(antiTrust, antiTrust, 999999));
-
-            }
-        } else if ((validTagCount == 1 && ta >= 0.070)) {
-            if (m_auto) {
-                double antiTrust = -69.0 * ta + 14.83;
-                if (antiTrust <= 5.0) {
-                    antiTrust = 5.0;
-                }
-                m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds,
-                        VecBuilder.fill(antiTrust, antiTrust, 999999));
-
-            } else {
-                double antiTrust = -69.0 * ta + 14.83;
-                if (antiTrust <= 5.0) {
-                    antiTrust = 5.0;
-                }
-                m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds,
-                        VecBuilder.fill(antiTrust, antiTrust, 999999));
-
             }
         }
     }

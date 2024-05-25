@@ -4,7 +4,6 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
@@ -28,13 +27,12 @@ public class Intake extends SubsystemBase {
 
         m_intake.getConfigurator().apply(slot0Configs);
         m_intake.getConfigurator().apply(new CurrentLimitsConfigs()
-            .withStatorCurrentLimit(CurrentLimit.kIntakerStator)
-            .withStatorCurrentLimitEnable(true)
-            .withSupplyCurrentLimit(CurrentLimit.kIntakerSupply)
-            .withSupplyCurrentLimitEnable(true));
+                .withStatorCurrentLimit(CurrentLimit.kIntakerStator)
+                .withStatorCurrentLimitEnable(true)
+                .withSupplyCurrentLimit(CurrentLimit.kIntakerSupply)
+                .withSupplyCurrentLimitEnable(true));
         m_intake.setInverted(false);
         m_intake.setNeutralMode(NeutralModeValue.Brake);
-
 
     }
 
@@ -59,7 +57,7 @@ public class Intake extends SubsystemBase {
 
     }
 
-    public double getKickerCurrent(){
+    public double getKickerCurrent() {
         return m_kick.getOutputCurrent();
     }
 

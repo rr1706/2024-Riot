@@ -11,8 +11,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import java.util.Optional;
-
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -56,7 +54,7 @@ public class Drivetrain extends SubsystemBase {
   private final NEOKrakenSwerveModule m_FLModule = new NEOKrakenSwerveModule(FrontLeft.kModuleID, FrontLeft.kOffset);
   private final NEOKrakenSwerveModule m_FRModule = new NEOKrakenSwerveModule(FrontRight.kModuleID, FrontRight.kOffset);
   private final NEOKrakenSwerveModule m_RLModule = new NEOKrakenSwerveModule(RearLeft.kModuleID, RearLeft.kOffset);
-  private final NEOKrakenSwerveModule m_RRModule = new NEOKrakenSwerveModule(RearRight.kModuleID,  RearRight.kOffset);
+  private final NEOKrakenSwerveModule m_RRModule = new NEOKrakenSwerveModule(RearRight.kModuleID, RearRight.kOffset);
 
   private static AHRS ahrs = new AHRS();
 
@@ -81,29 +79,6 @@ public class Drivetrain extends SubsystemBase {
     m_keepAnglePID.enableContinuousInput(-Math.PI, Math.PI);
     m_odometry.resetPosition(ahrs.getRotation2d(), getModulePositions(), new Pose2d());
     ahrs.reset();
-
-    
-
-    /*
-    AutoBuilder.configureHolonomic(
-      this::getAutoPose,
-      this::resetOdometry,
-      this::getChassisSpeed,
-      this::drive,
-      new HolonomicPathFollowerConfig(
-        new PIDConstants(1.0),
-        new PIDConstants(keepAngle),
-        0,
-        DriveConstants.kWheelBaseRadius,
-        new ReplanningConfig()
-      ),
-      () -> {
-        var alliance = DriverStation.getAlliance();
-        return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
-      },
-      this
-    );
-    */
   }
 
   /**
@@ -134,7 +109,7 @@ public class Drivetrain extends SubsystemBase {
       rot = 0.0;
     }
     if (Math.abs(xSpeed) < 0.02) {
-      xSpeed  = 0.0;
+      xSpeed = 0.0;
     }
     if (Math.abs(ySpeed) < 0.02) {
       ySpeed = 0.0;
@@ -151,7 +126,7 @@ public class Drivetrain extends SubsystemBase {
     setModuleStates(chassisSpeeds);
   }
 
-    public FieldRelativeSpeed getFieldRelativeSpeed() {
+  public FieldRelativeSpeed getFieldRelativeSpeed() {
     return m_fieldRelVel;
   }
 
@@ -164,7 +139,7 @@ public class Drivetrain extends SubsystemBase {
 
     ChassisSpeeds m_speeds = getChassisSpeed();
 
-    m_driveAccel = new ChassisAccel(m_speeds,m_lastDriveSpeed,GlobalConstants.kLoopTime);
+    m_driveAccel = new ChassisAccel(m_speeds, m_lastDriveSpeed, GlobalConstants.kLoopTime);
 
     m_lastDriveSpeed = m_speeds;
 
@@ -202,11 +177,9 @@ public class Drivetrain extends SubsystemBase {
     m_RRModule.setDesiredState(desiredStates[3]);
   }
 
-  public ChassisAccel getChassisAccel(){
+  public ChassisAccel getChassisAccel() {
     return m_driveAccel;
   }
-
-  
 
   public void setModuleStates(ChassisSpeeds chassisSpeeds) {
     SwerveModuleState[] desiredStates = DriveConstants.kSwerveKinematics
@@ -245,7 +218,7 @@ public class Drivetrain extends SubsystemBase {
     return ahrs.getRawGyroY();
   }
 
-  public double getSpeed(){
+  public double getSpeed() {
     double xSpeed = getChassisSpeed().vxMetersPerSecond;
     double ySpeed = getChassisSpeed().vyMetersPerSecond;
 
@@ -399,6 +372,5 @@ public class Drivetrain extends SubsystemBase {
     m_slewY = new SlewRateLimiter(translation, -translation, m_latestSlew[1]);
     m_slewRot = new SlewRateLimiter(rotation, -rotation, m_latestSlew[2]);
   }
-
 
 }

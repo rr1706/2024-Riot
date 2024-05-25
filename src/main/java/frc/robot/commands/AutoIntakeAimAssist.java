@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.Drivetrain;
@@ -19,7 +18,6 @@ public class AutoIntakeAimAssist extends Command {
     private boolean m_finished = false;
     private double ty_check = 25.0;
     private final double m_speed;
-
 
     public AutoIntakeAimAssist(Drivetrain drive, double speed) {
         m_drive = drive;
@@ -47,10 +45,9 @@ public class AutoIntakeAimAssist extends Command {
 
         double time = m_timer.get();
 
-        if(time > 0.20 && !m_detectedOnce){
+        if (time > 0.20 && !m_detectedOnce) {
             m_finished = true;
         }
-
 
         double tx = LimelightHelpers.getTX("limelight-note");
         boolean tv = LimelightHelpers.getTV("limelight-note");
@@ -58,7 +55,7 @@ public class AutoIntakeAimAssist extends Command {
 
         double xInput = -m_speed;
 
-        if(!tv){
+        if (!tv) {
             xInput = -0.3;
         }
 
@@ -67,39 +64,24 @@ public class AutoIntakeAimAssist extends Command {
         if (tv && !m_detectedOnce) {
             m_detectedOnce = true;
             ty_check = ty;
-            aimAssist = -1.0*m_pid.calculate(tx);
+            aimAssist = -1.0 * m_pid.calculate(tx);
         } else if (tv && (ty_check + 1.0) >= ty) {
             ty_check = ty;
-            aimAssist = -1.0*m_pid.calculate(tx);
+            aimAssist = -1.0 * m_pid.calculate(tx);
         }
 
-        if(aimAssist>=0.5){
+        if (aimAssist >= 0.5) {
             aimAssist = 0.5;
-        }
-        else if(aimAssist<=-0.5){
+        } else if (aimAssist <= -0.5) {
             aimAssist = -0.5;
         }
-
 
         double yInput = aimAssist;
 
         double desiredRot = -aimAssist;
 
-
-
-
-        SmartDashboard.putNumber("TX Note", tx);
-        SmartDashboard.putNumber("TY Note", ty);
-
-        // double desiredRot = -MathUtils.inputTransform(m_controller.getRightX())*
-        // DriveConstants.kMaxAngularSpeed;
-
-        // Translation2d rotAdj= desiredTranslation.rotateBy(new
-        // Rotation2d(-Math.PI/2.0)).times(desiredRot*0.05);
-
-        // desiredTranslation = desiredTranslation.plus(rotAdj);
-
-        m_drive.drive(m_slewX.calculate(xInput), m_slewY.calculate(yInput), m_slewRot.calculate(desiredRot), false, true);
+        m_drive.drive(m_slewX.calculate(xInput), m_slewY.calculate(yInput), m_slewRot.calculate(desiredRot), false,
+                true);
 
         /*
          * m_robotDrive.drive(m_slewX.calculate(
@@ -113,7 +95,6 @@ public class AutoIntakeAimAssist extends Command {
          * fieldOrient);
          */
 
-        SmartDashboard.putBoolean("DrivingByController", true);
     }
 
     @Override

@@ -47,19 +47,19 @@ public class Handoff extends Command {
         m_indexer.run(-.4);
         m_manipulator.run(-.3);
         m_elevator.setPose(ElevatorConstants.kRest);
-        if(m_useKicker){
+        if (m_useKicker) {
             m_intake.run(0.4, m_drivetrain.getChassisSpeed().vxMetersPerSecond);
         }
-        
-        else{
+
+        else {
             m_intake.run(0.4);
         }
-        
+
     }
 
     @Override
     public void execute() {
-        if(m_useKicker){
+        if (m_useKicker) {
             m_intake.run(0.8, m_drivetrain.getChassisSpeed().vxMetersPerSecond);
         }
         if (m_timer.get() > 0.2 && m_manipulator.getCurrent() > 15.0 && !currentSpiked) {
