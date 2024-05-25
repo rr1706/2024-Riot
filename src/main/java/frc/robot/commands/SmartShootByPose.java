@@ -49,8 +49,8 @@ public class SmartShootByPose extends Command {
 
     private final Timer m_timer = new Timer();
 
-    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(60.0);
-    private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(400.0);
+    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(100.0);
+    private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(500.0);
 
     public SmartShootByPose(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher, CommandXboxController controller,
             Supplier<Pose2d> getPose) {

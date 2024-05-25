@@ -37,7 +37,7 @@ public void initialize(){
 
 @Override
 public void execute() {
-    if(!intakedNote && m_feeder.getCurrent() >= 15.0 && m_timer.get() > 0.1){
+    if(!intakedNote && m_intake.getKickerCurrent() >= 10.0 && m_timer.get() > 0.2){
         intakedNote = true;
     }
 }

@@ -49,7 +49,7 @@ public void initialize(){
 
 @Override
 public void execute(){
-    if(m_feeder.getCurrent() > 15.0 && !m_currentSpiked && m_timer.get() > 0.4){
+    if(m_intake.getKickerCurrent() > 15.0 && !m_currentSpiked && m_timer.get() > 0.4){
         m_currentSpiked = true;
         m_timer.reset();
         m_timer.start();

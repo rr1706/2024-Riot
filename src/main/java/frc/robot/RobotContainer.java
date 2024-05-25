@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -26,11 +25,10 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoIntakeAimAssist;
-import frc.robot.commands.AutoShooterAim;
 import frc.robot.commands.AutoShooterByPose;
 import frc.robot.commands.AutoSmartShootNoPath;
-import frc.robot.commands.AutoSmartShooter;
 import frc.robot.commands.BiDirectionalIntake;
+import frc.robot.commands.CheckForB;
 import frc.robot.commands.DriveByController;
 import frc.robot.commands.Handoff;
 import frc.robot.commands.PerpetualIntake;
@@ -38,7 +36,6 @@ import frc.robot.commands.ReverseFeed;
 import frc.robot.commands.RotateToAngle;
 import frc.robot.commands.ShootByPose;
 import frc.robot.commands.SmartShootByPose;
-import frc.robot.commands.SmartShooter;
 import frc.robot.commands.ZeroClimber;
 import frc.robot.commands.ZeroElevator;
 import frc.robot.commands.ZeroPitcher;
@@ -190,7 +187,7 @@ public class RobotContainer {
                 .alongWith(new InstantCommand(() -> m_elevator.setPose(1.0)))
                 .alongWith(switchLimelightPipeline("limelight-note", 0)))
             .andThen(new ReverseFeed(m_feeder, m_indexer, m_intaker).withTimeout(0.130)))
-        .onFalse(new InstantCommand(() -> m_elevator.setPose(2.5)));
+        .onFalse(new InstantCommand(() -> m_elevator.setPose(2.5)).alongWith(new PerpetualIntake(m_intaker, m_indexer, m_feeder, -1.0).withTimeout(.25)));
     m_operatorPanel.button(3).onTrue(
 
         new InstantCommand(() -> {
@@ -215,18 +212,22 @@ public class RobotContainer {
 
   public void configureNamedCommands() {
     Command autoIntakeAssist = new AutoIntakeAimAssist(m_drive, 2.5);
-    PerpetualIntake perpetualIntake = new PerpetualIntake(m_intaker, m_indexer, m_feeder, -1.0);
+    PerpetualIntake perpetualIntakeBack = new PerpetualIntake(m_intaker, m_indexer, m_feeder, -1.0);
+    CheckForB checkBNote = new CheckForB();
 
     NamedCommands.registerCommand("SmartIntake", autoIntakeAssist
         .raceWith(new WaitCommand(0.1).andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true, m_shooter))
             .alongWith(new InstantCommand(() -> m_elevator.setPose(1.0)))));
     NamedCommands.registerCommand("PathDecider",
-        new ConditionalCommand(new WaitCommand(15.0), new WaitCommand(0.0), perpetualIntake::didIntakeNote));
+        new ConditionalCommand(new WaitCommand(15.0), new WaitCommand(0.0), perpetualIntakeBack::didIntakeNote));
     NamedCommands.registerCommand("TelePose", new InstantCommand(() -> m_poseEstimator.setAuto(false)));
     NamedCommands.registerCommand("AutoPose", new InstantCommand(() -> m_poseEstimator.setAuto(true)));
     NamedCommands.registerCommand("Auto Shooter By Pose",
         new AutoShooterByPose(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose));
-    NamedCommands.registerCommand("Perpetual Intake Back", new PerpetualIntake(m_intaker, m_indexer, m_feeder, -1.0));
+        NamedCommands.registerCommand("PathDeciderB", new ConditionalCommand(new WaitCommand(15.0), new WaitCommand(0.0), checkBNote::sawNote));
+        NamedCommands.registerCommand("CheckForB", checkBNote);
+    NamedCommands.registerCommand("Perpetual Intake Decider", perpetualIntakeBack);
+        NamedCommands.registerCommand("Perpetual Intake Back", new PerpetualIntake(m_intaker, m_indexer, m_feeder, -1.0));
     NamedCommands.registerCommand("Perpetual Intake Front", new PerpetualIntake(m_intaker, m_indexer, m_feeder, 1.0));
     NamedCommands.registerCommand("Perpetual Intake Assisted",
         new AutoIntakeAimAssist(m_drive, 2.5)

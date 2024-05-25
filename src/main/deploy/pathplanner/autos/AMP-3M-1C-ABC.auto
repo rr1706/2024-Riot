@@ -46,7 +46,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Perpetual Intake Back"
+                        "name": "Perpetual Intake Decider"
                       }
                     }
                   ]
@@ -106,7 +106,7 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "race",
           "data": {
             "commands": [
               {
@@ -136,6 +136,25 @@
                       "data": {
                         "waitTime": 0.4
                       }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.1
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "CheckForB"
+                            }
+                          }
+                        ]
+                      }
                     }
                   ]
                 }
@@ -156,9 +175,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "Grab 2AB - AMP"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Grab 2AB - AMP"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PathDeciderB"
+                }
+              }
+            ]
           }
         },
         {
@@ -189,6 +221,12 @@
                     }
                   ]
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PathDeciderB"
+                }
               }
             ]
           }
@@ -200,13 +238,19 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "race",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
                   "name": "PathDecider"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PathDeciderB"
                 }
               },
               {

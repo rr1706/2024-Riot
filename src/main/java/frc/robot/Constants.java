@@ -81,8 +81,8 @@ public final class Constants {
   public static final class GoalConstants{
     public static final Translation2d kRedGoal = new Translation2d(643.23/39.37, 218.42/39.37);
     public static final Translation2d kBlueGoal = new Translation2d(8.00/39.37, 218.42/39.37);
-    public static final Translation2d kRedFeed = new Translation2d(581.0/39.37, 275.00/39.37);
-    public static final Translation2d kBlueFeed = new Translation2d(69.0/39.37, 275.00/39.37);
+    public static final Translation2d kRedFeed = new Translation2d(626.0/39.37, 285.00/39.37);
+    public static final Translation2d kBlueFeed = new Translation2d(24.0/39.37, 285.00/39.37);
     public static final Translation2d kMidFeed = new Translation2d(8.2705, 250.42/39.37);
 
   }
@@ -119,7 +119,7 @@ public final class Constants {
     }
 
     public static final double kTransSlewRate = 12.0;
-    public static final double kRotSlewRate = 16.0;
+    public static final double kRotSlewRate = 30.0;
 
     public static final double kMaxSpeedMetersPerSecond = 5.0;
     public static final double kMaxAngularSpeed = 2 * Math.PI;
@@ -305,10 +305,12 @@ public final class Constants {
     };
 
     public static final Point2D[] kFeedVelocity = {
-        new Point2D.Double(220.0, 30.0),
-        new Point2D.Double(280.0, 39.0),
-        new Point2D.Double(320.0, 42.0),
-        new Point2D.Double(380.0, 45.0)
+        new Point2D.Double(220.0, 33.0),
+        new Point2D.Double(280.0, 40.0),
+        new Point2D.Double(320.0, 43.0),
+        new Point2D.Double(380.0, 46.0),
+        new Point2D.Double(420.0, 50.0),
+                new Point2D.Double(480.0, 52.0)
     };
 
     public static final Point2D[] kFeedTime = {

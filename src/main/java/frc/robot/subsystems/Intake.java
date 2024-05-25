@@ -59,6 +59,10 @@ public class Intake extends SubsystemBase {
 
     }
 
+    public double getKickerCurrent(){
+        return m_kick.getOutputCurrent();
+    }
+
     public void stop() {
         m_kick.stopMotor();
         m_intake.stopMotor();
