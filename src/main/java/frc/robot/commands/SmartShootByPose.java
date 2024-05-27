@@ -186,27 +186,14 @@ public class SmartShootByPose extends Command {
 
         m_robotDrive.drive(desiredTrans[0], desiredTrans[1], (desiredRot), true, true);
 
-        /*
-         * m_robotDrive.drive(m_slewX.calculate(
-         * -inputTransform(m_controller.getLeftY()))
-         * DriveConstants.kMaxSpeedMetersPerSecond,
-         * m_slewY.calculate(
-         * -inputTransform(m_controller.getLeftX()))
-         * DriveConstants.kMaxSpeedMetersPerSecond,
-         * m_slewRot.calculate(-inputTransform(m_controller.getRightX()))
-         * DriveConstants.kMaxAngularSpeed,
-         * fieldOrient);
-         */
-
-        SmartDashboard.putBoolean("DrivingByController", true);
     }
 
     Translation2d compForMovement(Translation2d goalLocation, boolean feedShot) {
 
         Translation2d toGoal = goalLocation.minus(getPose.get().getTranslation());
 
-        double rx = m_robotDrive.getFieldRelativeSpeed().vx + m_robotDrive.getFieldRelativeAccel().ax * 0.030;
-        double ry = m_robotDrive.getFieldRelativeSpeed().vy + m_robotDrive.getFieldRelativeAccel().ay * 0.030;
+        double rx = m_robotDrive.getFieldRelativeSpeed().vx + m_robotDrive.getFieldRelativeAccel().ax * 0.015;
+        double ry = m_robotDrive.getFieldRelativeSpeed().vy + m_robotDrive.getFieldRelativeAccel().ay * 0.015;
 
         double shotTime;
         if (feedShot) {

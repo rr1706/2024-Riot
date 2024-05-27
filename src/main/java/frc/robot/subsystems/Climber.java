@@ -29,7 +29,7 @@ public class Climber extends SubsystemBase {
         m_climberL.setSmartCurrentLimit(CurrentLimit.kClimber);
         m_climberL.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
         m_climberL.setIdleMode(IdleMode.kBrake);
-        m_pidL.setP(0.25);
+        m_pidL.setP(0.5);
 
         m_climberL.setInverted(true);
         m_climberL.burnFlash();
@@ -37,7 +37,7 @@ public class Climber extends SubsystemBase {
         m_climberR.setSmartCurrentLimit(CurrentLimit.kClimber);
         m_climberR.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
         m_climberR.setIdleMode(IdleMode.kBrake);
-        m_pidR.setP(0.25);
+        m_pidR.setP(0.5);
 
         m_climberR.setInverted(false);
         m_climberR.burnFlash();

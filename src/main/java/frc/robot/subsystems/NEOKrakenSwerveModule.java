@@ -16,7 +16,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CurrentLimit;
 import frc.robot.Constants.GlobalConstants;
@@ -32,20 +31,16 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
     private final TalonFX m_driveMotor;
     private final AbsoluteEncoder m_azimuthEnc;
     private final SparkPIDController m_azimuthPID;
-    private double moduleID;
     private Slot0Configs slot0Configs = new Slot0Configs();
     private final VelocityVoltage m_request = new VelocityVoltage(0.0).withSlot(0);
 
     /**
      * Create a new FRC 1706 NEOKrakenSwerveModule Object
      *
-     * @param drive   The drive SparkMax CAN ID.
-     * @param azimuth The azimuth SparkMax CAN ID.
-     * @param absEnc  The analog encoder port for the absolute encoder.
+     * @param moduleID  module ID also CAN ID for Azimuth and Drive MCs.
      * @param offset  The offset for the analog encoder.
      */
     public NEOKrakenSwerveModule(int moduleID, double offset) {
-        this.moduleID = moduleID;
         configurePID();
         m_driveMotor = new TalonFX(moduleID);
         m_driveMotor.getConfigurator().apply(slot0Configs);
@@ -66,8 +61,6 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         m_azimuthEnc = m_azimuthMotor.getAbsoluteEncoder(Type.kDutyCycle);
         m_azimuthEnc.setPositionConversionFactor(Aziumth.kPositionFactor);
         m_azimuthEnc.setVelocityConversionFactor(Aziumth.kVelocityFactor);
-
-        // m_azimuthEnc.setZeroOffset(offset);
 
         m_azimuthEnc.setInverted(true);
 
@@ -123,17 +116,8 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
      * @param desiredState Desired state with speed and angle.
      */
     public void setDesiredState(SwerveModuleState desiredState) {
-        // Optimize the reference state to avoid spinning further than 90 degrees
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getStateAngle()));
-        // Calculate the drive output from the drive PID controller.
-        // final double driveOutput =
-        // m_drivePIDController.calculate(m_driveEncoder.getVelocity(),
-        // state.speedMetersPerSecond);
-        // Calculates the desired feedForward motor % from the current desired velocity
-        // and the static and feedforward gains
         double metersToRotations = state.speedMetersPerSecond * Drive.kToRots;
-        SmartDashboard.putNumber("Module" + moduleID, state.speedMetersPerSecond);
-        SmartDashboard.putNumber("Kraken" + moduleID, getDriveVelocity());
         m_driveMotor.setControl(m_request.withVelocity(metersToRotations).withSlot(0));
         m_azimuthPID.setReference(state.angle.getRadians(), ControlType.kPosition);
     }

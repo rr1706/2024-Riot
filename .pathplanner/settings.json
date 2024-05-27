@@ -5,6 +5,7 @@
   "pathFolders": [
     "AMP",
     "CENTER",
+    "SNEAK",
     "SOURCE"
   ],
   "autoFolders": [
@@ -13,8 +14,9 @@
     "AMP-2M-3C",
     "AMP-3M-1C",
     "AMP-3M-2C",
-    "CENTER-1M",
     "CENTER-0M",
+    "CENTER-1M",
+    "SNEAK-3M-0C",
     "SOURCE-2M-0C",
     "SOURCE-3M-0C"
   ],

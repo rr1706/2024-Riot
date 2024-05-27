@@ -1,0 +1,129 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.454549670868242,
+      "y": 7.307562004567661
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Sneak-1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Sneak-2"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Aim Shooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Perpetual Intake Back"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.4
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Sneak-3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Sneak 4"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Aim Shooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Perpetual Intake Back"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.4
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Sneak-5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Sneak-6"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "SNEAK-3M-0C",
+  "choreoAuto": false
+}

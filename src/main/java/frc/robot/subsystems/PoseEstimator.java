@@ -27,7 +27,6 @@ public class PoseEstimator extends SubsystemBase {
                 VecBuilder.fill(0.229, 0.229, 0.229),
                 VecBuilder.fill(10, 10, 10));
         SmartDashboard.putData("Field", m_field);
-        SmartDashboard.putBoolean("Reset Pose", false);
     }
 
     @Override
@@ -91,10 +90,6 @@ public class PoseEstimator extends SubsystemBase {
         SmartDashboard.putNumber("PoseEstX", pose.getX());
         SmartDashboard.putNumber("PoseEstY", pose.getY());
         SmartDashboard.putNumber("PoseEstRot", pose.getRotation().getRadians());
-
-        if (SmartDashboard.getBoolean("Reset Pose", false)) {
-            updatePoseEstimator(true);
-        }
 
         m_field.setRobotPose(pose);
     }

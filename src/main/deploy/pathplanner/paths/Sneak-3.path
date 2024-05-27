@@ -1,0 +1,70 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.833121666243334,
+        "y": 6.285242570485141
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.805121099543199,
+        "y": 6.472615955217646
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.4414333444051515,
+        "y": 6.946327738809324
+      },
+      "prevControl": {
+        "x": 6.668518132383571,
+        "y": 6.524737623161189
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Sn-3-End"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.5,
+      "command": {
+        "type": "race",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Perpetual Intake Back"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -150.37625124882615,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "SNEAK",
+  "previewStartingState": {
+    "rotation": -172.53049281751578,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

@@ -34,8 +34,8 @@ public final class Constants {
   }
 
   public static final class CurrentLimit {
-    public static final int kDriveStator = 120;
-    public static final int kDriveSupply = 60;
+    public static final int kDriveStator = 110;
+    public static final int kDriveSupply = 50;
     public static final int kAzimuth = 20;
     public static final int kShooterSupply = 50;
     public static final int kShooterStator = 100;
@@ -64,7 +64,7 @@ public final class Constants {
       public static final double kGearRatio = (50.0 / 12.0) * (72.0 / 12.0);
       public static final double kPositionFactor = 2 * Math.PI;
       public static final double kVelocityFactor = kPositionFactor / 60.0;
-      public static final double kp = 1.0;
+      public static final double kp = 0.50;
       public static final double rioKp = 0.8;
       public static final double rioKi = 0.0;
       public static final double rioKd = 0.0;
@@ -300,13 +300,13 @@ public final class Constants {
     public static final Point2D[] kFeedPitch = {
         new Point2D.Double(220.0, 20.0),
         new Point2D.Double(280.0, 20.0),
-        new Point2D.Double(320.0, 20.0),
-        new Point2D.Double(380.0, 15.0)
+        new Point2D.Double(320.0, 18.0),
+        new Point2D.Double(380.0, 14.0)
     };
 
     public static final Point2D[] kFeedVelocity = {
         new Point2D.Double(220.0, 33.0),
-        new Point2D.Double(280.0, 40.0),
+        new Point2D.Double(280.0, 38.0),
         new Point2D.Double(320.0, 43.0),
         new Point2D.Double(380.0, 46.0),
         new Point2D.Double(420.0, 50.0),

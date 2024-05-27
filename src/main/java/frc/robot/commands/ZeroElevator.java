@@ -43,7 +43,7 @@ public class ZeroElevator extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_elevator.setPose(ElevatorConstants.kRest);
+        m_elevator.setPose(1.0);
         m_timer.stop();
     }
 

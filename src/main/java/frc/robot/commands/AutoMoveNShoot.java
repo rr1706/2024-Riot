@@ -112,8 +112,8 @@ public class AutoMoveNShoot extends Command {
 
         Translation2d toGoal = goalLocation.minus(getPose.get().getTranslation());
 
-        double rx = m_robotDrive.getFieldRelativeSpeed().vx + m_robotDrive.getFieldRelativeAccel().ax * 0.030;
-        double ry = m_robotDrive.getFieldRelativeSpeed().vy + m_robotDrive.getFieldRelativeAccel().ay * 0.030;
+        double rx = m_robotDrive.getFieldRelativeSpeed().vx;// + m_robotDrive.getFieldRelativeAccel().ax * 0.010;
+        double ry = m_robotDrive.getFieldRelativeSpeed().vy;// + m_robotDrive.getFieldRelativeAccel().ay * 0.010;
 
         double shotTime = m_timeTable.get(toGoal.getDistance(new Translation2d()));
         return new Translation2d(goalLocation.getX() - rx * shotTime, goalLocation.getY() - ry * shotTime);

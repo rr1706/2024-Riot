@@ -31,6 +31,7 @@ import frc.robot.commands.BiDirectionalIntake;
 import frc.robot.commands.CheckForNote;
 import frc.robot.commands.DriveByController;
 import frc.robot.commands.Handoff;
+import frc.robot.commands.MoveToFloor;
 import frc.robot.commands.PerpetualIntake;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.RotateToAngle;
@@ -163,7 +164,7 @@ public class RobotContainer {
     m_driverController.back()
         .onTrue(new InstantCommand(() -> m_climber.setPose(68.0)).alongWith(new ZeroElevator(m_elevator)));
 
-    m_driverController.pov(90).onTrue(new RotateToAngle(new Rotation2d(-Math.PI / 2.0), m_drive));
+    m_driverController.pov(90).onTrue(new InstantCommand(()->m_manipulator.run(-0.2))).onFalse(new InstantCommand(()->m_manipulator.stop()));
 
     m_driverController.pov(270)
         .onTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -20.5, m_elevator, m_drive, false)
@@ -186,7 +187,7 @@ public class RobotContainer {
     m_operatorPanel.button(3).onTrue(
 
         new InstantCommand(() -> {
-          m_intaker.runIndividual(-.2 * .66, -.2);
+          m_intaker.runIndividual(-.2 * .7, -.2);
           m_feeder.run(-0.4);
           m_indexer.run(-.4);
         })).onFalse(
@@ -197,6 +198,19 @@ public class RobotContainer {
             }));
 
     m_operatorPanel.button(12).whileTrue(new ZeroPitcher(m_pitcher));
+
+    m_operatorPanel.button(4).onTrue(
+
+        new InstantCommand(() -> {
+          m_intaker.runIndividual(.6 * .7, -.6);
+          m_feeder.run(-0.6);
+          m_indexer.run(-.6);
+        })).onFalse(
+            new InstantCommand(() -> {
+              m_intaker.stop();
+              m_feeder.stop();
+              m_indexer.stop();
+            }));
 
   }
 
@@ -249,7 +263,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Aim Shooter",
         new SmartShootByPose(m_shooter, m_drive, m_pitcher, m_driverController, m_poseEstimator::getPose));
     NamedCommands.registerCommand("Soft Shoot", new InstantCommand(() -> {
-      m_shooter.run(19);
+      m_shooter.run(16.0);
 
     }));
     NamedCommands.registerCommand("UpdatePose", new InstantCommand(() -> m_poseEstimator.updatePose()));
@@ -265,6 +279,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Shooter", new InstantCommand(() -> m_shooter.stop()));
     NamedCommands.registerCommand("Pull Up",
         new AutoMoveNShoot(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, -1.5, 0.0));
+    NamedCommands.registerCommand("DropNoteFront", new MoveToFloor(m_feeder, m_indexer, m_intaker, false));
 
   }
 
