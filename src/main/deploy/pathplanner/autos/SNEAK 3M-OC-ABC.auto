@@ -26,6 +26,12 @@
         {
           "type": "path",
           "data": {
+            "pathName": "Sneak-1b"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "Sneak-2"
           }
         },

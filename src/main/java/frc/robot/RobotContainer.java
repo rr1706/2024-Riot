@@ -263,7 +263,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Aim Shooter",
         new SmartShootByPose(m_shooter, m_drive, m_pitcher, m_driverController, m_poseEstimator::getPose));
     NamedCommands.registerCommand("Soft Shoot", new InstantCommand(() -> {
-      m_shooter.run(16.0);
+      m_shooter.run(16.5);
 
     }));
     NamedCommands.registerCommand("UpdatePose", new InstantCommand(() -> m_poseEstimator.updatePose()));

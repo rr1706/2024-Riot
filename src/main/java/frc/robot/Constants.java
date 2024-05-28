@@ -40,9 +40,9 @@ public final class Constants {
     public static final int kShooterSupply = 50;
     public static final int kShooterStator = 100;
     public static final int kFeederStator = 80;
-    public static final int kFeederSupply = 40;
+    public static final int kFeederSupply = 30;
     public static final int kIntakerSupply = 30;
-    public static final int kIntakerStator = 90;
+    public static final int kIntakerStator = 80;
     public static final int kKicker = 30;
     public static final int kIndexer = 30;
     public static final int kElevator = 40;

@@ -3,40 +3,67 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.033449913053675,
-        "y": 4.361188722377445
+        "x": 8.106304828872139,
+        "y": 7.307562004567661
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.157727068663837,
-        "y": 6.066213330714821
+        "x": 7.8603772614107275,
+        "y": 7.155321129472502
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.471366606071299,
-        "y": 6.2770083885388885
+        "x": 8.27025654051308,
+        "y": 5.773442417070284
       },
       "prevControl": {
-        "x": 6.373101020096476,
-        "y": 6.113056676897948
+        "x": 7.321678780304778,
+        "y": 6.792285196553275
+      },
+      "nextControl": {
+        "x": 8.581066300299998,
+        "y": 5.439609712113965
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.27025654051308,
+        "y": 4.098792791023527
+      },
+      "prevControl": {
+        "x": 7.801823078681821,
+        "y": 5.176189753235427
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Sn-2-End"
+      "linkedName": "Sn-1-End"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.0,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": 127.47617956136126,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.9,
-      "maxWaypointRelativePos": 1.0,
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 2.0,
       "constraints": {
         "maxVelocity": 5.0,
-        "maxAcceleration": 2.0,
+        "maxAcceleration": 2.5,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0
       }
@@ -45,40 +72,15 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 1.6,
       "command": {
         "type": "sequential",
         "data": {
           "commands": [
             {
-              "type": "race",
-              "data": {
-                "commands": [
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "Perpetual Intake Back"
-                    }
-                  },
-                  {
-                    "type": "wait",
-                    "data": {
-                      "waitTime": 0.25
-                    }
-                  }
-                ]
-              }
-            },
-            {
               "type": "named",
               "data": {
-                "name": "Kick Back"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Auto Shooter By Pose"
+                "name": "Stop Shooter"
               }
             }
           ]
@@ -87,15 +89,21 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 0,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "Limelight Pipeline 1"
+                "name": "Soft Shoot"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Perpetual Intake Back"
               }
             }
           ]
@@ -111,13 +119,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -173.06227509899873,
-    "rotateFast": true
+    "rotation": 90.0,
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "SNEAK",
   "previewStartingState": {
-    "rotation": 90.0,
+    "rotation": 180.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

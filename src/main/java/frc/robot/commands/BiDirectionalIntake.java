@@ -44,7 +44,7 @@ public class BiDirectionalIntake extends Command {
         double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
         m_intake.run(1.0, robotVelocity);
 
-        if (m_feeder.getCurrent() > 14.0 && m_timer.get() > 0.2) {
+        if (m_feeder.getCurrent() > 30.0 && m_timer.get() > 0.2) {
             m_controller.getHID().setRumble(RumbleType.kBothRumble, 1.0);
         }
 
