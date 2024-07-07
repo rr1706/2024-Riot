@@ -32,8 +32,9 @@ public class MoveToFloor extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_feeder.stop();
-        m_indexer.stop();
-        m_intake.stop();
+        // m_feeder.stop();
+        // m_indexer.stop();
+        // m_intake.stop();
     }
 }
+

@@ -30,7 +30,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.3
+                  "waitTime": 1.2
                 }
               },
               {
@@ -68,9 +68,35 @@
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "D Pull Up - SOURCE"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "D Pull Up - SOURCE"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.8
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PathDecider"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -100,6 +126,12 @@
                 "data": {
                   "waitTime": 0.4
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PathDecider"
+                }
               }
             ]
           }
@@ -126,6 +158,38 @@
           "type": "path",
           "data": {
             "pathName": "C Pull Up Through Stage - SOURCE"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "C Pull Up Through Stage - SOURCE"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.7
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PathDecider"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -211,6 +275,6 @@
       ]
     }
   },
-  "folder": "SOURCE-3M-0C",
+  "folder": "SOURCE-3M-0C-SKP",
   "choreoAuto": false
 }

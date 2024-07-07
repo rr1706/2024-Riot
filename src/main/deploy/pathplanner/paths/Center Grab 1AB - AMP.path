@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6561869414751653,
-        "y": 2.8925766268080317
+        "x": 4.185342216838282,
+        "y": 5.535354916863679
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.815559759507535,
-        "y": 1.2062161642154945
+        "x": 5.655516695648776,
+        "y": 6.5220491979445505
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.281967377058862,
-        "y": 0.7846260485673593
+        "x": 8.289990426134699,
+        "y": 7.439674879349759
       },
       "prevControl": {
-        "x": 6.8649561550193,
-        "y": 1.1945053276697124
+        "x": 6.642210976729646,
+        "y": 7.074597995349837
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,11 +29,23 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.5,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.8,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.55,
       "command": {
         "type": "parallel",
         "data": {
@@ -41,7 +53,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Perpetual Intake Back"
+                "name": "Perpetual Intake Decider"
               }
             }
           ]
@@ -50,7 +62,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.4,
       "command": {
         "type": "sequential",
         "data": {
@@ -67,7 +79,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.8,
+      "waypointRelativePos": 0.7,
       "command": {
         "type": "sequential",
         "data": {
@@ -84,7 +96,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.55,
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "sequential",
         "data": {
@@ -92,7 +104,7 @@
             {
               "type": "named",
               "data": {
-                "name": "TrackNoteE"
+                "name": "TrackNoteA"
               }
             }
           ]
@@ -124,15 +136,15 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 165.0,
-    "rotateFast": false
+    "velocity": 0.0,
+    "rotation": -157.80454047132105,
+    "rotateFast": true
   },
   "reversed": false,
-  "folder": "SOURCE",
+  "folder": "CENTER",
   "previewStartingState": {
-    "rotation": 140.58260575653108,
-    "velocity": 0
+    "rotation": 180.0,
+    "velocity": 2.5
   },
   "useDefaultConstraints": true
 }

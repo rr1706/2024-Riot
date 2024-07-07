@@ -46,7 +46,7 @@ public class Handoff extends Command {
         m_intake.run(.4);
         m_indexer.run(-.4);
         m_manipulator.run(-.3);
-        m_elevator.setPose(ElevatorConstants.kRest);
+            m_elevator.setPose(ElevatorConstants.kRest);
         if (m_useKicker) {
             m_intake.run(0.4, m_drivetrain.getChassisSpeed().vxMetersPerSecond);
         }

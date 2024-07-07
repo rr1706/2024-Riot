@@ -42,7 +42,7 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
      */
     public NEOKrakenSwerveModule(int moduleID, double offset) {
         configurePID();
-        m_driveMotor = new TalonFX(moduleID);
+        m_driveMotor = new TalonFX(moduleID,"*");
         m_driveMotor.getConfigurator().apply(slot0Configs);
         m_driveMotor.getConfigurator()
                 .apply(new CurrentLimitsConfigs().withSupplyCurrentLimit(CurrentLimit.kDriveSupply)
@@ -52,7 +52,7 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         m_driveMotor.setNeutralMode(NeutralModeValue.Brake);
 
         m_azimuthMotor = new CANSparkMax(moduleID, MotorType.kBrushless);
-        // m_azimuthMotor.restoreFactoryDefaults();
+        //m_azimuthMotor.restoreFactoryDefaults();
         m_azimuthMotor.setSmartCurrentLimit(CurrentLimit.kAzimuth);
         m_azimuthMotor.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
         m_azimuthMotor.setInverted(true);
@@ -61,6 +61,8 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         m_azimuthEnc = m_azimuthMotor.getAbsoluteEncoder(Type.kDutyCycle);
         m_azimuthEnc.setPositionConversionFactor(Aziumth.kPositionFactor);
         m_azimuthEnc.setVelocityConversionFactor(Aziumth.kVelocityFactor);
+
+        //m_azimuthEnc.setZeroOffset(offset);
 
         m_azimuthEnc.setInverted(true);
 

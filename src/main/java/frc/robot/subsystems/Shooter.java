@@ -6,13 +6,16 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CurrentLimit;
 
 public class Shooter extends SubsystemBase {
 
-    private final TalonFX m_motor1 = new TalonFX(5);
-    private final TalonFX m_motor2 = new TalonFX(6);
+    private final TalonFX m_motor1 = new TalonFX(5,"*");
+    private final TalonFX m_motor2 = new TalonFX(6,"*");
+
+    private double m_desiredSpin = 0.0;
 
     private double m_desriedVel = 0.0;
 
@@ -50,6 +53,9 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
+        m_motor1.setControl(m_request.withVelocity(m_desriedVel + m_desiredSpin / 2.0).withSlot(0));
+        m_motor2.setControl(m_request.withVelocity(-1.0 * (m_desriedVel - m_desiredSpin / 2.0)).withSlot(0));
+
     }
 
     public void run(double velocity) {
@@ -59,17 +65,34 @@ public class Shooter extends SubsystemBase {
 
     }
 
-    public void run(double velocity, double spinDiff) {
-        m_desriedVel = velocity;
-        spinDiff = 0.01 * spinDiff * velocity;
-        m_motor1.setControl(m_request.withVelocity(velocity + spinDiff / 2.0).withSlot(0));
-        m_motor2.setControl(m_request.withVelocity(-1.0 * (velocity - spinDiff / 2.0)).withSlot(0));
+    public Command changeSpeed(double adjust) {
+        return runOnce(() -> {
+            m_desriedVel += adjust;
+            if (m_desriedVel >= 80.0) {
+                m_desriedVel = 80.0;
+            } else if (m_desriedVel <= 10.0) {
+                m_desriedVel = 10.0;
+            }
+        });
+    }
 
+    public void run(double velocity, double spinDiff) {
+        spinDiff = 0.01 * spinDiff * velocity;
+        if(velocity >= 100.0){
+            velocity = 100.0;
+        }
+        else if (velocity <= 0.0){
+            velocity = 0.0;
+        }
+        m_desriedVel = velocity;
+        m_desiredSpin = spinDiff;
     }
 
     public void stop() {
         m_motor1.stopMotor();
         m_motor2.stopMotor();
+        m_desriedVel = 0.0;
+        m_desiredSpin = 0.0;
     }
 
     public boolean atSetpoint() {

@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 1.31,
-      "y": 7.044997166917411
+      "y": 6.95
     },
     "rotation": -150.0
   },
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Limelight Pipeline 0"
+            "name": "Limelight Pipeline 1"
           }
         },
         {
@@ -24,13 +24,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Step Back"
+                  "name": "Step Back Slow"
                 }
               },
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.7
+                  "waitTime": 1.5
                 }
               },
               {
@@ -40,7 +40,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.8
+                        "waitTime": 0.75
                       }
                     },
                     {
@@ -64,13 +64,39 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Grab 1BA - AMP"
+            "pathName": "Grab 1AB - AMP"
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "1BA Pull Up - AMP"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "1AB Pull Up - AMP"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.7
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PathDecider"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -99,6 +125,12 @@
                 "type": "wait",
                 "data": {
                   "waitTime": 0.4
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PathDecider"
                 }
               }
             ]
@@ -119,13 +151,39 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Grab 3ABC - AMP"
+            "pathName": "Grab 2AB - AMP"
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "3ABC Pull Up - AMP"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2AB Pull Up - AMP"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.7
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PathDecider"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -155,6 +213,12 @@
                 "data": {
                   "waitTime": 0.4
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PathDecider"
+                }
               }
             ]
           }
@@ -168,13 +232,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Grab A-3M-2C-BCA"
+            "pathName": "Grab 3ABC - AMP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "A Pull Up-3M-1C-BCA"
+            "pathName": "3ABC Pull Up - AMP"
           }
         },
         {
@@ -196,7 +260,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.4
+                  "waitTime": 0.8
                 }
               }
             ]
@@ -205,6 +269,6 @@
       ]
     }
   },
-  "folder": "AMP-3M-1C",
+  "folder": "AMP-3M-1C-SKP",
   "choreoAuto": false
 }

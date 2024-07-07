@@ -32,16 +32,16 @@
     },
     {
       "anchor": {
-        "x": 4.096539731541003,
-        "y": 5.505754088431254
+        "x": 4.0192228743943925,
+        "y": 5.340141464876368
       },
       "prevControl": {
-        "x": 4.34321330181122,
-        "y": 5.012406947890819
+        "x": 4.26589644466461,
+        "y": 4.846794324335932
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Sneak End Start"
     }
   ],
   "rotationTargets": [
@@ -58,7 +58,7 @@
       "maxWaypointRelativePos": 2.0,
       "constraints": {
         "maxVelocity": 2.5,
-        "maxAcceleration": 3.0,
+        "maxAcceleration": 2.5,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0
       }
@@ -85,7 +85,7 @@
                   {
                     "type": "wait",
                     "data": {
-                      "waitTime": 0.5
+                      "waitTime": 0.4
                     }
                   }
                 ]
@@ -126,14 +126,14 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
+    "maxVelocity": 4.8,
     "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -177.0,
+    "rotation": 179.83440572259718,
     "rotateFast": false
   },
   "reversed": false,

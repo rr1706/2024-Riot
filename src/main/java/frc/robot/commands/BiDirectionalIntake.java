@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,7 +35,7 @@ public class BiDirectionalIntake extends Command {
         m_timer.reset();
         m_timer.start();
         m_indexer.run(0.7);
-        m_feeder.run(0.7);
+        m_feeder.run(0.8);
         double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
         m_intake.run(1.0, robotVelocity);
     }
@@ -43,11 +44,9 @@ public class BiDirectionalIntake extends Command {
     public void execute() {
         double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
         m_intake.run(1.0, robotVelocity);
-
-        if (m_feeder.getCurrent() > 30.0 && m_timer.get() > 0.2) {
-            m_controller.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+        if(m_feeder.getProx()){
+                    m_controller.getHID().setRumble(RumbleType.kBothRumble, 1.0);
         }
-
     }
 
     @Override
@@ -55,7 +54,8 @@ public class BiDirectionalIntake extends Command {
         m_intake.stop();
         m_indexer.stop();
         m_feeder.stop();
-        m_controller.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+                            m_controller.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+
     }
 
 }

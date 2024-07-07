@@ -7,14 +7,16 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CurrentLimit;
 
 public class Feeder extends SubsystemBase {
     private boolean m_PIDEnabled = false;
     private double m_desiredPose = 0.0;
-
-    private final TalonFX m_motor = new TalonFX(7);
+    private final DigitalInput m_prox = new DigitalInput(0);
+    private final TalonFX m_motor = new TalonFX(7,"*");
     private Slot0Configs slot0Configs = new Slot0Configs();
 
     public Feeder() {
@@ -34,6 +36,7 @@ public class Feeder extends SubsystemBase {
         if (m_PIDEnabled) {
             m_motor.setControl(new MotionMagicVoltage(m_desiredPose));
         }
+        SmartDashboard.putBoolean("Feeder Prox", getProx());
     }
 
     public void configurePID() {
@@ -52,6 +55,10 @@ public class Feeder extends SubsystemBase {
     public void stop() {
         m_PIDEnabled = false;
         m_motor.stopMotor();
+    }
+
+    public boolean getProx(){
+        return !m_prox.get();
     }
 
     public void setZero() {

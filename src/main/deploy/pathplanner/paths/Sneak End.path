@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.912506594243959,
-        "y": 5.555088802485298
+        "x": 4.0192228743943925,
+        "y": 5.340141464876368
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1696897362494774,
-        "y": 5.678392552422275
+        "x": 3.707689286332152,
+        "y": 6.275347476624943
       },
       "isLocked": false,
-      "linkedName": "MIDDLE C"
+      "linkedName": "Sneak End Start"
     },
     {
       "anchor": {
-        "x": 2.912506594243959,
-        "y": 6.987721397466125
+        "x": 4.628186374775031,
+        "y": 7.37782702384235
       },
       "prevControl": {
-        "x": 2.0105245009915285,
-        "y": 6.512483520376134
+        "x": 3.7615844703872,
+        "y": 6.885971888919526
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -153.02860258961294,
+    "rotation": -155.51212358808485,
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "CENTER",
+  "folder": "SNEAK",
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

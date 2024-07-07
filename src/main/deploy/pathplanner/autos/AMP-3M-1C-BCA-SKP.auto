@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 1.31,
-      "y": 7.044997166917411
+      "y": 6.95
     },
     "rotation": -150.0
   },
@@ -30,7 +30,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.7
+                  "waitTime": 1.5
                 }
               },
               {
@@ -40,7 +40,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.8
+                        "waitTime": 0.75
                       }
                     },
                     {
@@ -64,13 +64,39 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Grab 1AB - AMP"
+            "pathName": "Grab 1BA - AMP"
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "1AB Pull Up - AMP"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2AB Pull Up - AMP"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.7
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PathDecider"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -99,6 +125,12 @@
                 "type": "wait",
                 "data": {
                   "waitTime": 0.4
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PathDecider"
                 }
               }
             ]
@@ -119,13 +151,39 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Grab 2AB - AMP"
+            "pathName": "Grab 3ABC - AMP"
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "2AB Pull Up - AMP"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "3ABC Pull Up - AMP"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.7
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PathDecider"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -155,6 +213,12 @@
                 "data": {
                   "waitTime": 0.4
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PathDecider"
+                }
               }
             ]
           }
@@ -168,37 +232,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Grab 3ABC - AMP"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3ABC Pull Up Speaker - AMP"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Perpetual Intake Front"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Auto Shooter By Pose"
-                }
-              }
-            ]
+            "pathName": "Grab A-3M-1C-BCA"
           }
         }
       ]
     }
   },
-  "folder": "AMP-3M-2C",
+  "folder": "AMP-3M-1C-SKP",
   "choreoAuto": false
 }

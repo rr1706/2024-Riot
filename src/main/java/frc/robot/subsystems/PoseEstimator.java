@@ -3,20 +3,29 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.LimelightHelpers.PoseEstimate;
+import frc.robot.utilities.MathUtils;
 
 public class PoseEstimator extends SubsystemBase {
     private final SwerveDrivePoseEstimator m_poseEstimator;
+    private final SwerveDrivePoseEstimator m_noteEstimator;
     private final Drivetrain m_drivetrain;
     private final Field2d m_field = new Field2d();
     private boolean m_auto = true;
+    private boolean m_trackNote = false;
+    private int m_noteID = 0;
+    private InterpolatingDoubleTreeMap m_noteDistance = new InterpolatingDoubleTreeMap();
 
     public PoseEstimator(Drivetrain drivetrain) {
         m_drivetrain = drivetrain;
@@ -26,6 +35,14 @@ public class PoseEstimator extends SubsystemBase {
                 new Pose2d(),
                 VecBuilder.fill(0.229, 0.229, 0.229),
                 VecBuilder.fill(10, 10, 10));
+        m_noteEstimator = new SwerveDrivePoseEstimator(DriveConstants.kSwerveKinematics,
+                drivetrain.getGyro(),
+                drivetrain.getModulePositions(),
+                new Pose2d(),
+                VecBuilder.fill(0.229, 0.229, 0.229),
+                VecBuilder.fill(10, 10, 10));
+        m_noteDistance = MathUtils.pointsToTreeMap(VisionConstants.kNoteDistance);
+
         SmartDashboard.putData("Field", m_field);
     }
 
@@ -41,10 +58,16 @@ public class PoseEstimator extends SubsystemBase {
 
         m_poseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_drivetrain.getGyro(),
                 m_drivetrain.getModulePositions());
+        m_noteEstimator.updateWithTime(Timer.getFPGATimestamp(), m_drivetrain.getGyro(),
+                m_drivetrain.getModulePositions());
         updateWithVision("limelight-front");
 
-        if (!m_auto) {
+        if (true) {
             updateWithVision("limelight-back");
+        }
+
+        if (m_trackNote && LimelightHelpers.getTV("limelight-note")) {
+            updateWithNote("limelight-note", m_noteID);
         }
 
     }
@@ -83,6 +106,62 @@ public class PoseEstimator extends SubsystemBase {
                         VecBuilder.fill(antiTrust, antiTrust, antiTrust));
             }
         }
+
+    }
+
+    private void updateWithNote(String limeightName, int noteID) {
+
+        double tx = LimelightHelpers.getTX(limeightName);
+        double ty = LimelightHelpers.getTY(limeightName);
+        double yAdj = (ty + 0.006461 * tx * tx) / (0.000144 * tx * tx + 1);
+        double distance = m_noteDistance.get(yAdj) * 0.0254;
+
+        if (distance >= 0) {
+            SmartDashboard.putNumber("DistanceToNote", distance);
+            Rotation2d robotAngle = m_drivetrain.getGyro();
+            double visionAngle = (robotAngle.getRadians() - Math.toRadians(tx));
+            SmartDashboard.putNumber("Vision Angle", visionAngle);
+            Translation2d noteToRobot = new Translation2d(distance, new Rotation2d(visionAngle));
+            Pose2d calculatedPose = new Pose2d(VisionConstants.kNoteIDs[noteID].plus(noteToRobot), robotAngle);
+
+            SmartDashboard.putNumber("NoteCalcX", calculatedPose.getX());
+            SmartDashboard.putNumber("NoteCalcY", calculatedPose.getY());
+            SmartDashboard.putNumber("NoteVecX", noteToRobot.getX() * 39.37);
+            SmartDashboard.putNumber("NoteVecY", noteToRobot.getY() * 39.37);
+
+            double latency = LimelightHelpers.getLatency_Capture(limeightName)
+                    + LimelightHelpers.getLatency_Pipeline(limeightName);
+
+            latency /= 1000.0;
+
+            double timestamp = Timer.getFPGATimestamp() - latency;
+
+            if(calculatedPose.getTranslation().getDistance(getPose().getTranslation())<= 2.5){
+                m_noteEstimator.addVisionMeasurement(calculatedPose, timestamp, VecBuilder.fill(2.0, 2.0, 999999));
+            }
+
+        }
+
+    }
+
+    public void trackNote(int noteID) {
+        m_noteID = noteID;
+        m_noteEstimator.resetPosition(m_drivetrain.getGyro(), m_drivetrain.getModulePositions(), getPose());
+        m_trackNote = true;
+    }
+
+
+    public void trackSneakNote(int noteID) {
+        var alliance = DriverStation.getAlliance();
+        boolean redAlliance = alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red;
+        if(redAlliance){noteID+=2;}
+        m_noteID = noteID;
+        m_noteEstimator.resetPosition(m_drivetrain.getGyro(), m_drivetrain.getModulePositions(), getPose());
+        m_trackNote = true;
+    }
+
+    public void stopNoteTracking() {
+        m_trackNote = false;
     }
 
     private void updateShuffleboard() {
@@ -95,7 +174,12 @@ public class PoseEstimator extends SubsystemBase {
     }
 
     public Pose2d getPose() {
-        return m_poseEstimator.getEstimatedPosition();
+        if (m_trackNote) {
+            return m_noteEstimator.getEstimatedPosition();
+        } else {
+            return m_poseEstimator.getEstimatedPosition();
+        }
+
     }
 
     public void setAuto(boolean auto) {

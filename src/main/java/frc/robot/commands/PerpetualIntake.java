@@ -26,7 +26,7 @@ public class PerpetualIntake extends Command {
     @Override
     public void initialize() {
         m_indexer.run(0.7);
-        m_feeder.run(0.7);
+        m_feeder.run(0.8);
         m_intake.run(1.0, m_direction);
         intakedNote = false;
         m_timer.reset();

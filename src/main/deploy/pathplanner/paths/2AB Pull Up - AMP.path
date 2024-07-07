@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.112385455540144,
-        "y": 5.811629315566324
+        "x": 7.790112242136038,
+        "y": 5.949104965257007
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.796643285594267,
-        "y": 6.038569000214924
+        "x": 7.474370072190161,
+        "y": 6.176044649905607
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.438443953810986,
-        "y": 6.265508684863524
+        "x": 5.120041509697854,
+        "y": 6.206743369264199
       },
       "prevControl": {
-        "x": 6.819815947324203,
-        "y": 6.522049197944551
+        "x": 6.501413503211071,
+        "y": 6.463283882345227
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
     {
       "waypointRelativePos": 0.65,
       "rotationDegrees": -172.0,
-      "rotateFast": true
+      "rotateFast": false
     }
   ],
   "constraintZones": [
@@ -42,7 +42,7 @@
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 5.0,
-        "maxAcceleration": 2.0,
+        "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0
       }
@@ -69,7 +69,7 @@
                   {
                     "type": "wait",
                     "data": {
-                      "waitTime": 0.25
+                      "waitTime": 0.4
                     }
                   }
                 ]
@@ -90,10 +90,27 @@
           ]
         }
       }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.9,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Limelight Pipeline 1"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
+    "maxVelocity": 4.8,
     "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0

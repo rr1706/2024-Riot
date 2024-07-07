@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.31,
-      "y": 7.044997166917411
+      "x": 1.442332115433463,
+      "y": 2.0
     },
-    "rotation": -150.0
+    "rotation": 90.0
   },
   "command": {
     "type": "sequential",
@@ -30,7 +30,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.7
+                  "waitTime": 1.2
                 }
               },
               {
@@ -40,13 +40,13 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.8
+                        "waitTime": 0.9
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Perpetual Intake Decider"
+                        "name": "Perpetual Intake Back"
                       }
                     }
                   ]
@@ -64,7 +64,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Grab 1AB - AMP"
+            "pathName": "Grab E - SOURCE"
           }
         },
         {
@@ -74,7 +74,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "1AB Pull Up - AMP"
+                  "pathName": "E Pull Up - SOURCE"
                 }
               },
               {
@@ -112,51 +112,25 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PathDecider"
+                  "name": "Aim Shooter"
                 }
               },
               {
-                "type": "race",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Aim Shooter"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Perpetual Intake Back"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.4
-                      }
-                    },
-                    {
-                      "type": "sequential",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 0.1
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "CheckForB"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ]
+                  "name": "Perpetual Intake Back"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.4
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PathDecider"
                 }
               }
             ]
@@ -175,22 +149,9 @@
           }
         },
         {
-          "type": "race",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Grab 2AB - AMP"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PathDeciderB"
-                }
-              }
-            ]
+            "pathName": "Grab D - SOURCE"
           }
         },
         {
@@ -200,7 +161,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "2AB Pull Up - AMP"
+                  "pathName": "D Pull Up - SOURCE"
                 }
               },
               {
@@ -221,12 +182,6 @@
                     }
                   ]
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PathDeciderB"
-                }
               }
             ]
           }
@@ -235,68 +190,6 @@
           "type": "named",
           "data": {
             "name": "Limelight Pipeline 1"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "PathDecider"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PathDeciderB"
-                }
-              },
-              {
-                "type": "race",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Perpetual Intake Back"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Aim Shooter"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.4
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Limelight Pipeline 0"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Grab 3ABC - AMP"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3ABC Pull Up - AMP"
           }
         },
         {
@@ -320,6 +213,61 @@
                 "data": {
                   "waitTime": 0.4
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PathDecider"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Grab C - SOURCE"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C Pull Up Through Stage - SOURCE"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 1"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Perpetual Intake Front"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Aim Shooter"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
               }
             ]
           }
@@ -327,6 +275,6 @@
       ]
     }
   },
-  "folder": "AMP-3M-1C",
+  "folder": "SOURCE-3M-0C-SKP",
   "choreoAuto": false
 }

@@ -28,13 +28,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 public final class Constants {
   public static final class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kDemoControllerPort = 2;
     public static final double kDeadband = 0.01;
     public static final double kCubic = 0.95;
     public static final double kLinear = 0.05;
   }
 
   public static final class CurrentLimit {
-    public static final int kDriveStator = 110;
+    public static final int kDriveStator = 120;
     public static final int kDriveSupply = 50;
     public static final int kAzimuth = 20;
     public static final int kShooterSupply = 50;
@@ -47,13 +48,14 @@ public final class Constants {
     public static final int kIndexer = 30;
     public static final int kElevator = 40;
     public static final int kClimber = 60;
+
     public static final int kManipulator = 30;
     public static final int kPitcher = 30;
   }
 
   public static final class ModuleConstants {
     public static final class Drive {
-      public static final double kGearRatio = (36.0 / 14.0) * (18.0 / 24.0) * (45.0 / 15.0);
+      public static final double kGearRatio = (36.0 / 13.0) * (16.0 / 24.0) * (45.0 / 15.0);
       public static final double kWheelDiameter = 0.09741;
       public static final double kToMeters = (1.0 / kGearRatio) * kWheelDiameter * Math.PI;
       public static final double kToRots = 1 / kToMeters;
@@ -76,13 +78,37 @@ public final class Constants {
   public static final class VisionConstants {
     public static final double kPoseErrorAcceptance = 3.0; // How much error there can be between current stimated pose
                                                            // and vision pose in meters
+
+    public static final Point2D[] kNoteDistance = {
+        new Point2D.Double(30.29, 136.0),
+        new Point2D.Double(29.04, 121.0),
+        new Point2D.Double(27.53, 109.0),
+        new Point2D.Double(25.69, 97.0),
+        new Point2D.Double(23.58, 85.0),
+        new Point2D.Double(20.56, 73.0),
+        new Point2D.Double(16.18, 61.0),
+        new Point2D.Double(9.93, 49.0),
+        new Point2D.Double(4.08, 37.0) };
+
+    public static final Translation2d[] kNoteIDs = {
+        new Translation2d(8.2706, 0.753),
+        new Translation2d(8.2706, 2.429),
+        new Translation2d(8.2706, 4.106),
+        new Translation2d(8.2706, 5.782),
+        new Translation2d(8.2706, 7.458),
+        new Translation2d(5.00, 7.62),
+        new Translation2d(5.00, 2.00),
+        new Translation2d(12.5412, 7.62),
+        new Translation2d(12.5412, 2.00)
+    };
+
   }
 
   public static final class GoalConstants {
     public static final Translation2d kRedGoal = new Translation2d(643.23 / 39.37, 218.42 / 39.37);
     public static final Translation2d kBlueGoal = new Translation2d(8.00 / 39.37, 218.42 / 39.37);
-    public static final Translation2d kRedFeed = new Translation2d(626.0 / 39.37, 285.00 / 39.37);
-    public static final Translation2d kBlueFeed = new Translation2d(24.0 / 39.37, 285.00 / 39.37);
+    public static final Translation2d kRedFeed = new Translation2d(626.0 / 39.37, 265.00 / 39.37);
+    public static final Translation2d kBlueFeed = new Translation2d(24.0 / 39.37, 265.00 / 39.37);
     public static final Translation2d kMidFeed = new Translation2d(8.2705, 250.42 / 39.37);
 
   }
@@ -96,32 +122,32 @@ public final class Constants {
 
     public static final class FrontLeft {
       public static final int kModuleID = 4;
-      public static final double kOffset = 2 * Math.PI - 0.957574069499969;// 5.295623302459717;
+      public static final double kOffset = 2*Math.PI-2.3363444805145264;
       public static final Translation2d kLocation = new Translation2d(kWheelBaseLength / 2, kWheelBaseWidth / 2);
     }
 
     public static final class FrontRight {
       public static final int kModuleID = 1;
-      public static final double kOffset = 2 * Math.PI - 2.058273077011108;// 4.239565849304199;
+      public static final double kOffset = 2*Math.PI-5.121488094329834;
       public static final Translation2d kLocation = new Translation2d(kWheelBaseLength / 2, -kWheelBaseWidth / 2);
     }
 
     public static final class RearLeft {
       public static final int kModuleID = 3;
-      public static final double kOffset = 2 * Math.PI - 0.037144355475903;// 6.257627487182617;
+      public static final double kOffset = 2*Math.PI-3.5409798622131348;
       public static final Translation2d kLocation = new Translation2d(-kWheelBaseLength / 2, kWheelBaseWidth / 2);
     }
 
     public static final class RearRight {
       public static final int kModuleID = 2;
-      public static final double kOffset = 2 * Math.PI - 5.337879180908203;// 0.91804438829422;
+      public static final double kOffset = 2*Math.PI-2.0609993934631348;
       public static final Translation2d kLocation = new Translation2d(-kWheelBaseLength / 2, -kWheelBaseWidth / 2);
     }
 
     public static final double kTransSlewRate = 12.0;
-    public static final double kRotSlewRate = 30.0;
+    public static final double kRotSlewRate = 32.0;
 
-    public static final double kMaxSpeedMetersPerSecond = 5.0;
+    public static final double kMaxSpeedMetersPerSecond = 5.2;
     public static final double kMaxAngularSpeed = 2 * Math.PI;
     public static final double kMaxAngularAccel = 1.5 * Math.PI;
 
@@ -143,10 +169,10 @@ public final class Constants {
                                                                                                     // likely live in
                                                                                                     // your
           // Constants class
-          new PIDConstants(2.5, 0.0, 0.0), // Translation PID constants
+          new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
           new PIDConstants(2.5, 0.0, 0.0), // Rotation PID constants
-          5.0, // Max module speed, in m/s
-          DriveConstants.kWheelBaseRadius, // Drive base radius in meters. Distance from robot center to furthest
+          4.8, // Max module speed, in m/s
+          DriveConstants.kWheelBaseRadius, // D\[]rive base radius in meters. Distance from robot center to furthest
                                            // module.
           new ReplanningConfig() // Default path replanning config. See the API for the options here
       );
