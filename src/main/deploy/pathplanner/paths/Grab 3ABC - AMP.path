@@ -42,7 +42,7 @@
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 4.8,
-        "maxAcceleration": 4.0,
+        "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0
       }
@@ -150,7 +150,7 @@
   "folder": "AMP",
   "previewStartingState": {
     "rotation": -171.0,
-    "velocity": 0
+    "velocity": 0.5
   },
   "useDefaultConstraints": true
 }

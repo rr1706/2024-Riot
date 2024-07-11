@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.461616615540925,
-        "y": 6.008968171782498
+        "x": 5.038065653877384,
+        "y": 6.230165042355762
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.5119233700005905,
-        "y": 7.123932709403881
+        "x": 6.088372408337049,
+        "y": 7.345129579977145
       },
       "isLocked": false,
-      "linkedName": "3M-2C-BCA-C spot"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -29,7 +29,19 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.7,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 4.8,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "New Event Marker",
@@ -84,7 +96,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.3,
       "command": {
         "type": "sequential",
         "data": {
@@ -131,7 +143,7 @@
   "reversed": false,
   "folder": "AMP",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": -171.73844246627812,
     "velocity": 0
   },
   "useDefaultConstraints": true
