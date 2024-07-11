@@ -3,45 +3,88 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.461616615540925,
-        "y": 6.008968171782498
+        "x": 7.619038314999709,
+        "y": 7.252202965944393
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.511923370000588,
-        "y": 7.123932709403881
+        "x": 7.064040376297585,
+        "y": 7.014791090923124
       },
       "isLocked": false,
-      "linkedName": "3M-2C-BCA-C spot"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.375654069425114,
-        "y": 7.436381206571257
+        "x": 4.241728768764241,
+        "y": 6.05450249416904
       },
       "prevControl": {
-        "x": 7.375654069425114,
-        "y": 7.436381206571257
+        "x": 5.436234096433954,
+        "y": 6.113056676897948
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
-  "constraintZones": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -172.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.7,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 5.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "sequential",
         "data": {
           "commands": [
             {
+              "type": "race",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "Perpetual Intake Back"
+                    }
+                  },
+                  {
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.35
+                    }
+                  }
+                ]
+              }
+            },
+            {
               "type": "named",
               "data": {
-                "name": "Perpetual Intake Back"
+                "name": "Kick Back"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Auto Shooter By Pose"
               }
             }
           ]
@@ -50,7 +93,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.35,
+      "waypointRelativePos": 0.6,
       "command": {
         "type": "sequential",
         "data": {
@@ -58,7 +101,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Soft Shoot"
+                "name": "Limelight Pipeline 1"
               }
             }
           ]
@@ -67,7 +110,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.65,
+      "waypointRelativePos": 0.8,
       "command": {
         "type": "sequential",
         "data": {
@@ -75,41 +118,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Stop Shooter"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.25,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "TrackNoteA"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.95,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "StopNoteTracking"
+                "name": "Perpetual Intake Front"
               }
             }
           ]
@@ -124,14 +133,14 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 180.0,
+    "velocity": 0.2,
+    "rotation": -176.4736270524452,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "AMP",
+  "folder": "SNEAK",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": -170.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

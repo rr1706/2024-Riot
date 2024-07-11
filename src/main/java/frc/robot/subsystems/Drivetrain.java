@@ -158,6 +158,10 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Front Right Encoder", m_FRModule.getStateAngle());
     SmartDashboard.putNumber("Rear Left Encoder", m_RLModule.getStateAngle());
     SmartDashboard.putNumber("Rear Right Encoder", m_RRModule.getStateAngle());
+    SmartDashboard.putNumber("Front Left Speed", m_FLModule.getDriveVelocity());
+    SmartDashboard.putNumber("Front Right Speed", m_FRModule.getDriveVelocity());
+    SmartDashboard.putNumber("Rear Left Speed", m_RLModule.getDriveVelocity());
+    SmartDashboard.putNumber("Rear Right Speed", m_RRModule.getDriveVelocity());    
 
     updateOdometry();
 

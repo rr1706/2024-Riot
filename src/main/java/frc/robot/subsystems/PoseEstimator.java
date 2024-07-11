@@ -34,13 +34,13 @@ public class PoseEstimator extends SubsystemBase {
                 drivetrain.getModulePositions(),
                 new Pose2d(),
                 VecBuilder.fill(0.229, 0.229, 0.229),
-                VecBuilder.fill(10, 10, 10));
+                VecBuilder.fill(10, 10, 200));
         m_noteEstimator = new SwerveDrivePoseEstimator(DriveConstants.kSwerveKinematics,
                 drivetrain.getGyro(),
                 drivetrain.getModulePositions(),
                 new Pose2d(),
                 VecBuilder.fill(0.229, 0.229, 0.229),
-                VecBuilder.fill(10, 10, 10));
+                VecBuilder.fill(10, 10, 200));
         m_noteDistance = MathUtils.pointsToTreeMap(VisionConstants.kNoteDistance);
 
         SmartDashboard.putData("Field", m_field);
@@ -53,7 +53,6 @@ public class PoseEstimator extends SubsystemBase {
     }
 
     private void updatePoseEstimator(boolean force) {
-
         SmartDashboard.putBoolean("Auto Pose", m_auto);
 
         m_poseEstimator.updateWithTime(Timer.getFPGATimestamp(), m_drivetrain.getGyro(),
@@ -62,7 +61,7 @@ public class PoseEstimator extends SubsystemBase {
                 m_drivetrain.getModulePositions());
         updateWithVision("limelight-front");
 
-        if (true) {
+        if (m_auto) {
             updateWithVision("limelight-back");
         }
 
@@ -80,8 +79,10 @@ public class PoseEstimator extends SubsystemBase {
 
         if ((validTagCount >= 2.0 && ta >= 0.030) && slowRotate) {
             if (m_auto) {
-                double antiTrust = 20.0;
-                m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds,
+                double antiTrust = 4*(-150.0 * ta + 10.0);
+                if (antiTrust <= 8.0) {
+                    antiTrust = 8.0;
+                }                m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds,
                         VecBuilder.fill(antiTrust, antiTrust, antiTrust));
             } else {
                 double antiTrust = -150.0 * ta + 10.0;
@@ -92,14 +93,14 @@ public class PoseEstimator extends SubsystemBase {
                         VecBuilder.fill(antiTrust, antiTrust, antiTrust));
 
             }
-        } else if ((validTagCount == 1 && ta >= 0.070) && !m_auto && slowRotate) {
+        } else if ((validTagCount == 1 && ta >= 0.060) && !m_auto && slowRotate) {
             if (m_auto) {
                 m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds,
                         VecBuilder.fill(30.0, 30.0, 30.0));
             } else {
                 double antiTrust = -69.0 * ta + 14.83;
-                if (antiTrust <= 5.0) {
-                    antiTrust = 5.0;
+                if (antiTrust <= 10.0) {
+                    antiTrust = 10.0;
                 }
 
                 m_poseEstimator.addVisionMeasurement(limelightBotPose.pose, limelightBotPose.timestampSeconds,

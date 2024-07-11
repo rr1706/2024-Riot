@@ -137,10 +137,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "AMP",
+  "folder": "SOURCE",
   "previewStartingState": {
-    "rotation": 105.86180136559894,
-    "velocity": 0
+    "rotation": -110.5080989717684,
+    "velocity": 0.5
   },
   "useDefaultConstraints": true
 }

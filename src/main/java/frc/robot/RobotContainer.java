@@ -34,6 +34,7 @@ import frc.robot.commands.AutoMoveNShoot;
 import frc.robot.commands.BiDirectionalIntake;
 import frc.robot.commands.CheckForNote;
 import frc.robot.commands.DriveByController;
+import frc.robot.commands.Feed;
 import frc.robot.commands.Handoff;
 import frc.robot.commands.MoveToFloor;
 import frc.robot.commands.PerpetualIntake;
@@ -182,18 +183,15 @@ public class RobotContainer {
                         .alongWith(new InstantCommand(() -> m_poseEstimator.setAuto(false))))
                 .onFalse(switchLimelightPipeline("limelight-front", 0));
 
-        m_driverController.rightTrigger(0.25)
-                // .whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder,
-                // m_driverController))
-                // .onFalse(new ReverseFeed(m_feeder, m_indexer).withTimeout(0.130));
-                .onTrue(new InstantCommand(() -> m_feeder.run(0.6))
-                        .alongWith(new InstantCommand(() -> m_indexer.run(0.6))))
-                .onFalse(new InstantCommand(() -> m_feeder.stop())
-                        .alongWith(new InstantCommand(() -> m_indexer.stop())));
+        m_driverController.rightTrigger(0.25).whileTrue(new Feed(m_feeder, m_indexer, m_intaker));
+                // .onTrue(new InstantCommand(() -> m_feeder.run(0.6))
+                //         .alongWith(new InstantCommand(() -> m_indexer.run(0.6))))
+                // .onFalse(new InstantCommand(() -> m_feeder.stop())
+                //         .alongWith(new InstantCommand(() -> m_indexer.stop())));
 
         m_driverController.leftBumper()
                 .whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder, m_driverController))
-                .onFalse(new ReverseIntake(m_feeder, m_indexer, m_intaker).withTimeout(0.150));
+                .onFalse(new ReverseIntake(m_feeder, m_indexer, m_intaker).withTimeout(0.130));
         // .onFalse(new InstantCommand(() -> m_feeder.run(-0.4)).andThen(new
         // WaitCommand(0.06))
         // .andThen(new InstantCommand(() -> m_feeder.stop()).alongWith(new
@@ -235,7 +233,7 @@ public class RobotContainer {
                                 .andThen(new AutoIntake(m_intaker, m_indexer, m_feeder, true, m_shooter))
                                 .alongWith(new InstantCommand(() -> m_elevator.setPose(1.0)))
                                 .alongWith(switchLimelightPipeline("limelight-note", 0)))
-                        .andThen(new ReverseIntake(m_feeder, m_indexer, m_intaker).withTimeout(0.130)))
+                        .andThen(new ReverseIntake(m_feeder, m_indexer, m_intaker).withTimeout(0.150)))
                 .onFalse(new InstantCommand(() -> m_elevator.setPose(1.0))
                         .alongWith(new PerpetualIntake(m_intaker, m_indexer, m_feeder, -1.0).withTimeout(.25)));
         m_operatorPanel.button(3).onTrue(
@@ -310,7 +308,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Step Back Slower",
                 new AutoMoveNShoot(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, 1.7, 0.0));
         NamedCommands.registerCommand("Kick Back",
-                new ReverseIntake(m_feeder, m_indexer, m_intaker).withTimeout(0.150));
+                new ReverseIntake(m_feeder, m_indexer, m_intaker).withTimeout(0.170));
         NamedCommands.registerCommand("Stop Shooter", new InstantCommand(() -> m_shooter.stop()));
         NamedCommands.registerCommand("DropNoteFront", new MoveToFloor(m_feeder, m_indexer, m_intaker, false));
 

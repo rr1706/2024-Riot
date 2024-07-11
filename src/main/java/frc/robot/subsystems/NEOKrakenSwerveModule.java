@@ -6,7 +6,9 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
+import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -51,6 +53,8 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
                         .withStatorCurrentLimitEnable(true));
         m_driveMotor.setNeutralMode(NeutralModeValue.Brake);
 
+        m_driveMotor.getConfigurator().apply(new ClosedLoopRampsConfigs().withVoltageClosedLoopRampPeriod(0.100));
+
         m_azimuthMotor = new CANSparkMax(moduleID, MotorType.kBrushless);
         //m_azimuthMotor.restoreFactoryDefaults();
         m_azimuthMotor.setSmartCurrentLimit(CurrentLimit.kAzimuth);
@@ -65,6 +69,8 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         //m_azimuthEnc.setZeroOffset(offset);
 
         m_azimuthEnc.setInverted(true);
+
+
 
         m_azimuthPID = m_azimuthMotor.getPIDController();
 

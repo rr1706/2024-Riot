@@ -35,7 +35,7 @@ public final class Constants {
   }
 
   public static final class CurrentLimit {
-    public static final int kDriveStator = 120;
+    public static final int kDriveStator = 100;
     public static final int kDriveSupply = 50;
     public static final int kAzimuth = 20;
     public static final int kShooterSupply = 50;
@@ -56,7 +56,7 @@ public final class Constants {
   public static final class ModuleConstants {
     public static final class Drive {
       public static final double kGearRatio = (36.0 / 13.0) * (16.0 / 24.0) * (45.0 / 15.0);
-      public static final double kWheelDiameter = 0.09741;
+      public static final double kWheelDiameter = 0.0985;
       public static final double kToMeters = (1.0 / kGearRatio) * kWheelDiameter * Math.PI;
       public static final double kToRots = 1 / kToMeters;
       public static final double kKrakenMaxRPS = 100.0;
@@ -66,7 +66,7 @@ public final class Constants {
       public static final double kGearRatio = (50.0 / 12.0) * (72.0 / 12.0);
       public static final double kPositionFactor = 2 * Math.PI;
       public static final double kVelocityFactor = kPositionFactor / 60.0;
-      public static final double kp = 0.50;
+      public static final double kp = 0.35;
       public static final double rioKp = 0.8;
       public static final double rioKi = 0.0;
       public static final double rioKd = 0.0;
@@ -122,30 +122,30 @@ public final class Constants {
 
     public static final class FrontLeft {
       public static final int kModuleID = 4;
-      public static final double kOffset = 2*Math.PI-2.3363444805145264;
+      public static final double kOffset = 2*Math.PI-2.3363444805145264+0.003748307;
       public static final Translation2d kLocation = new Translation2d(kWheelBaseLength / 2, kWheelBaseWidth / 2);
     }
 
     public static final class FrontRight {
       public static final int kModuleID = 1;
-      public static final double kOffset = 2*Math.PI-5.121488094329834;
+      public static final double kOffset = 2*Math.PI-5.121488094329834+0.000682;
       public static final Translation2d kLocation = new Translation2d(kWheelBaseLength / 2, -kWheelBaseWidth / 2);
     }
 
     public static final class RearLeft {
       public static final int kModuleID = 3;
-      public static final double kOffset = 2*Math.PI-3.5409798622131348;
+      public static final double kOffset = 2*Math.PI-3.5409798622131348+0.01738;
       public static final Translation2d kLocation = new Translation2d(-kWheelBaseLength / 2, kWheelBaseWidth / 2);
     }
 
     public static final class RearRight {
       public static final int kModuleID = 2;
-      public static final double kOffset = 2*Math.PI-2.0609993934631348;
+      public static final double kOffset = 2*Math.PI-2.0609993934631348-0.0027262;
       public static final Translation2d kLocation = new Translation2d(-kWheelBaseLength / 2, -kWheelBaseWidth / 2);
     }
 
     public static final double kTransSlewRate = 12.0;
-    public static final double kRotSlewRate = 32.0;
+    public static final double kRotSlewRate = 30.0;
 
     public static final double kMaxSpeedMetersPerSecond = 5.2;
     public static final double kMaxAngularSpeed = 2 * Math.PI;
@@ -170,7 +170,7 @@ public final class Constants {
                                                                                                     // your
           // Constants class
           new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-          new PIDConstants(2.5, 0.0, 0.0), // Rotation PID constants
+          new PIDConstants(3.5, 0.0, 0.0), // Rotation PID constants
           4.8, // Max module speed, in m/s
           DriveConstants.kWheelBaseRadius, // D\[]rive base radius in meters. Distance from robot center to furthest
                                            // module.
@@ -194,12 +194,12 @@ public final class Constants {
   }
 
   public static final class ElevatorConstants {
-    public static final double kRest = 2.7;
+    public static final double kRest = 2.6;
   }
 
   public static final class ShooterConstants {
     private static final double kpowerOffset = 0.0;
-    private static final double kPitchOffset = 0.3 + 0.1;
+    private static final double kPitchOffset = 0.3;
     public static final Point2D[] kDistTable = {
         new Point2D.Double(0.20, 38.0), // .3B
         new Point2D.Double(-3.36, 38.0 + 12.0),
@@ -340,9 +340,9 @@ public final class Constants {
     };
 
     public static final Point2D[] kFeedTime = {
-        new Point2D.Double(6.0, 0.9),
-        new Point2D.Double(8.0, 1.0),
-        new Point2D.Double(10.0, 1.1)
+        new Point2D.Double(6.0, 1.0),
+        new Point2D.Double(8.0, 1.15),
+        new Point2D.Double(10.0, 1.3)
     };
 
   }

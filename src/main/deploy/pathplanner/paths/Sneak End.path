@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.0192228743943925,
-        "y": 5.340141464876368
+        "x": 4.136331239852207,
+        "y": 5.246454772510115
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.707689286332152,
-        "y": 6.275347476624943
+        "x": 3.8247976517899662,
+        "y": 6.181660784258691
       },
       "isLocked": false,
       "linkedName": "Sneak End Start"
@@ -33,7 +33,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.8,
-    "maxAcceleration": 5.0,
+    "maxAcceleration": 4.4,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

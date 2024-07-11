@@ -17,6 +17,8 @@ public class BiDirectionalIntake extends Command {
     private final Feeder m_feeder;
     private final CommandXboxController m_controller;
     private final Timer m_timer = new Timer();
+    private boolean noteInRobot = false;
+    private double noteTime = Double.POSITIVE_INFINITY;
 
     public BiDirectionalIntake(Intake intake, Drivetrain robotDrive, Indexer indexer, Feeder feeder,
             CommandXboxController controller) {
@@ -34,6 +36,8 @@ public class BiDirectionalIntake extends Command {
     public void initialize() {
         m_timer.reset();
         m_timer.start();
+        noteInRobot = false;
+        noteTime = Double.POSITIVE_INFINITY;
         m_indexer.run(0.7);
         m_feeder.run(0.8);
         double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
@@ -42,19 +46,37 @@ public class BiDirectionalIntake extends Command {
 
     @Override
     public void execute() {
+        double time = m_timer.get();
         double robotVelocity = m_robotDrive.getChassisSpeed().vxMetersPerSecond;
-        m_intake.run(1.0, robotVelocity);
-        if(m_feeder.getProx()){
-                    m_controller.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+       if (!m_feeder.getProx() && noteInRobot) {
+            noteInRobot = false;
+            noteTime = Double.POSITIVE_INFINITY;
+            m_intake.run(1.0, robotVelocity);
+            m_indexer.run(0.7);
+            m_feeder.run(0.8);
+        } else if (m_feeder.getProx() && !noteInRobot) {
+            noteInRobot = true;
+            noteTime = time;
+            m_controller.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+            m_intake.run(0.2, robotVelocity);
+            m_feeder.run(0.6);
+        } else if (time >= (noteTime + 0.110)) {
+            m_feeder.run(0.4);
+            m_indexer.run(-1.0);
+            m_intake.run(0.6, robotVelocity);
+        }else{
+             m_intake.run(1.0, robotVelocity);
         }
+
     }
 
     @Override
     public void end(boolean interrupted) {
+        m_timer.stop();
         m_intake.stop();
         m_indexer.stop();
         m_feeder.stop();
-                            m_controller.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+        m_controller.getHID().setRumble(RumbleType.kBothRumble, 0.0);
 
     }
 

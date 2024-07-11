@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.813387780621717,
-        "y": 7.044997166917411
+        "x": 4.663318884412376,
+        "y": 7.014791090923124
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.4350051777026644,
-        "y": 7.05486410972822
+        "x": 5.284936281493323,
+        "y": 7.024658033733933
       },
       "isLocked": false,
       "linkedName": "Step Back End"
@@ -125,7 +125,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.8,
-    "maxAcceleration": 5.0,
+    "maxAcceleration": 4.4,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 1.31,
-      "y": 6.95
+      "y": 7.0
     },
     "rotation": -150.0
   },
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Limelight Pipeline 1"
+            "name": "Limelight Pipeline 0"
           }
         },
         {
@@ -53,12 +53,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Limelight Pipeline 0"
           }
         },
         {
@@ -199,13 +193,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Perpetual Intake Back"
+                  "name": "Aim Shooter"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Aim Shooter"
+                  "name": "Perpetual Intake Back"
                 }
               },
               {
@@ -236,21 +230,41 @@
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "3ABC Pull Up - AMP"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "3ABC Pull Up - AMP"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.7
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PathDecider"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
           "type": "race",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Perpetual Intake Back"
-                }
-              },
               {
                 "type": "named",
                 "data": {
@@ -262,8 +276,39 @@
                 "data": {
                   "waitTime": 0.8
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PathDecider"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Perpetual Intake Back"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.1
+                      }
+                    }
+                  ]
+                }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Grab 3ABC - AMP"
           }
         }
       ]

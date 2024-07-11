@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 1"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Grab C - CENTER"
@@ -34,7 +40,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Grab Stage Close BC - AMP"
+                        "pathName": "Grab Stage Close BC - CENTER"
                       }
                     },
                     {

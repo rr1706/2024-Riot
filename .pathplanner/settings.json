@@ -22,7 +22,7 @@
     "SOURCE-3M-0C-SKP"
   ],
   "defaultMaxVel": 4.8,
-  "defaultMaxAccel": 5.0,
+  "defaultMaxAccel": 4.4,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "maxModuleSpeed": 5.0

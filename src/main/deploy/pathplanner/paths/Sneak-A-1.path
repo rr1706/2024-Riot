@@ -3,29 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.49,
-        "y": 7.32
+        "x": 4.5579213555003415,
+        "y": 6.312140898176232
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8881684425565712,
-        "y": 7.5659275674614115
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.9886692583656194,
-        "y": 7.670597937486888
-      },
-      "prevControl": {
-        "x": 2.4031274310765443,
-        "y": 7.670597937486888
-      },
-      "nextControl": {
-        "x": 3.843560326207669,
-        "y": 7.670597937486888
+        "x": 5.647029154258022,
+        "y": 6.604911811820771
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +20,8 @@
         "y": 7.448092043117039
       },
       "prevControl": {
-        "x": 4.557921355500343,
-        "y": 7.284140331476098
+        "x": 7.005486193568678,
+        "y": 7.026501927468906
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,10 +33,10 @@
     {
       "name": "New Constraints Zone",
       "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.35,
+      "maxWaypointRelativePos": 0.5,
       "constraints": {
         "maxVelocity": 5.0,
-        "maxAcceleration": 3.5,
+        "maxAcceleration": 5.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0
       }
@@ -61,37 +45,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 1.15,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "race",
-              "data": {
-                "commands": [
-                  {
-                    "type": "named",
-                    "data": {
-                      "name": "DropNoteFront"
-                    }
-                  },
-                  {
-                    "type": "wait",
-                    "data": {
-                      "waitTime": 0.7
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 1.85,
+      "waypointRelativePos": 0.5,
       "command": {
         "type": "sequential",
         "data": {
@@ -99,7 +53,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Perpetual Intake Decider"
+                "name": "Perpetual Intake Back"
               }
             }
           ]
@@ -108,7 +62,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 1.65,
+      "waypointRelativePos": 0.3,
       "command": {
         "type": "sequential",
         "data": {
@@ -125,7 +79,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 1.95,
+      "waypointRelativePos": 0.95,
       "command": {
         "type": "sequential",
         "data": {
@@ -143,20 +97,20 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.8,
-    "maxAcceleration": 5.0,
+    "maxAcceleration": 4.4,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -174.2894068625004,
+    "rotation": -165.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "SNEAK",
   "previewStartingState": {
-    "rotation": 180.0,
-    "velocity": 0
+    "rotation": -162.6883538911534,
+    "velocity": 2.5
   },
   "useDefaultConstraints": true
 }

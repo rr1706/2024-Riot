@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.991222307694258,
-        "y": 2.1079505782406716
+        "x": 4.604764701683467,
+        "y": 2.389010655339427
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.619028587557888,
-        "y": 1.0188427794829915
+        "x": 6.314546837367568,
+        "y": 1.0656861256661159
       },
       "isLocked": false,
       "linkedName": "GRAB DC"
@@ -137,7 +137,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.8,
-    "maxAcceleration": 5.0,
+    "maxAcceleration": 4.4,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
