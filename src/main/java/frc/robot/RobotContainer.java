@@ -137,7 +137,7 @@ public class RobotContainer {
 
         m_demoController.leftTrigger(0.25)
                 .onTrue(new InstantCommand(() -> m_pitcher.pitchToAngle(16.0))
-                        .alongWith(new InstantCommand(() -> m_shooter.run(20.0, 25.0))))
+                        .alongWith(new InstantCommand(() -> m_shooter.run(80.0, 25.0))))
                 .onFalse(new InstantCommand(() -> m_pitcher.pitchToAngle(PitcherConstants.kHome))
                         .alongWith(new InstantCommand(() -> m_shooter.stop())));
 
@@ -146,6 +146,14 @@ public class RobotContainer {
                         .alongWith(new InstantCommand(() -> m_shooter.run(40.0, 25.0))))
                 .onFalse(new InstantCommand(() -> m_pitcher.pitchToAngle(PitcherConstants.kHome))
                         .alongWith(new InstantCommand(() -> m_shooter.stop())));
+
+                        m_demoController.rightBumper().onTrue(new InstantCommand(() ->{
+m_shooter.run(-10.0, 0.0);
+m_feeder.run(-0.2);
+                        })).onFalse(new InstantCommand(()->{
+                                m_shooter.stop();
+                                m_feeder.stop();
+                        }));
 
         m_demoController.rightTrigger(0.25)
                 // .whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder,
