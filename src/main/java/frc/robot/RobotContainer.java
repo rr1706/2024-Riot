@@ -224,7 +224,6 @@ m_feeder.run(-0.2);
                         .withTimeout(2.0));
 
         m_driverController.x().onTrue(new InstantCommand(()->{
-                                m_poseEstimator.trackNote(2);
                         })).onFalse(new InstantCommand(()->{
                                 m_poseEstimator.stopNoteTracking();
                         }));
@@ -321,25 +320,25 @@ m_feeder.run(-0.2);
         NamedCommands.registerCommand("DropNoteFront", new MoveToFloor(m_feeder, m_indexer, m_intaker, false));
 
         NamedCommands.registerCommand("TrackNoteA", new InstantCommand(() -> {
-            m_poseEstimator.trackNote(4);
+            //m_poseEstimator.trackNote(4);
         }));
         NamedCommands.registerCommand("TrackNoteB", new InstantCommand(() -> {
-            m_poseEstimator.trackNote(3);
+            //m_poseEstimator.trackNote(3);
         }));
         NamedCommands.registerCommand("TrackNoteC", new InstantCommand(() -> {
-            m_poseEstimator.trackNote(2);
+            //m_poseEstimator.trackNote(2);
         }));
         NamedCommands.registerCommand("TrackNoteD", new InstantCommand(() -> {
-            m_poseEstimator.trackNote(1);
+            //m_poseEstimator.trackNote(1);
         }));
         NamedCommands.registerCommand("TrackNoteE", new InstantCommand(() -> {
-            m_poseEstimator.trackNote(0);
+            //m_poseEstimator.trackNote(0);
         }));
         NamedCommands.registerCommand("TrackSneakAmp", new InstantCommand(() -> {
-            m_poseEstimator.trackSneakNote(5);
+            //m_poseEstimator.trackSneakNote(5);
         }));
         NamedCommands.registerCommand("TrackSneakSource", new InstantCommand(() -> {
-            m_poseEstimator.trackSneakNote(6);
+            //m_poseEstimator.trackSneakNote(6);
         }));
         NamedCommands.registerCommand("StopNoteTracking", new InstantCommand(() -> {
             m_poseEstimator.stopNoteTracking();
