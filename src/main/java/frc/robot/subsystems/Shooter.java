@@ -88,6 +88,10 @@ public class Shooter extends SubsystemBase {
         m_desiredSpin = spinDiff;
     }
 
+    public Command runShooter(double velocity, double spinDiff){
+        return runEnd(()->run(velocity, spinDiff), ()->stop());
+    }
+
     public void stop() {
         m_motor1.stopMotor();
         m_motor2.stopMotor();

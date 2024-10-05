@@ -23,9 +23,9 @@ public class PoseEstimator extends SubsystemBase {
     private final Drivetrain m_drivetrain;
     private final Field2d m_field = new Field2d();
     private boolean m_auto = true;
-    private boolean m_trackNote = false;
-    private int m_noteID = 0;
-    private InterpolatingDoubleTreeMap m_noteDistance = new InterpolatingDoubleTreeMap();
+    //private boolean m_trackNote = false;
+    //private int m_noteID = 0;
+    //private InterpolatingDoubleTreeMap m_noteDistance = new InterpolatingDoubleTreeMap();
 
     public PoseEstimator(Drivetrain drivetrain) {
         m_drivetrain = drivetrain;
@@ -65,9 +65,9 @@ public class PoseEstimator extends SubsystemBase {
             updateWithVision("limelight-back");
         }
 
-        if (m_trackNote && LimelightHelpers.getTV("limelight-note")) {
-            //updateWithNote("limelight-note", m_noteID);
-        }
+        // if (m_trackNote && LimelightHelpers.getTV("limelight-note")) {
+        //     //updateWithNote("limelight-note", m_noteID);
+        // }
 
     }
 
@@ -161,9 +161,9 @@ public class PoseEstimator extends SubsystemBase {
     //     m_trackNote = true;
     // }
 
-    public void stopNoteTracking() {
-        m_trackNote = false;
-    }
+    // public void stopNoteTracking() {
+    //     m_trackNote = false;
+    // }
 
     private void updateShuffleboard() {
         Pose2d pose = getPose();
