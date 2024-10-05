@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.155174019335199,
-        "y": 6.265297551993107
+        "x": 4.101198730214863,
+        "y": 5.035659714686048
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.122134414794451,
-        "y": 6.344233094479575
+        "x": 5.377679913705047,
+        "y": 4.005106098657276
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "2M C Pull"
     },
     {
       "anchor": {
-        "x": 8.289990426134699,
-        "y": 5.782028487133897
+        "x": 8.27025654051308,
+        "y": 2.435854001522554
       },
       "prevControl": {
-        "x": 7.510501944080813,
-        "y": 6.226040913620289
+        "x": 6.724426116469921,
+        "y": 3.2204800500899147
       },
       "nextControl": null,
       "isLocked": false,
@@ -113,9 +113,9 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "AMP",
+  "folder": "CENTER",
   "previewStartingState": {
-    "rotation": -172.551282126178,
+    "rotation": 177.2241965512169,
     "velocity": 0.5
   },
   "useDefaultConstraints": true

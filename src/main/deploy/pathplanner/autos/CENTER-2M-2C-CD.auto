@@ -26,7 +26,44 @@
         {
           "type": "path",
           "data": {
-            "pathName": "C Pull Up Speaker - CENTER"
+            "pathName": "2M C PULL UP"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Aim Shooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Perpetual Intake Back"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.4
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Grab 2CD"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D Pull Up Speaker - CENTER"
           }
         },
         {
@@ -47,12 +84,6 @@
                       "type": "wait",
                       "data": {
                         "waitTime": 0.4
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Grab Amp - CENTER "
                       }
                     }
                   ]

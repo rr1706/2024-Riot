@@ -98,7 +98,7 @@ public class RobotContainer {
         m_shooter.stop();
         m_pitcher.pitchToAngle(2.0);
         m_poseEstimator.setAuto(false);
-        m_poseEstimator.stopNoteTracking();
+        //m_poseEstimator.stopNoteTracking();
     });
 
     private final SmartShootByPose m_shoot = new SmartShootByPose(m_shooter, m_drive, m_pitcher, m_driverController,
@@ -199,7 +199,7 @@ m_feeder.run(-0.2);
 
         m_driverController.leftBumper()
                 .whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder, m_driverController))
-                .onFalse(new ReverseIntake(m_feeder, m_indexer, m_intaker).withTimeout(0.130));
+                .onFalse((new ReverseIntake(m_feeder, m_indexer, m_intaker).alongWith(new ConditionalCommand(new WaitCommand(1.0), m_shooter.runShooter(-10.0, 0), m_shoot::isScheduled))).withTimeout(0.090));
         // .onFalse(new InstantCommand(() -> m_feeder.run(-0.4)).andThen(new
         // WaitCommand(0.06))
         // .andThen(new InstantCommand(() -> m_feeder.stop()).alongWith(new
@@ -223,10 +223,10 @@ m_feeder.run(-0.2);
                 .onTrue(new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -19.8, m_elevator, m_drive, false)
                         .withTimeout(2.0));
 
-        m_driverController.x().onTrue(new InstantCommand(()->{
-                        })).onFalse(new InstantCommand(()->{
-                                m_poseEstimator.stopNoteTracking();
-                        }));
+        // m_driverController.x().onTrue(new InstantCommand(()->{
+        //                 })).onFalse(new InstantCommand(()->{
+        //                         m_poseEstimator.stopNoteTracking();
+        //                 }));
 
         m_driverController.a().onTrue(new InstantCommand(() -> m_elevator.setPose(16.0)))
                 .onFalse(new InstantCommand(() -> m_elevator.setPose(1.0)).andThen(new WaitCommand(0.25))
@@ -315,34 +315,34 @@ m_feeder.run(-0.2);
         NamedCommands.registerCommand("Step Back Slower",
                 new AutoMoveNShoot(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, 1.7, 0.0));
         NamedCommands.registerCommand("Kick Back",
-                new ReverseIntake(m_feeder, m_indexer, m_intaker).withTimeout(0.170));
+                (new ReverseIntake(m_feeder, m_indexer, m_intaker).alongWith(m_shooter.runShooter(-10.0, 0))).withTimeout(0.110));
         NamedCommands.registerCommand("Stop Shooter", new InstantCommand(() -> m_shooter.stop()));
         NamedCommands.registerCommand("DropNoteFront", new MoveToFloor(m_feeder, m_indexer, m_intaker, false));
 
-        NamedCommands.registerCommand("TrackNoteA", new InstantCommand(() -> {
-            //m_poseEstimator.trackNote(4);
-        }));
-        NamedCommands.registerCommand("TrackNoteB", new InstantCommand(() -> {
-            //m_poseEstimator.trackNote(3);
-        }));
-        NamedCommands.registerCommand("TrackNoteC", new InstantCommand(() -> {
-            //m_poseEstimator.trackNote(2);
-        }));
-        NamedCommands.registerCommand("TrackNoteD", new InstantCommand(() -> {
-            //m_poseEstimator.trackNote(1);
-        }));
-        NamedCommands.registerCommand("TrackNoteE", new InstantCommand(() -> {
-            //m_poseEstimator.trackNote(0);
-        }));
-        NamedCommands.registerCommand("TrackSneakAmp", new InstantCommand(() -> {
-            //m_poseEstimator.trackSneakNote(5);
-        }));
-        NamedCommands.registerCommand("TrackSneakSource", new InstantCommand(() -> {
-            //m_poseEstimator.trackSneakNote(6);
-        }));
-        NamedCommands.registerCommand("StopNoteTracking", new InstantCommand(() -> {
-            m_poseEstimator.stopNoteTracking();
-        }));
+        // NamedCommands.registerCommand("TrackNoteA", new InstantCommand(() -> {
+        //     //m_poseEstimator.trackNote(4);
+        // }));
+        // NamedCommands.registerCommand("TrackNoteB", new InstantCommand(() -> {
+        //     //m_poseEstimator.trackNote(3);
+        // }));
+        // NamedCommands.registerCommand("TrackNoteC", new InstantCommand(() -> {
+        //     //m_poseEstimator.trackNote(2);
+        // }));
+        // NamedCommands.registerCommand("TrackNoteD", new InstantCommand(() -> {
+        //     //m_poseEstimator.trackNote(1);
+        // }));
+        // NamedCommands.registerCommand("TrackNoteE", new InstantCommand(() -> {
+        //     //m_poseEstimator.trackNote(0);
+        // }));
+        // NamedCommands.registerCommand("TrackSneakAmp", new InstantCommand(() -> {
+        //     //m_poseEstimator.trackSneakNote(5);
+        // }));
+        // NamedCommands.registerCommand("TrackSneakSource", new InstantCommand(() -> {
+        //     //m_poseEstimator.trackSneakNote(6);
+        // }));
+        // NamedCommands.registerCommand("StopNoteTracking", new InstantCommand(() -> {
+        //     //m_poseEstimator.stopNoteTracking();
+        // }));
 
     }
 
