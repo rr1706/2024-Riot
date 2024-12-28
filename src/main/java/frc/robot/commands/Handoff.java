@@ -42,9 +42,9 @@ public class Handoff extends Command {
         currentSpiked = false;
         m_timer.reset();
         m_timer.start();
-        m_feeder.run(-0.4);
-        m_intake.run(.4);
-        m_indexer.run(-.4);
+        m_feeder.run(-0.5);
+        m_intake.run(0.4);
+        m_indexer.run(-0.5);
         m_manipulator.run(-.3);
             m_elevator.setPose(ElevatorConstants.kRest);
         if (m_useKicker) {

@@ -36,7 +36,7 @@ public final class Constants {
 
   public static final class CurrentLimit {
     public static final int kDriveStator = 100;
-    public static final int kDriveSupply = 50;
+    public static final int kDriveSupply = 40;
     public static final int kAzimuth = 20;
     public static final int kShooterSupply = 50;
     public static final int kShooterStator = 100;
@@ -46,7 +46,7 @@ public final class Constants {
     public static final int kIntakerStator = 80;
     public static final int kKicker = 30;
     public static final int kIndexer = 30;
-    public static final int kElevator = 40;
+    public static final int kElevator = 30;
     public static final int kClimber = 60;
 
     public static final int kManipulator = 30;
@@ -145,9 +145,9 @@ public final class Constants {
     }
 
     public static final double kTransSlewRate = 12.0;
-    public static final double kRotSlewRate = 30.0;
+    public static final double kRotSlewRate = 32.0;
 
-    public static final double kMaxSpeedMetersPerSecond = 5.2;
+    public static final double kMaxSpeedMetersPerSecond = 5.1;
     public static final double kMaxAngularSpeed = 2 * Math.PI;
     public static final double kMaxAngularAccel = 1.5 * Math.PI;
 
@@ -169,10 +169,10 @@ public final class Constants {
                                                                                                     // likely live in
                                                                                                     // your
           // Constants class
-          new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-          new PIDConstants(3.5, 0.0, 0.0), // Rotation PID constants
+          new PIDConstants(3.0, 0.0, 0.0), // Translation PID constants
+          new PIDConstants(3.0, 0.0, 0.0), // Rotation PID constants
           4.8, // Max module speed, in m/s
-          DriveConstants.kWheelBaseRadius, // D\[]rive base radius in meters. Distance from robot center to furthest
+          DriveConstants.kWheelBaseRadius, // Drive base radius in meters. Distance from robot center to furthest
                                            // module.
           new ReplanningConfig() // Default path replanning config. See the API for the options here
       );

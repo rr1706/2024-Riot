@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 8.289990426134699,
-        "y": 4.1046482092964185
+        "x": 8.305389050150424,
+        "y": 4.005106098657276
       },
       "prevControl": {
-        "x": 7.856689473940783,
-        "y": 4.842430911680654
+        "x": 7.872088097956508,
+        "y": 4.742888801041511
       },
       "nextControl": null,
       "isLocked": false,
@@ -94,40 +94,6 @@
               "type": "named",
               "data": {
                 "name": "Stop Shooter"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.3,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "TrackNoteC"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.95,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "StopNoteTracking"
               }
             }
           ]

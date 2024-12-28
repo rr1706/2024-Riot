@@ -70,13 +70,21 @@ public class Pitcher extends SubsystemBase {
         return m_motor.getOutputCurrent();
     }
 
+    public double getPitch(){
+        return m_motor.getEncoder().getPosition();
+    }
+
+    public double getSetAngle(){
+        return m_angle;
+    }
+
     @Override
     public void periodic() {
         if (m_PIDEnabled) {
             m_pid.setReference(m_angle, ControlType.kPosition);
         }
 
-        SmartDashboard.putNumber("Pitcher", m_motor.getEncoder().getPosition());
+        SmartDashboard.putNumber("Pitcher", getPitch());
     }
 
 }

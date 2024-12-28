@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.6841875081753006,
-        "y": 4.145636137206654
+        "x": 2.672476671629519,
+        "y": 4.321298685393376
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.338844509796996,
-        "y": 4.194970851260697
+        "x": 2.3271336732512147,
+        "y": 4.37063339944742
       },
       "isLocked": false,
       "linkedName": "C3 End"
@@ -41,8 +41,8 @@
       "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 4.0,
-        "maxAcceleration": 2.5,
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0
       }

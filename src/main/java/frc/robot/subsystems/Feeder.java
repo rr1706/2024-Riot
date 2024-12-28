@@ -15,7 +15,7 @@ import frc.robot.Constants.CurrentLimit;
 public class Feeder extends SubsystemBase {
     private boolean m_PIDEnabled = false;
     private double m_desiredPose = 0.0;
-    private final DigitalInput m_prox = new DigitalInput(0);
+    private final DigitalInput m_prox = new DigitalInput(3);
     private final TalonFX m_motor = new TalonFX(7,"*");
     private Slot0Configs slot0Configs = new Slot0Configs();
 

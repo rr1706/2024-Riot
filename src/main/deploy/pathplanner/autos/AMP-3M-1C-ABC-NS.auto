@@ -70,25 +70,6 @@
                 "data": {
                   "pathName": "1AB Pull Up - AMP"
                 }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.7
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "PathDecider"
-                      }
-                    }
-                  ]
-                }
               }
             ]
           }
@@ -119,12 +100,6 @@
                 "type": "wait",
                 "data": {
                   "waitTime": 0.4
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PathDecider"
                 }
               }
             ]
@@ -157,25 +132,6 @@
                 "data": {
                   "pathName": "2AB Pull Up - AMP"
                 }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.7
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "PathDecider"
-                      }
-                    }
-                  ]
-                }
               }
             ]
           }
@@ -207,12 +163,6 @@
                 "data": {
                   "waitTime": 0.4
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PathDecider"
-                }
               }
             ]
           }
@@ -238,25 +188,6 @@
                 "data": {
                   "pathName": "ALT 3ABC Pull Up - AMP"
                 }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.7
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "PathDecider"
-                      }
-                    }
-                  ]
-                }
               }
             ]
           }
@@ -275,12 +206,6 @@
                 "type": "wait",
                 "data": {
                   "waitTime": 0.8
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PathDecider"
                 }
               },
               {
@@ -314,6 +239,6 @@
       ]
     }
   },
-  "folder": "AMP",
+  "folder": null,
   "choreoAuto": false
 }

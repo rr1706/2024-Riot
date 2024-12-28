@@ -48,7 +48,7 @@ public class ZeroClimber extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_climber.setPose(0.0);
+        m_climber.setPose(0.2);
         m_timer.stop();
     }
 

@@ -18,17 +18,17 @@ import frc.robot.Constants.GlobalConstants;
 public class Elevator extends SubsystemBase{
     private final CANSparkMax m_motorL = new CANSparkMax(14, MotorType.kBrushless);
     private final CANSparkMax m_motorR = new CANSparkMax(15, MotorType.kBrushless);
-    private final RelativeEncoder m_encoder = m_motorL.getEncoder();
-    private final RelativeEncoder m_encoderR = m_motorR.getEncoder();
+    private final RelativeEncoder m_encoderL = m_motorL.getEncoder();
+    private final RelativeEncoder m_encoder = m_motorR.getEncoder();
 
     private final ProfiledPIDController m_pid = new ProfiledPIDController(0.05,0.01
-    ,0.00, new Constraints(50, 100));
+    ,0.00, new Constraints(75, 125));
 
-    private final ElevatorFeedforward m_ff = new ElevatorFeedforward(0.025, 0.02, 1.0/100.0);
-    private final ElevatorFeedforward m_ff2 = new ElevatorFeedforward(0.025, 0.02, 1.0/100.0);
+    private final ElevatorFeedforward m_ff = new ElevatorFeedforward(0.025, 0.02, 1.0/183.0);
+    private final ElevatorFeedforward m_ff2 = new ElevatorFeedforward(0.025, 0.02, 1.0/183.0);
 
     private boolean m_PIDEnabled = false;
-    private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State(2.5,0.0);
+    private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State(3.0,0.0);
 
 
     public Elevator() {
@@ -64,6 +64,7 @@ public class Elevator extends SubsystemBase{
 
         SmartDashboard.putNumber("Ele Desired Pose", state.position);
         SmartDashboard.putNumber("Ele Actual Pose", m_encoder.getPosition());
+        SmartDashboard.putNumber("Ele Pose 2", m_encoderL.getPosition());
 
 
     }
@@ -87,7 +88,7 @@ public class Elevator extends SubsystemBase{
 
     public void setZero(){
         m_encoder.setPosition(0.0);
-        m_encoderR.setPosition(0.0);
+        m_encoderL.setPosition(0.0);
     }
 
     public double 

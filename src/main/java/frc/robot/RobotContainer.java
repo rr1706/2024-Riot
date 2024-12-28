@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.time.Instant;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -13,7 +11,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants.Auto;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.PitcherConstants;
 import frc.robot.commands.AutoIntake;
@@ -199,7 +195,7 @@ m_feeder.run(-0.2);
 
         m_driverController.leftBumper()
                 .whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder, m_driverController))
-                .onFalse((new ReverseIntake(m_feeder, m_indexer, m_intaker).alongWith(new ConditionalCommand(new WaitCommand(1.0), m_shooter.runShooter(-10.0, 0), m_shoot::isScheduled))).withTimeout(0.090));
+                .onFalse((new ReverseIntake(m_feeder, m_indexer, m_intaker).alongWith(new ConditionalCommand(new WaitCommand(1.0), m_shooter.runShooter(-10.0, 0), m_shoot::isScheduled))).withTimeout(0.130));
         // .onFalse(new InstantCommand(() -> m_feeder.run(-0.4)).andThen(new
         // WaitCommand(0.06))
         // .andThen(new InstantCommand(() -> m_feeder.stop()).alongWith(new
@@ -212,9 +208,16 @@ m_feeder.run(-0.2);
         m_driverController.b().onTrue(new InstantCommand(() -> m_manipulator.run(.4)))
                 .onFalse(new InstantCommand(() -> m_manipulator.stop()));
 
-        m_driverController.start().onTrue(new InstantCommand(() -> m_climber.setPose(0.0)));
+        // m_driverController.start().onTrue(
+        //         new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -21.0, m_elevator, m_drive, false)
+        //                 .withTimeout(2.0)
+        //                 .andThen(new InstantCommand(() -> m_climber.setPose(0.0)))
+        //                 .andThen(new WaitCommand(0.400)
+        //                 .andThen(new InstantCommand(() -> m_elevator.setPose(24.5)))
+        //         )
+        //         );
         m_driverController.back()
-                .onTrue(new InstantCommand(() -> m_climber.setPose(68.0)).alongWith(new ZeroElevator(m_elevator)));
+                .onTrue(new InstantCommand(() -> m_climber.setPose(70.0)).alongWith(new ZeroElevator(m_elevator)));
 
         m_driverController.pov(90).onTrue(new InstantCommand(() -> m_manipulator.run(-0.2)))
                 .onFalse(new InstantCommand(() -> m_manipulator.stop()));
@@ -228,11 +231,12 @@ m_feeder.run(-0.2);
         //                         m_poseEstimator.stopNoteTracking();
         //                 }));
 
-        m_driverController.a().onTrue(new InstantCommand(() -> m_elevator.setPose(16.0)))
-                .onFalse(new InstantCommand(() -> m_elevator.setPose(1.0)).andThen(new WaitCommand(0.25))
+        m_driverController.a().onTrue(new InstantCommand(() -> m_elevator.setPose(28.0)))
+                .onFalse(new InstantCommand(() -> m_elevator.setPose(3.0)).andThen(new WaitCommand(0.25))
                         .andThen(new ZeroElevator(m_elevator)));
-        m_driverController.y().onTrue(new InstantCommand(() -> m_elevator.setPose(24.5)))
-                .onFalse(new InstantCommand(() -> m_elevator.setPose(ElevatorConstants.kRest)));
+
+        m_driverController.y().onTrue(new InstantCommand(() -> m_climber.setPose(1.0)));
+        m_driverController.start().onTrue(new InstantCommand(() -> m_climber.setPose(1.0)));
 
         m_operatorPanel.button(2)
                 .whileTrue(new AutoIntakeAimAssist(m_drive, 1.5)
@@ -241,7 +245,7 @@ m_feeder.run(-0.2);
                                 .alongWith(new InstantCommand(() -> m_elevator.setPose(1.0)))
                                 .alongWith(switchLimelightPipeline("limelight-note", 0)))
                         .andThen(new ReverseIntake(m_feeder, m_indexer, m_intaker).withTimeout(0.150)))
-                .onFalse(new InstantCommand(() -> m_elevator.setPose(1.0))
+                .onFalse(new InstantCommand(() -> m_elevator.setPose(3.0))
                         .alongWith(new PerpetualIntake(m_intaker, m_indexer, m_feeder, -1.0).withTimeout(.25)));
         m_operatorPanel.button(3).onTrue(
 

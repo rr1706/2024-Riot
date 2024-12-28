@@ -26,7 +26,7 @@ public class ZeroElevator extends Command {
     @Override
     public void execute() {
         if (m_timer.get() > 0.1) {
-            if (m_elevator.getLeftCurrent() + m_elevator.getRightCurrent() > 60.0) {
+            if (m_elevator.getLeftCurrent() + m_elevator.getRightCurrent() > 40.0) {
                 m_elevator.stop();
                 m_elevator.setZero();
                 m_finished = true;
@@ -43,7 +43,7 @@ public class ZeroElevator extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_elevator.setPose(1.0);
+        m_elevator.setPose(2.5);
         m_timer.stop();
     }
 

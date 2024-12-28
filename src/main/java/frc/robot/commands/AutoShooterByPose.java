@@ -33,8 +33,8 @@ public class AutoShooterByPose extends Command {
 
     private final Timer m_timer = new Timer();
 
-    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(60.0);
-    private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(400.0);
+    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(120.0);
+    private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(800.0);
 
     public AutoShooterByPose(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher, Supplier<Pose2d> getPose) {
         m_shooter = shooter;

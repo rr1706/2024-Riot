@@ -74,12 +74,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Limelight Pipeline 1"
-          }
-        },
-        {
           "type": "race",
           "data": {
             "commands": [

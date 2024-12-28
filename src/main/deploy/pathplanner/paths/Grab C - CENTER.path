@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.8644289499705946,
-        "y": 4.84
+        "x": 1.5248146901429311,
+        "y": 5.527514849608872
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.864428949970595,
-        "y": 4.84
+        "x": 1.6302122190549644,
+        "y": 4.473539560488536
       },
       "isLocked": false,
       "linkedName": null
@@ -48,12 +48,12 @@
     },
     {
       "anchor": {
-        "x": 8.270256540513081,
-        "y": 4.114515152107228
+        "x": 8.281967377058862,
+        "y": 3.9816844255657124
       },
       "prevControl": {
-        "x": 7.270256540513081,
-        "y": 4.114515152107228
+        "x": 7.281967377058862,
+        "y": 3.9816844255657124
       },
       "nextControl": null,
       "isLocked": false,
@@ -90,6 +90,17 @@
       "constraints": {
         "maxVelocity": 2.5,
         "maxAcceleration": 5.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    },
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.35,
+      "constraints": {
+        "maxVelocity": 2.5,
+        "maxAcceleration": 2.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0
       }
@@ -133,7 +144,7 @@
                   {
                     "type": "wait",
                     "data": {
-                      "waitTime": 2.0
+                      "waitTime": 2.25
                     }
                   }
                 ]
@@ -143,40 +154,6 @@
               "type": "named",
               "data": {
                 "name": "Stop Shooter"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 1.75,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "TrackNoteC"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 2.9499999999999997,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "StopNoteTracking"
               }
             }
           ]

@@ -92,6 +92,10 @@ public class Shooter extends SubsystemBase {
         return runEnd(()->run(velocity, spinDiff), ()->stop());
     }
 
+    public double getSetVelocity(){
+        return m_desriedVel;    
+    }
+
     public void stop() {
         m_motor1.stopMotor();
         m_motor2.stopMotor();

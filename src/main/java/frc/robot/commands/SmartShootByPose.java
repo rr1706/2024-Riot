@@ -44,8 +44,8 @@ public class SmartShootByPose extends Command {
 
     private final Timer m_timer = new Timer();
 
-    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(100.0);
-    private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(500.0);
+    private final SlewRateLimiter m_pitchFilter = new SlewRateLimiter(120.0);
+    private final SlewRateLimiter m_velocityFilter = new SlewRateLimiter(800.0);
 
     public SmartShootByPose(Shooter shooter, Drivetrain robotDrive, Pitcher pitcher, CommandXboxController controller,
             Supplier<Pose2d> getPose) {
@@ -77,6 +77,10 @@ public class SmartShootByPose extends Command {
         SmartDashboard.putNumber("Set Spin Diff", manualSpinDiff);
 
         SmartDashboard.putBoolean("Manual Override", manualOverride);
+
+        m_pitchFilter.reset(m_pitcher.getSetAngle());
+        m_velocityFilter.reset(m_shooter.getSetVelocity());
+
         m_timer.reset();
         m_timer.start();
     }
@@ -90,7 +94,7 @@ public class SmartShootByPose extends Command {
         if (redAlliance) {
             pitchOffset = 0.10;
         } else {
-            pitchOffset = 0.0;
+            pitchOffset = 0.10;
         }
 
         Translation2d goalLocation;
@@ -98,7 +102,7 @@ public class SmartShootByPose extends Command {
 
         if (redAlliance) {
             goalLocation = GoalConstants.kRedGoal;
-            if (getPose.get().getTranslation().getX() <= 4.0) {
+            if (getPose.get().getTranslation().getX() <= 2.0) {
                 goalLocation = GoalConstants.kMidFeed;
                 feedShot = true;
             } else if (getPose.get().getTranslation().getX() <= 9.0) {
@@ -108,7 +112,7 @@ public class SmartShootByPose extends Command {
             }
         } else {
             goalLocation = GoalConstants.kBlueGoal;
-            if (getPose.get().getTranslation().getX() >= 12.5) {
+            if (getPose.get().getTranslation().getX() >= 14.5) {
                 goalLocation = GoalConstants.kMidFeed;
                 feedShot = true;
             } else if (getPose.get().getTranslation().getX() >= 7.5) {
@@ -171,7 +175,7 @@ public class SmartShootByPose extends Command {
 
         double desiredTrans[] = MathUtils.inputTransform(xInput, yInput);
 
-        double maxLinear = DriveConstants.kMaxSpeedMetersPerSecond * 0.4;
+        double maxLinear = DriveConstants.kMaxSpeedMetersPerSecond * 0.33;
 
         desiredTrans[0] *= maxLinear;
         desiredTrans[1] *= maxLinear;

@@ -60,10 +60,7 @@ public class PoseEstimator extends SubsystemBase {
         // m_noteEstimator.updateWithTime(Timer.getFPGATimestamp(), m_drivetrain.getGyro(),
         //         m_drivetrain.getModulePositions());
         updateWithVision("limelight-front");
-
-        if (m_auto) {
-            updateWithVision("limelight-back");
-        }
+        updateWithVision("limelight-back");
 
         // if (m_trackNote && LimelightHelpers.getTV("limelight-note")) {
         //     //updateWithNote("limelight-note", m_noteID);
