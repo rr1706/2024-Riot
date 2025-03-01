@@ -144,7 +144,7 @@ public final class Constants {
       public static final Translation2d kLocation = new Translation2d(-kWheelBaseLength / 2, -kWheelBaseWidth / 2);
     }
 
-    public static final double kTransSlewRate = 12.0;
+    public static final double kTransSlewRate = 16.0;
     public static final double kRotSlewRate = 32.0;
 
     public static final double kMaxSpeedMetersPerSecond = 5.1;

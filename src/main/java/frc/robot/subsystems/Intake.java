@@ -17,7 +17,7 @@ import frc.robot.Constants.GlobalConstants;
 
 public class Intake extends SubsystemBase {
     private final CANSparkMax m_kick = new CANSparkMax(10, MotorType.kBrushless);
-    private final TalonFX m_intake = new TalonFX(11,"*");
+    private final TalonFX m_intake = new TalonFX(11,"rio");
     private Slot0Configs slot0Configs = new Slot0Configs();
 
 

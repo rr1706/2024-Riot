@@ -43,7 +43,7 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
      */
     public NEOKrakenSwerveModule(int moduleID, double offset) {
         configurePID();
-        m_driveMotor = new TalonFX(moduleID,"*");
+        m_driveMotor = new TalonFX(moduleID,"rio");
         m_driveMotor.getConfigurator().apply(slot0Configs);
         m_driveMotor.getConfigurator()
                 .apply(new CurrentLimitsConfigs().withSupplyCurrentLimit(CurrentLimit.kDriveSupply)

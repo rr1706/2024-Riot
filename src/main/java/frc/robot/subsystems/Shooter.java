@@ -12,8 +12,8 @@ import frc.robot.Constants.CurrentLimit;
 
 public class Shooter extends SubsystemBase {
 
-    private final TalonFX m_motor1 = new TalonFX(5,"*");
-    private final TalonFX m_motor2 = new TalonFX(6,"*");
+    private final TalonFX m_motor1 = new TalonFX(5,"rio");
+    private final TalonFX m_motor2 = new TalonFX(6,"rio");
 
     private double m_desiredSpin = 0.0;
 
