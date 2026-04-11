@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -64,7 +62,7 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
 
-    private final SendableChooser<Command> autoChooser;
+    //private final SendableChooser<Command> autoChooser;
 
     private final Drivetrain m_drive = new Drivetrain();
     private final Shooter m_shooter = new Shooter();
@@ -104,12 +102,10 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        configureAutoBuilder();
-        configureNamedCommands();
-        autoChooser = AutoBuilder.buildAutoChooser();
+        //autoChooser = AutoBuilder.buildAutoChooser();
 
         m_drive.setDefaultCommand(m_driveByController);
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        //SmartDashboard.putData("Auto Chooser", autoChooser);
         // Configure the trigger bindings
         configureBindings();
 
@@ -131,9 +127,9 @@ public class RobotContainer {
      */
     private void configureBindings() {
 
-        m_demoController.leftTrigger(0.25)
-                .onTrue(new InstantCommand(() -> m_pitcher.pitchToAngle(16.0))
-                        .alongWith(new InstantCommand(() -> m_shooter.run(80.0, 25.0))))
+        m_driverController.leftTrigger(0.25)
+                .onTrue(new InstantCommand(() -> m_pitcher.pitchToAngle(2))
+                        .alongWith(new InstantCommand(() -> m_shooter.run(10, 25.0))))
                 .onFalse(new InstantCommand(() -> m_pitcher.pitchToAngle(PitcherConstants.kHome))
                         .alongWith(new InstantCommand(() -> m_shooter.stop())));
 
@@ -151,7 +147,7 @@ m_feeder.run(-0.2);
                                 m_feeder.stop();
                         }));
 
-        m_demoController.rightTrigger(0.25)
+        m_driverController.rightTrigger(0.25)
                 // .whileTrue(new BiDirectionalIntake(m_intaker, m_drive, m_indexer, m_feeder,
                 // m_demoController))
                 // .onFalse(new ReverseFeed(m_feeder, m_indexer).withTimeout(0.130));
@@ -160,11 +156,11 @@ m_feeder.run(-0.2);
                 .onFalse(new InstantCommand(() -> m_feeder.stop())
                         .alongWith(new InstantCommand(() -> m_indexer.stop())));
 
-        m_demoController.y().onTrue(m_pitcher.changePitch(2.0));
-        m_demoController.b().onTrue(m_pitcher.changePitch(-2.0));
+        m_driverController.y().onTrue(m_pitcher.changePitch(2.0));
+        m_driverController.x().onTrue(m_pitcher.changePitch(-2.0));
 
-        m_demoController.pov(0).onTrue(m_shooter.changeSpeed(10.0));
-        m_demoController.pov(180).onTrue(m_shooter.changeSpeed(-10.0));
+        m_driverController.pov(0).onTrue(m_shooter.changeSpeed(10.0));
+        m_driverController.pov(180).onTrue(m_shooter.changeSpeed(-10.0));
 
         m_driverController.pov(0).onTrue(
                 new InstantCommand(
@@ -181,11 +177,11 @@ m_feeder.run(-0.2);
         m_driverController.pov(180).onTrue(new InstantCommand(
                 () -> m_drive.resetOdometry(new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(Math.PI)))));
 
-        m_driverController.leftTrigger(0.25)
-                .whileTrue(m_shoot)
-                .onTrue(switchLimelightPipeline("limelight-front", 1)
-                        .alongWith(new InstantCommand(() -> m_poseEstimator.setAuto(false))))
-                .onFalse(switchLimelightPipeline("limelight-front", 0));
+        // m_driverController.leftTrigger(0.25)
+        //         .whileTrue(m_shoot)
+        //         .onTrue(switchLimelightPipeline("limelight-front", 1)
+        //                 .alongWith(new InstantCommand(() -> m_poseEstimator.setAuto(false))))
+        //         .onFalse(switchLimelightPipeline("limelight-front", 0));
 
         m_driverController.rightTrigger(0.25).whileTrue(new Feed(m_feeder, m_indexer, m_intaker));
                 // .onTrue(new InstantCommand(() -> m_feeder.run(0.6))
@@ -277,91 +273,91 @@ m_feeder.run(-0.2);
 
     }
 
-    public void configureNamedCommands() {
-        PerpetualIntake perpetualIntakeBack = new PerpetualIntake(m_intaker, m_indexer, m_feeder, -1.0);
-        CheckForNote checkBNote = new CheckForNote();
+//     public void configureNamedCommands() {
+//         PerpetualIntake perpetualIntakeBack = new PerpetualIntake(m_intaker, m_indexer, m_feeder, -1.0);
+//         CheckForNote checkBNote = new CheckForNote();
 
-        NamedCommands.registerCommand("PathDecider",
-                new ConditionalCommand(new WaitCommand(15.0), new WaitCommand(0.0),
-                        m_feeder::getProx));
-        NamedCommands.registerCommand("TelePose", new InstantCommand(() -> m_poseEstimator.setAuto(false)));
-        NamedCommands.registerCommand("AutoPose", new InstantCommand(() -> m_poseEstimator.setAuto(true)));
-        NamedCommands.registerCommand("Auto Shooter By Pose",
-                new AutoShooterByPose(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose));
-        NamedCommands.registerCommand("PathDeciderB",
-                new ConditionalCommand(new WaitCommand(15.0), new WaitCommand(0.0), checkBNote::sawNote));
-        NamedCommands.registerCommand("CheckForB", checkBNote);
-        NamedCommands.registerCommand("Perpetual Intake Decider", perpetualIntakeBack);
-        NamedCommands.registerCommand("Perpetual Intake Back",
-                new PerpetualIntake(m_intaker, m_indexer, m_feeder, -1.0));
-        NamedCommands.registerCommand("Perpetual Intake Front",
-                new PerpetualIntake(m_intaker, m_indexer, m_feeder, 1.0));
-        NamedCommands.registerCommand("Limelight Pipeline 1", switchLimelightPipeline("limelight-front", 1)
-                .alongWith(new InstantCommand(() -> m_poseEstimator.setAuto(false))));
-        NamedCommands.registerCommand("Limelight Pipeline 0", switchLimelightPipeline("limelight-front", 0)
-                .alongWith(new InstantCommand(() -> m_poseEstimator.setAuto(true))));
-        NamedCommands.registerCommand("Stop Drive", new InstantCommand(() -> m_drive.stop()));
-        NamedCommands.registerCommand("Aim Shooter",
-                new SmartShootByPose(m_shooter, m_drive, m_pitcher, m_driverController, m_poseEstimator::getPose));
-        NamedCommands.registerCommand("Soft Shoot", new InstantCommand(() -> {
-            m_shooter.run(12.5);
+//         NamedCommands.registerCommand("PathDecider",
+//                 new ConditionalCommand(new WaitCommand(15.0), new WaitCommand(0.0),
+//                         m_feeder::getProx));
+//         NamedCommands.registerCommand("TelePose", new InstantCommand(() -> m_poseEstimator.setAuto(false)));
+//         NamedCommands.registerCommand("AutoPose", new InstantCommand(() -> m_poseEstimator.setAuto(true)));
+//         NamedCommands.registerCommand("Auto Shooter By Pose",
+//                 new AutoShooterByPose(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose));
+//         NamedCommands.registerCommand("PathDeciderB",
+//                 new ConditionalCommand(new WaitCommand(15.0), new WaitCommand(0.0), checkBNote::sawNote));
+//         NamedCommands.registerCommand("CheckForB", checkBNote);
+//         NamedCommands.registerCommand("Perpetual Intake Decider", perpetualIntakeBack);
+//         NamedCommands.registerCommand("Perpetual Intake Back",
+//                 new PerpetualIntake(m_intaker, m_indexer, m_feeder, -1.0));
+//         NamedCommands.registerCommand("Perpetual Intake Front",
+//                 new PerpetualIntake(m_intaker, m_indexer, m_feeder, 1.0));
+//         NamedCommands.registerCommand("Limelight Pipeline 1", switchLimelightPipeline("limelight-front", 1)
+//                 .alongWith(new InstantCommand(() -> m_poseEstimator.setAuto(false))));
+//         NamedCommands.registerCommand("Limelight Pipeline 0", switchLimelightPipeline("limelight-front", 0)
+//                 .alongWith(new InstantCommand(() -> m_poseEstimator.setAuto(true))));
+//         NamedCommands.registerCommand("Stop Drive", new InstantCommand(() -> m_drive.stop()));
+//         NamedCommands.registerCommand("Aim Shooter",
+//                 new SmartShootByPose(m_shooter, m_drive, m_pitcher, m_driverController, m_poseEstimator::getPose));
+//         NamedCommands.registerCommand("Soft Shoot", new InstantCommand(() -> {
+//             m_shooter.run(12.5);
 
-        }));
-        NamedCommands.registerCommand("UpdatePose", new InstantCommand(() -> m_poseEstimator.updatePose()));
-        NamedCommands.registerCommand("NoteFar", switchLimelightPipeline("limelight-note", 0));
-        NamedCommands.registerCommand("NoteClose", switchLimelightPipeline("limelight-note", 1));
-        NamedCommands.registerCommand("AimAtCenter", new RotateToAngle(new Rotation2d(-Math.PI / 2.0), m_drive));
-        NamedCommands.registerCommand("AimAtNote", new RotateToAngle(new Rotation2d(Math.PI / 4.0), m_drive));
-        NamedCommands.registerCommand("Step Back",
-                new AutoMoveNShoot(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, 2.3, 0.0));
-        NamedCommands.registerCommand("Step Back Slow",
-                new AutoMoveNShoot(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, 2.0, 0.0));
-        NamedCommands.registerCommand("Step Back Slower",
-                new AutoMoveNShoot(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, 1.7, 0.0));
-        NamedCommands.registerCommand("Kick Back",
-                (new ReverseIntake(m_feeder, m_indexer, m_intaker).alongWith(m_shooter.runShooter(-10.0, 0))).withTimeout(0.110));
-        NamedCommands.registerCommand("Stop Shooter", new InstantCommand(() -> m_shooter.stop()));
-        NamedCommands.registerCommand("DropNoteFront", new MoveToFloor(m_feeder, m_indexer, m_intaker, false));
+//         }));
+//         NamedCommands.registerCommand("UpdatePose", new InstantCommand(() -> m_poseEstimator.updatePose()));
+//         NamedCommands.registerCommand("NoteFar", switchLimelightPipeline("limelight-note", 0));
+//         NamedCommands.registerCommand("NoteClose", switchLimelightPipeline("limelight-note", 1));
+//         NamedCommands.registerCommand("AimAtCenter", new RotateToAngle(new Rotation2d(-Math.PI / 2.0), m_drive));
+//         NamedCommands.registerCommand("AimAtNote", new RotateToAngle(new Rotation2d(Math.PI / 4.0), m_drive));
+//         NamedCommands.registerCommand("Step Back",
+//                 new AutoMoveNShoot(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, 2.3, 0.0));
+//         NamedCommands.registerCommand("Step Back Slow",
+//                 new AutoMoveNShoot(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, 2.0, 0.0));
+//         NamedCommands.registerCommand("Step Back Slower",
+//                 new AutoMoveNShoot(m_shooter, m_drive, m_pitcher, m_poseEstimator::getPose, 1.7, 0.0));
+//         NamedCommands.registerCommand("Kick Back",
+//                 (new ReverseIntake(m_feeder, m_indexer, m_intaker).alongWith(m_shooter.runShooter(-10.0, 0))).withTimeout(0.110));
+//         NamedCommands.registerCommand("Stop Shooter", new InstantCommand(() -> m_shooter.stop()));
+//         NamedCommands.registerCommand("DropNoteFront", new MoveToFloor(m_feeder, m_indexer, m_intaker, false));
 
-        // NamedCommands.registerCommand("TrackNoteA", new InstantCommand(() -> {
-        //     //m_poseEstimator.trackNote(4);
-        // }));
-        // NamedCommands.registerCommand("TrackNoteB", new InstantCommand(() -> {
-        //     //m_poseEstimator.trackNote(3);
-        // }));
-        // NamedCommands.registerCommand("TrackNoteC", new InstantCommand(() -> {
-        //     //m_poseEstimator.trackNote(2);
-        // }));
-        // NamedCommands.registerCommand("TrackNoteD", new InstantCommand(() -> {
-        //     //m_poseEstimator.trackNote(1);
-        // }));
-        // NamedCommands.registerCommand("TrackNoteE", new InstantCommand(() -> {
-        //     //m_poseEstimator.trackNote(0);
-        // }));
-        // NamedCommands.registerCommand("TrackSneakAmp", new InstantCommand(() -> {
-        //     //m_poseEstimator.trackSneakNote(5);
-        // }));
-        // NamedCommands.registerCommand("TrackSneakSource", new InstantCommand(() -> {
-        //     //m_poseEstimator.trackSneakNote(6);
-        // }));
-        // NamedCommands.registerCommand("StopNoteTracking", new InstantCommand(() -> {
-        //     //m_poseEstimator.stopNoteTracking();
-        // }));
+//         // NamedCommands.registerCommand("TrackNoteA", new InstantCommand(() -> {
+//         //     //m_poseEstimator.trackNote(4);
+//         // }));
+//         // NamedCommands.registerCommand("TrackNoteB", new InstantCommand(() -> {
+//         //     //m_poseEstimator.trackNote(3);
+//         // }));
+//         // NamedCommands.registerCommand("TrackNoteC", new InstantCommand(() -> {
+//         //     //m_poseEstimator.trackNote(2);
+//         // }));
+//         // NamedCommands.registerCommand("TrackNoteD", new InstantCommand(() -> {
+//         //     //m_poseEstimator.trackNote(1);
+//         // }));
+//         // NamedCommands.registerCommand("TrackNoteE", new InstantCommand(() -> {
+//         //     //m_poseEstimator.trackNote(0);
+//         // }));
+//         // NamedCommands.registerCommand("TrackSneakAmp", new InstantCommand(() -> {
+//         //     //m_poseEstimator.trackSneakNote(5);
+//         // }));
+//         // NamedCommands.registerCommand("TrackSneakSource", new InstantCommand(() -> {
+//         //     //m_poseEstimator.trackSneakNote(6);
+//         // }));
+//         // NamedCommands.registerCommand("StopNoteTracking", new InstantCommand(() -> {
+//         //     //m_poseEstimator.stopNoteTracking();
+//         // }));
 
-    }
+//     }
 
-    public void configureAutoBuilder() {
-        AutoBuilder.configureHolonomic(m_poseEstimator::getPose, m_poseEstimator::resetOdometry,
-                m_drive::getChassisSpeed,
-                m_drive::drive, Auto.autoConfig,
-                () -> {
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-                }, m_drive);
-    }
+//     public void configureAutoBuilder() {
+//         AutoBuilder.configureHolonomic(m_poseEstimator::getPose, m_poseEstimator::resetOdometry,
+//                 m_drive::getChassisSpeed,
+//                 m_drive::drive, Auto.autoConfig,
+//                 () -> {
+//                     var alliance = DriverStation.getAlliance();
+//                     if (alliance.isPresent()) {
+//                         return alliance.get() == DriverStation.Alliance.Red;
+//                     }
+//                     return false;
+//                 }, m_drive);
+//     }
 
     /**
      *
@@ -370,7 +366,7 @@ m_feeder.run(-0.2);
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        return new WaitCommand(0.0);
 
     }
 

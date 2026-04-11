@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.awt.geom.Point2D;
 
+
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -164,19 +165,19 @@ public final class Constants {
 
     public static final class Auto {
 
-      public static final HolonomicPathFollowerConfig autoConfig = new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig,
-                                                                                                    // this should
-                                                                                                    // likely live in
-                                                                                                    // your
-          // Constants class
-          new PIDConstants(3.0, 0.0, 0.0), // Translation PID constants
-          new PIDConstants(3.0, 0.0, 0.0), // Rotation PID constants
-          4.8, // Max module speed, in m/s
-          DriveConstants.kWheelBaseRadius, // Drive base radius in meters. Distance from robot center to furthest
-                                           // module.
-          new ReplanningConfig() // Default path replanning config. See the API for the options here
-      );
-    }
+     public static final HolonomicPathFollowerConfig autoConfig = new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig,
+                                                                                               // this should
+                                                                                               // likely live in
+                                                                                                // your
+         // Constants class
+         new PIDConstants(3.0, 0.0, 0.0), // Translation PID constants
+        new PIDConstants(3.0, 0.0, 0.0), // Rotation PID constants
+        4.8, // Max module speed, in m/s
+        DriveConstants.kWheelBaseRadius, // Drive base radius in meters. Distance from robot center to furthest
+                                          // module.
+        new ReplanningConfig() // Default path replanning config. See the API for the options here
+       );
+   }
   }
 
   public static final class GlobalConstants {
