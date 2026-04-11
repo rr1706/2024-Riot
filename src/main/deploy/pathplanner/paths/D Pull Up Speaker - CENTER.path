@@ -1,0 +1,185 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.293678213604645,
+        "y": 2.435854001522554
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.150595125726627,
+        "y": 3.583515983009141
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.061487326968947,
+        "y": 4.368142031576503
+      },
+      "prevControl": {
+        "x": 5.541631625345989,
+        "y": 3.946551915928368
+      },
+      "nextControl": {
+        "x": 4.602114172083133,
+        "y": 4.771494070012827
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.303745530567986,
+        "y": 5.229479689728611
+      },
+      "prevControl": {
+        "x": 4.593053865137686,
+        "y": 4.8248646568619815
+      },
+      "nextControl": {
+        "x": 3.9285567216114257,
+        "y": 5.754203709494369
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.477971343959805,
+        "y": 5.515804013063089
+      },
+      "prevControl": {
+        "x": 2.336452073195173,
+        "y": 5.515804013063089
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 1.7999999999999998,
+      "maxWaypointRelativePos": 3.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 2.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "race",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "Perpetual Intake Back"
+                    }
+                  },
+                  {
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.25
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Kick Back"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Auto Shooter By Pose"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 2.3000000000000003,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Perpetual Intake Front"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Limelight Pipeline 1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 2.8499999999999996,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Limelight Pipeline 0"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.8,
+    "maxAcceleration": 4.4,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "CENTER",
+  "previewStartingState": {
+    "rotation": 156.80140948635193,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

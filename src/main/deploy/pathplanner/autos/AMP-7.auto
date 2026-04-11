@@ -1,0 +1,148 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.31,
+      "y": 7.044997166917411
+    },
+    "rotation": -150.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 1"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Step Back"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.75
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.7
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Perpetual Intake Back"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Grab 1AB Aggresive"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1AB Aggresive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 0"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Shooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Grab 2AB Aggresive"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2AB Aggresive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Limelight Pipeline 0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Grab 3ABC Aggresive"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3ABC Pull Up Aggresive"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Perpetual Intake Back"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Shooter By Pose"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

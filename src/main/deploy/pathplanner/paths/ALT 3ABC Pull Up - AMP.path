@@ -1,0 +1,146 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.094593992326358,
+        "y": 4.438407050851191
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.64958220358666,
+        "y": 5.3635631379679305
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.677582770286794,
+        "y": 6.124767513443729
+      },
+      "prevControl": {
+        "x": 7.261859929285741,
+        "y": 5.802991686748656
+      },
+      "nextControl": {
+        "x": 5.8695350486278715,
+        "y": 6.569779302183426
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.710162230595501,
+        "y": 6.124767513443729
+      },
+      "prevControl": {
+        "x": 5.459655769525519,
+        "y": 6.382405917450922
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "5-5 END"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.4,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.2,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 4.8,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "race",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "Perpetual Intake Back"
+                    }
+                  },
+                  {
+                    "type": "wait",
+                    "data": {
+                      "waitTime": 0.25
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Kick Back"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Auto Shooter By Pose"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.5,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Limelight Pipeline 1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.8,
+    "maxAcceleration": 4.4,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -172.13207291339234,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "AMP",
+  "previewStartingState": {
+    "rotation": 105.86180136559894,
+    "velocity": 0.5
+  },
+  "useDefaultConstraints": true
+}
