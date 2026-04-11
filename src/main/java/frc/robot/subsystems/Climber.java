@@ -1,24 +1,29 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CurrentLimit;
 import frc.robot.Constants.GlobalConstants;
 
 public class Climber extends SubsystemBase {
-    private final CANSparkMax m_climberL = new CANSparkMax(13, MotorType.kBrushless);
-    private final CANSparkMax m_climberR = new CANSparkMax(12, MotorType.kBrushless);
-    private final SparkPIDController m_pidL = m_climberL.getPIDController();
-    private final SparkPIDController m_pidR = m_climberR.getPIDController();
+    private final SparkMax m_climberL = new SparkMax(13, MotorType.kBrushless);
+    private final SparkMax m_climberR = new SparkMax(12, MotorType.kBrushless);
+    private final SparkClosedLoopController m_pidL = m_climberL.getClosedLoopController();
+    private final SparkClosedLoopController m_pidR = m_climberR.getClosedLoopController();
     private final RelativeEncoder m_leftEncoder = m_climberL.getEncoder();
     private final RelativeEncoder m_rightEncoder = m_climberR.getEncoder();
+    private final SparkMaxConfig m_configL = new SparkMaxConfig();
+    private final SparkMaxConfig m_configR = new SparkMaxConfig();
+
     private double m_leftPose = 2.0;
     private double m_rightPose = 2.0;
 
@@ -26,21 +31,19 @@ public class Climber extends SubsystemBase {
     private boolean m_rightPIDEnabled = true;
 
     public Climber() {
-        m_climberL.setSmartCurrentLimit(CurrentLimit.kClimber);
-        m_climberL.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
-        m_climberL.setIdleMode(IdleMode.kBrake);
-        m_pidL.setP(1.0);
+        m_configL.smartCurrentLimit(CurrentLimit.kClimber);
+        m_configL.voltageCompensation(GlobalConstants.kVoltCompensation);
+        m_configL.idleMode(IdleMode.kBrake);
+        m_configL.closedLoop.p(1.0);
+        m_configL.inverted(true);
+        m_climberL.configure(m_configL, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        m_climberL.setInverted(true);
-        m_climberL.burnFlash();
-
-        m_climberR.setSmartCurrentLimit(CurrentLimit.kClimber);
-        m_climberR.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
-        m_climberR.setIdleMode(IdleMode.kBrake);
-        m_pidR.setP(1.0);
-
-        m_climberR.setInverted(false);
-        m_climberR.burnFlash();
+        m_configR.smartCurrentLimit(CurrentLimit.kClimber);
+        m_configR.voltageCompensation(GlobalConstants.kVoltCompensation);
+        m_configR.idleMode(IdleMode.kBrake);
+        m_configR.closedLoop.p(1.0);
+        m_configR.inverted(false);
+        m_climberR.configure(m_configR, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
     public void zero() {
@@ -99,14 +102,14 @@ public class Climber extends SubsystemBase {
     @Override
     public void periodic() {
         if (m_leftPIDEnabled) {
-            m_pidL.setReference(m_leftPose, ControlType.kPosition);
+            m_pidL.setSetpoint(m_leftPose, ControlType.kPosition);
         }
         if (m_rightPIDEnabled) {
-            m_pidR.setReference(m_rightPose, ControlType.kPosition);
+            m_pidR.setSetpoint(m_rightPose, ControlType.kPosition);
         }
+
         SmartDashboard.putNumber("Left Climber", getLeftPose());
         SmartDashboard.putNumber("Right Climber", getRightPose());
-
     }
 
 }

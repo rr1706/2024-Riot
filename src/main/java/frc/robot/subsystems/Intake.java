@@ -1,33 +1,33 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.CANSparkMax;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CurrentLimit;
 import frc.robot.Constants.GlobalConstants;
 
 public class Intake extends SubsystemBase {
-    private final CANSparkMax m_kick = new CANSparkMax(10, MotorType.kBrushless);
+    private final SparkMax m_kick = new SparkMax(10, MotorType.kBrushless);
+    private final SparkMaxConfig m_kickConfig = new SparkMaxConfig();
     private final TalonFX m_intake = new TalonFX(11,"rio");
     private Slot0Configs slot0Configs = new Slot0Configs();
 
 
     public Intake() {
-        m_kick.setSmartCurrentLimit(CurrentLimit.kKicker);
-        m_kick.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
-        m_kick.setIdleMode(IdleMode.kBrake);
+        m_kickConfig.smartCurrentLimit(CurrentLimit.kKicker);
+        m_kickConfig.voltageCompensation(GlobalConstants.kVoltCompensation);
+        m_kickConfig.idleMode(IdleMode.kBrake);
+        m_kickConfig.inverted(false);
 
-        m_kick.setInverted(false);
-        m_kick.burnFlash();
+        m_kick.configure(m_kickConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
         m_intake.getConfigurator().apply(slot0Configs);
         m_intake.getConfigurator().apply(new CurrentLimitsConfigs()
@@ -35,7 +35,6 @@ public class Intake extends SubsystemBase {
                 .withStatorCurrentLimitEnable(true)
                 .withSupplyCurrentLimit(CurrentLimit.kIntakerSupply)
                 .withSupplyCurrentLimitEnable(true));
-        m_intake.setInverted(false);
         m_intake.setNeutralMode(NeutralModeValue.Brake);
 
     }

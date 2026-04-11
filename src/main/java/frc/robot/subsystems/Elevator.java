@@ -1,11 +1,13 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
-
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -16,8 +18,9 @@ import frc.robot.Constants.CurrentLimit;
 import frc.robot.Constants.GlobalConstants;
 
 public class Elevator extends SubsystemBase{
-    private final CANSparkMax m_motorL = new CANSparkMax(14, MotorType.kBrushless);
-    private final CANSparkMax m_motorR = new CANSparkMax(15, MotorType.kBrushless);
+    private final SparkMax m_motorL = new SparkMax(14, MotorType.kBrushless);
+    private final SparkMax m_motorR = new SparkMax(15, MotorType.kBrushless);
+
     private final RelativeEncoder m_encoderL = m_motorL.getEncoder();
     private final RelativeEncoder m_encoder = m_motorR.getEncoder();
 
@@ -28,27 +31,31 @@ public class Elevator extends SubsystemBase{
     private final ElevatorFeedforward m_ff2 = new ElevatorFeedforward(0.025, 0.02, 1.0/183.0);
 
     private boolean m_PIDEnabled = false;
+
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State(3.0,0.0);
 
+    private final SparkMaxConfig m_motorLConfig = new SparkMaxConfig();
+    private final SparkMaxConfig m_motorRConfig = new SparkMaxConfig();
 
     public Elevator() {
-        m_motorL.setSmartCurrentLimit(CurrentLimit.kElevator);
-        m_motorR.setSmartCurrentLimit(CurrentLimit.kElevator);
-        m_motorL.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
-        m_motorR.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
-        m_motorL.setIdleMode(IdleMode.kBrake);
-        m_motorR.setIdleMode(IdleMode.kBrake);
+        m_motorLConfig.smartCurrentLimit(CurrentLimit.kElevator);
+        m_motorRConfig.smartCurrentLimit(CurrentLimit.kElevator);
 
-        m_motorL.setInverted(true);
-        m_motorR.setInverted(false);
+        m_motorLConfig.voltageCompensation(GlobalConstants.kVoltCompensation);
+        m_motorRConfig.voltageCompensation(GlobalConstants.kVoltCompensation);
+        
+        m_motorLConfig.idleMode(IdleMode.kBrake);
+        m_motorRConfig.idleMode(IdleMode.kBrake);
 
-        m_encoder.setVelocityConversionFactor(1.0/60.0);
+        m_motorLConfig.inverted(true);
+        m_motorRConfig.inverted(false);
 
-        m_motorL.burnFlash();
-        m_motorR.burnFlash();
+        m_motorL.configure(m_motorLConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_motorR.configure(m_motorRConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        m_setpoint= new TrapezoidProfile.State(getLeftPose(),0.0);
+        m_setpoint = new TrapezoidProfile.State(getLeftPose(),0.0);
     }
+    
     @Override
     public void periodic() {
         double output = m_pid.calculate(getLeftPose(), m_setpoint);
@@ -65,8 +72,6 @@ public class Elevator extends SubsystemBase{
         SmartDashboard.putNumber("Ele Desired Pose", state.position);
         SmartDashboard.putNumber("Ele Actual Pose", m_encoder.getPosition());
         SmartDashboard.putNumber("Ele Pose 2", m_encoderL.getPosition());
-
-
     }
 
     public void zero(){
@@ -76,8 +81,8 @@ public class Elevator extends SubsystemBase{
     }
 
     public void set(double power){
-        m_motorL.set(power);
-        m_motorR.set(power);
+        m_motorL.set(power/60);
+        m_motorR.set(power/60);
     }
 
     public void setPose(double pose){
@@ -110,8 +115,4 @@ public class Elevator extends SubsystemBase{
     public void stop(){
         m_motorL.stopMotor();
     }
-
-
-    
-    
 }

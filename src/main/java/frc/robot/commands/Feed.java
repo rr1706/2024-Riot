@@ -4,17 +4,14 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Intake;
 
 public class Feed extends Command {
     private final Feeder m_feed;
     private final Indexer m_indexer;
-    private final Intake m_intake;
     private final Timer m_timer = new Timer();
 
-    public Feed(Feeder feed, Indexer indexer, Intake intake){
+    public Feed(Feeder feed, Indexer indexer){
         m_feed = feed;
-        m_intake = intake;
         m_indexer = indexer;
         addRequirements(m_feed);
     }

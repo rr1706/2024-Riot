@@ -11,11 +11,12 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Timer;
-
 import frc.robot.Constants.*;
 import frc.robot.Constants.DriveConstants.FrontLeft;
 import frc.robot.Constants.DriveConstants.FrontRight;
@@ -56,7 +57,7 @@ public class Drivetrain extends SubsystemBase {
   private final NEOKrakenSwerveModule m_RLModule = new NEOKrakenSwerveModule(RearLeft.kModuleID, RearLeft.kOffset);
   private final NEOKrakenSwerveModule m_RRModule = new NEOKrakenSwerveModule(RearRight.kModuleID, RearRight.kOffset);
 
-  private static AHRS ahrs = new AHRS();
+  private static AHRS ahrs = new AHRS(NavXComType.kMXP_SPI);
 
   private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(DriveConstants.kSwerveKinematics,
       ahrs.getRotation2d(), getModulePositions());

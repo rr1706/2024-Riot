@@ -1,19 +1,21 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.FeedbackSensor;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkMax;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -28,10 +30,11 @@ import frc.robot.Constants.ModuleConstants.Drive;
  * and an analog azimuth Encoder
  */
 public class NEOKrakenSwerveModule extends SubsystemBase {
-    private final CANSparkMax m_azimuthMotor;
+    private final SparkMax m_azimuthMotor;
+    private final SparkMaxConfig m_azimuthConfig = new SparkMaxConfig();
     private final TalonFX m_driveMotor;
     private final AbsoluteEncoder m_azimuthEnc;
-    private final SparkPIDController m_azimuthPID;
+    private final SparkClosedLoopController m_azimuthPID;
     private Slot0Configs slot0Configs = new Slot0Configs();
     private final VelocityVoltage m_request = new VelocityVoltage(0.0).withSlot(0);
 
@@ -54,34 +57,26 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
 
         m_driveMotor.getConfigurator().apply(new ClosedLoopRampsConfigs().withVoltageClosedLoopRampPeriod(0.100));
 
-        m_azimuthMotor = new CANSparkMax(moduleID, MotorType.kBrushless);
-        //m_azimuthMotor.restoreFactoryDefaults();
-        m_azimuthMotor.setSmartCurrentLimit(CurrentLimit.kAzimuth);
-        m_azimuthMotor.enableVoltageCompensation(GlobalConstants.kVoltCompensation);
-        m_azimuthMotor.setInverted(true);
-        m_azimuthMotor.setIdleMode(IdleMode.kBrake);
+        m_azimuthMotor = new SparkMax(moduleID, MotorType.kBrushless);
+        m_azimuthConfig.smartCurrentLimit(CurrentLimit.kAzimuth);
+        m_azimuthConfig.voltageCompensation(GlobalConstants.kVoltCompensation);
+        m_azimuthConfig.inverted(true);
+        m_azimuthConfig.idleMode(IdleMode.kBrake);
+        m_azimuthMotor.configure(m_azimuthConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        m_azimuthEnc = m_azimuthMotor.getAbsoluteEncoder(Type.kDutyCycle);
-        m_azimuthEnc.setPositionConversionFactor(Aziumth.kPositionFactor);
-        m_azimuthEnc.setVelocityConversionFactor(Aziumth.kVelocityFactor);
+        m_azimuthEnc = m_azimuthMotor.getAbsoluteEncoder();
+        m_azimuthConfig.encoder.positionConversionFactor(Aziumth.kPositionFactor);
+        m_azimuthConfig.encoder.velocityConversionFactor(Aziumth.kVelocityFactor);
 
-        //m_azimuthEnc.setZeroOffset(offset);
-
-        m_azimuthEnc.setInverted(true);
+        m_azimuthConfig.inverted(true);
 
 
 
-        m_azimuthPID = m_azimuthMotor.getPIDController();
+        m_azimuthPID = m_azimuthMotor.getClosedLoopController();
 
-        m_azimuthPID.setFeedbackDevice(m_azimuthEnc);
+        m_azimuthConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
 
-        m_azimuthPID.setPositionPIDWrappingEnabled(true);
-        m_azimuthPID.setPositionPIDWrappingMinInput(0.0);
-        m_azimuthPID.setPositionPIDWrappingMaxInput(2.0 * Math.PI);
-
-        m_azimuthPID.setP(Aziumth.kp);
-
-        m_azimuthMotor.burnFlash();
+        m_azimuthConfig.closedLoop.p(Aziumth.kp);
     }
 
     /**
@@ -126,7 +121,7 @@ public class NEOKrakenSwerveModule extends SubsystemBase {
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getStateAngle()));
         double metersToRotations = state.speedMetersPerSecond * Drive.kToRots;
         m_driveMotor.setControl(m_request.withVelocity(metersToRotations).withSlot(0));
-        m_azimuthPID.setReference(state.angle.getRadians(), ControlType.kPosition);
+        m_azimuthPID.setSetpoint(state.angle.getRadians(), ControlType.kPosition);
     }
 
     public double getStateAngle() {
