@@ -14,7 +14,6 @@ import com.ctre.phoenix6.swerve.SwerveModule;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.controllers.PPLTVController;
 import com.reduxrobotics.sensors.canandgyro.Canandgyro;
@@ -200,10 +199,10 @@ public class Drivetrain extends SubsystemBase {
     double speed = Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed);
     
     SmartDashboard.putNumber("Speed", speed);
-    SmartDashboard.putNumber("Front Left Encoder", m_FLModule.getStateAngle().getRadians());
-    SmartDashboard.putNumber("Front Right Encoder", m_FRModule.getStateAngle().getRadians());
-    SmartDashboard.putNumber("Rear Left Encoder", m_RLModule.getStateAngle().getRadians());
-    SmartDashboard.putNumber("Rear Right Encoder", m_RRModule.getStateAngle().getRadians());
+    SmartDashboard.putNumber("Front Left Encoder", m_FLModule.getStateAngle());
+    SmartDashboard.putNumber("Front Right Encoder", m_FRModule.getStateAngle());
+    SmartDashboard.putNumber("Rear Left Encoder", m_RLModule.getStateAngle());
+    SmartDashboard.putNumber("Rear Right Encoder", m_RRModule.getStateAngle());
     SmartDashboard.putNumber("Front Left Speed", m_FLModule.getDriveVelocity());
     SmartDashboard.putNumber("Front Right Speed", m_FRModule.getDriveVelocity());
     SmartDashboard.putNumber("Rear Left Speed", m_RLModule.getDriveVelocity());
