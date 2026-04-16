@@ -1,8 +1,8 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.*;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.utilities.MathUtils;
+import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -14,7 +14,7 @@ public class DriveByController extends Command {
   private final Drivetrain m_robotDrive;
   private final CommandXboxController m_controller;
 
-  private boolean fieldOrient = true;
+  private boolean fieldOrient = false;
 
   /**
    * Contructs a DriveByController object which applys the driver inputs from the
@@ -79,4 +79,5 @@ public class DriveByController extends Command {
       fieldOrient = true;
     }
   }
+
 }
