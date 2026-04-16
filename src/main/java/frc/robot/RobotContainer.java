@@ -218,8 +218,8 @@ m_feeder.run(-0.2);
                 .onFalse(new InstantCommand(() -> m_elevator.setPose(3.0)).andThen(new WaitCommand(0.25))
                         .andThen(new ZeroElevator(m_elevator)));
 
-        m_driverController.y().onTrue(new InstantCommand(() -> m_climber.setPose(1.0)));
-        m_driverController.start().onTrue(new InstantCommand(() -> m_climber.setPose(1.0)));
+     //   m_driverController.y().onTrue(new InstantCommand(() -> m_climber.setPose(1.0)));
+     //   m_driverController.start().onTrue(new InstantCommand(() -> m_climber.setPose(1.0)));
 
         m_operatorPanel.button(2)
                 .whileTrue(new AutoIntakeAimAssist(m_drive, 1.5)
