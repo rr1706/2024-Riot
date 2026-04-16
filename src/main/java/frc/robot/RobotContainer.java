@@ -162,20 +162,7 @@ m_feeder.run(-0.2);
         m_driverController.pov(0).onTrue(m_shooter.changeSpeed(10.0));
         m_driverController.pov(180).onTrue(m_shooter.changeSpeed(-10.0));
 
-        m_driverController.pov(0).onTrue(
-                new InstantCommand(
-                        () -> {
-                            var alliance = DriverStation.getAlliance();
-                            if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-                                m_poseEstimator
-                                        .resetOdometry(new Pose2d(new Translation2d(15.17, 5.55), new Rotation2d()));
-                            } else {
-                                m_poseEstimator.resetOdometry(
-                                        new Pose2d(new Translation2d(1.31, 5.55), new Rotation2d(Math.PI)));
-                            }
-                        }));
-        m_driverController.pov(180).onTrue(new InstantCommand(
-                () -> m_drive.resetOdometry(new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(Math.PI)))));
+        m_driverController.start().onTrue((new InstantCommand(()-> m_drive.resetOdometry(new Pose2d()))));
 
         // m_driverController.leftTrigger(0.25)
         //         .whileTrue(m_shoot)
