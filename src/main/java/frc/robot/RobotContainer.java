@@ -17,9 +17,7 @@ import frc.robot.commands.DriveByController;
 import frc.robot.commands.Feed;
 import frc.robot.commands.Handoff;
 import frc.robot.commands.ReverseIntake;
-import frc.robot.commands.ZeroClimber;
 import frc.robot.commands.ZeroElevator;
-import frc.robot.commands.ZeroPitcher;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
@@ -61,13 +59,14 @@ public class RobotContainer {
                 .onFalse(new InstantCommand(() -> m_pitcher.pitchToAngle(PitcherConstants.kHome))
                         .alongWith(new InstantCommand(() -> m_shooter.stop())));
 
-                        m_driverController.rightBumper().onTrue(new InstantCommand(() ->{
-                                m_shooter.run(-10.0, 0.0);
-                                m_feeder.run(-0.2);
-                        })).onFalse(new InstantCommand(()->{
-                                m_shooter.stop();
-                                m_feeder.stop();
-                        }));
+        m_driverController.rightBumper()
+                .onTrue(new InstantCommand(() ->{
+                        m_shooter.run(-10.0, 0.0);
+                        m_feeder.run(-0.2);
+                })).onFalse(new InstantCommand(()->{
+                        m_shooter.stop();
+                        m_feeder.stop();
+                }));
 
         m_driverController.rightTrigger(0.25)
                 .onTrue(new InstantCommand(() -> m_feeder.run(0.6))
@@ -81,7 +80,7 @@ public class RobotContainer {
         m_driverController.pov(0).onTrue(m_shooter.changeSpeed(10.0));
         m_driverController.pov(180).onTrue(m_shooter.changeSpeed(-10.0));
 
-        m_driverController.pov(180).onTrue(new InstantCommand(
+        m_driverController.start().onTrue(new InstantCommand(
                 () -> m_drive.resetOdometry(new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(Math.PI)))));
 
         m_driverController.rightTrigger(0.25).whileTrue(new Feed(m_feeder, m_indexer));
@@ -93,9 +92,6 @@ public class RobotContainer {
         m_driverController.rightBumper()
                 .whileTrue(
                         new Handoff(m_intaker, m_indexer, m_manipulator, m_feeder, -14.0, m_elevator, m_drive, false));
-
-        m_driverController.b().onTrue(new InstantCommand(() -> m_manipulator.run(.4)))
-                .onFalse(new InstantCommand(() -> m_manipulator.stop()));
 
         m_driverController.back()
                 .onTrue(new InstantCommand(() -> m_climber.setPose(70.0)).alongWith(new ZeroElevator(m_elevator)));
@@ -110,8 +106,5 @@ public class RobotContainer {
         m_driverController.a().onTrue(new InstantCommand(() -> m_elevator.setPose(28.0)))
                 .onFalse(new InstantCommand(() -> m_elevator.setPose(3.0)).andThen(new WaitCommand(0.25))
                         .andThen(new ZeroElevator(m_elevator)));
-
-        m_driverController.y().onTrue(new InstantCommand(() -> m_climber.setPose(1.0)));
-        m_driverController.start().onTrue(new InstantCommand(() -> m_climber.setPose(1.0)));
     }
 }
