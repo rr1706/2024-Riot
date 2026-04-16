@@ -52,10 +52,10 @@ public class Drivetrain extends SubsystemBase {
   private SlewRateLimiter m_slewY = new SlewRateLimiter(DriveConstants.kTransSlewRate);
   private SlewRateLimiter m_slewRot = new SlewRateLimiter(DriveConstants.kRotSlewRate);
 
-  private final NEOKrakenSwerveModule m_FLModule = new NEOKrakenSwerveModule(FrontLeft.kModuleID, FrontLeft.kOffset);
-  private final NEOKrakenSwerveModule m_FRModule = new NEOKrakenSwerveModule(FrontRight.kModuleID, FrontRight.kOffset);
-  private final NEOKrakenSwerveModule m_RLModule = new NEOKrakenSwerveModule(RearLeft.kModuleID, RearLeft.kOffset);
-  private final NEOKrakenSwerveModule m_RRModule = new NEOKrakenSwerveModule(RearRight.kModuleID, RearRight.kOffset);
+  private final swerve m_FLModule = new swerve(FrontLeft.kModuleID, FrontLeft.kOffset);
+  private final swerve m_FRModule = new swerve(FrontRight.kModuleID, FrontRight.kOffset);
+  private final swerve m_RLModule = new swerve(RearLeft.kModuleID, RearLeft.kOffset);
+  private final swerve m_RRModule = new swerve(RearRight.kModuleID, RearRight.kOffset);
 
   private static AHRS ahrs = new AHRS(NavXComType.kMXP_SPI);
 
