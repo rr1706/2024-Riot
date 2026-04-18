@@ -57,7 +57,6 @@ public class DriveByController extends Command {
     double desiredRot = -MathUtils.inputTransform(m_controller.getRightX()) * DriveConstants.kMaxAngularSpeed;
 
     m_robotDrive.drive(desiredTrans[0], desiredTrans[1], desiredRot, true, true);
-
   }
 
   @Override
