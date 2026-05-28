@@ -76,7 +76,6 @@ public class BiDirectionalIntake extends Command {
         m_indexer.stop();
         m_feeder.stop();
         m_controller.getHID().setRumble(RumbleType.kBothRumble, 0.0);
-
     }
 
 }

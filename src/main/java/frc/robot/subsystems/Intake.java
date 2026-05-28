@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -17,26 +17,12 @@ import frc.robot.Constants.GlobalConstants;
 public class Intake extends SubsystemBase {
     private final SparkMax m_kick = new SparkMax(10, MotorType.kBrushless);
     private final SparkMaxConfig m_kickConfig = new SparkMaxConfig();
-    private final TalonFX m_intake = new TalonFX(11,"rio");
-    private Slot0Configs slot0Configs = new Slot0Configs();
 
+    private final TalonFX m_intake = new TalonFX(11,"rio");
+    private final TalonFXConfigurator m_intakeCfg = m_intake.getConfigurator();
 
     public Intake() {
-        m_kickConfig.smartCurrentLimit(CurrentLimit.kKicker);
-        m_kickConfig.voltageCompensation(GlobalConstants.kVoltCompensation);
-        m_kickConfig.idleMode(IdleMode.kBrake);
-        m_kickConfig.inverted(false);
-
-        m_kick.configure(m_kickConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-
-        m_intake.getConfigurator().apply(slot0Configs);
-        m_intake.getConfigurator().apply(new CurrentLimitsConfigs()
-                .withStatorCurrentLimit(CurrentLimit.kIntakerStator)
-                .withStatorCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(CurrentLimit.kIntakerSupply)
-                .withSupplyCurrentLimitEnable(true));
-        m_intake.setNeutralMode(NeutralModeValue.Brake);
-
+        motorConfigs();
     }
 
     public void run(double speed) {
@@ -57,7 +43,6 @@ public class Intake extends SubsystemBase {
             m_kick.set(-speed * 0.7);
             m_intake.set(speed);
         }
-
     }
 
     public double getKickerCurrent() {
@@ -67,5 +52,23 @@ public class Intake extends SubsystemBase {
     public void stop() {
         m_kick.stopMotor();
         m_intake.stopMotor();
+    }
+
+    public void motorConfigs() {
+        m_kickConfig.smartCurrentLimit(CurrentLimit.kKicker);
+        m_kickConfig.voltageCompensation(GlobalConstants.kVoltCompensation);
+
+        m_kickConfig.idleMode(IdleMode.kBrake);
+        m_kickConfig.inverted(false);
+
+        m_kick.configure(m_kickConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+
+        m_intakeCfg.apply(new CurrentLimitsConfigs()
+                .withStatorCurrentLimit(CurrentLimit.kIntakerStator)
+                .withStatorCurrentLimitEnable(true)
+                .withSupplyCurrentLimit(CurrentLimit.kIntakerSupply)
+                .withSupplyCurrentLimitEnable(true));
+
+        m_intake.setNeutralMode(NeutralModeValue.Brake);
     }
 }

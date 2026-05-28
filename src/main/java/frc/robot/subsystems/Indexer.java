@@ -6,6 +6,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
+
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CurrentLimit;
 import frc.robot.Constants.GlobalConstants;
@@ -15,19 +17,27 @@ public class Indexer extends SubsystemBase {
     private final SparkMaxConfig m_config = new SparkMaxConfig();
 
     public Indexer() {
-        m_config.smartCurrentLimit(CurrentLimit.kIndexer);
-        m_config.voltageCompensation(GlobalConstants.kVoltCompensation);
-        m_config.idleMode(IdleMode.kBrake);
-        m_config.inverted(false);
-
-        m_motor.configure(m_config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        motorConfigs();
     }
 
     public void run(double speed) {
         m_motor.set(speed);
     }
 
+    public Command runCmd(double speed) {
+        return runEnd(()-> run(speed), ()-> stop());
+    }
+
     public void stop() {
         m_motor.stopMotor();
+    }
+
+    public void motorConfigs() {
+        m_config.smartCurrentLimit(CurrentLimit.kIndexer);
+        m_config.voltageCompensation(GlobalConstants.kVoltCompensation);
+        m_config.idleMode(IdleMode.kBrake);
+        m_config.inverted(false);
+
+        m_motor.configure(m_config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 }

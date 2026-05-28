@@ -11,8 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.studica.frc.AHRS;
-import com.studica.frc.AHRS.NavXComType;
+import com.reduxrobotics.sensors.canandgyro.Canandgyro;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -53,18 +52,17 @@ public class Drivetrain extends SubsystemBase {
   private SlewRateLimiter m_slewY = new SlewRateLimiter(DriveConstants.kTransSlewRate);
   private SlewRateLimiter m_slewRot = new SlewRateLimiter(DriveConstants.kRotSlewRate);
 
-  private final swerve m_FLModule = new swerve(FrontLeft.kModuleID, FrontLeft.kOffset);
-  private final swerve m_FRModule = new swerve(FrontRight.kModuleID, FrontRight.kOffset);
-  private final swerve m_RLModule = new swerve(RearLeft.kModuleID, RearLeft.kOffset);
-  private final swerve m_RRModule = new swerve(RearRight.kModuleID, RearRight.kOffset);
-
-  private static AHRS ahrs = new AHRS(NavXComType.kMXP_SPI);
+  private final SwerveModule m_FLModule = new SwerveModule(FrontLeft.kModuleID);
+  private final SwerveModule m_FRModule = new SwerveModule(FrontRight.kModuleID);
+  private final SwerveModule m_RLModule = new SwerveModule(RearLeft.kModuleID);
+  private final SwerveModule m_RRModule = new SwerveModule(RearRight.kModuleID);
+  private static Canandgyro gyro = new Canandgyro(20);
 
   private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(DriveConstants.kSwerveKinematics,
-      ahrs.getRotation2d(), getModulePositions());
+      gyro.getRotation2d(), getModulePositions());
 
   private final SwerveDriveOdometry m_autoOdometry = new SwerveDriveOdometry(DriveConstants.kSwerveKinematics,
-      ahrs.getRotation2d(), getModulePositions());
+      gyro.getRotation2d(), getModulePositions());
 
   private final double[] m_latestSlew = { 0.0, 0.0, 0.0 };
 
@@ -79,8 +77,8 @@ public class Drivetrain extends SubsystemBase {
     m_keepAngleTimer.reset();
     m_keepAngleTimer.start();
     m_keepAnglePID.enableContinuousInput(-Math.PI, Math.PI);
-    m_odometry.resetPosition(ahrs.getRotation2d(), getModulePositions(), new Pose2d());
-    ahrs.reset();
+    m_odometry.resetPosition(gyro.getRotation2d(), getModulePositions(), new Pose2d());
+    gyro.setYaw(0.0);
   }
 
   /**
@@ -118,7 +116,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     if (fieldRelative) {
-      setModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, ahrs.getRotation2d()));
+      setModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, gyro.getRotation2d()));
     } else {
       setModuleStates(new ChassisSpeeds(xSpeed, ySpeed, rot));
     }
@@ -138,7 +136,6 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-
     ChassisSpeeds m_speeds = getChassisSpeed();
 
     m_driveAccel = new ChassisAccel(m_speeds, m_lastDriveSpeed, GlobalConstants.kLoopTime);
@@ -216,12 +213,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getTilt() {
-    return ahrs.getRoll();
-    // return MathUtils.pythagorean(ahrs.getRoll(), ahrs.getPitch());
-  }
-
-  public double getTiltVel() {
-    return ahrs.getRawGyroY();
+    return gyro.getRoll();
+    // return MathUtils.pythagorean(gyro.getRoll(), gyro.getPitch());
   }
 
   public double getSpeed() {
@@ -238,11 +231,11 @@ public class Drivetrain extends SubsystemBase {
    * once per loop to minimize error.
    */
   public void updateOdometry() {
-    m_odometry.update(ahrs.getRotation2d(), getModulePositions());
+    m_odometry.update(gyro.getRotation2d(), getModulePositions());
   }
 
   public void updateAutoOdometry() {
-    m_autoOdometry.update(ahrs.getRotation2d(), getModulePositions());
+    m_autoOdometry.update(gyro.getRotation2d(), getModulePositions());
   }
 
   /**
@@ -251,7 +244,7 @@ public class Drivetrain extends SubsystemBase {
    * @return Rotation2d object containing Gyro angle
    */
   public Rotation2d getGyro() {
-    return ahrs.getRotation2d();
+    return gyro.getRotation2d();
   }
 
   /**
@@ -283,15 +276,14 @@ public class Drivetrain extends SubsystemBase {
    * @param pose in which to set the odometry and gyro.
    */
   public void resetOdometry(Pose2d pose) {
-    ahrs.reset();
-    ahrs.setAngleAdjustment(pose.getRotation().getDegrees());
+    gyro.setYaw(pose.getRotation().getRotations());
     updateKeepAngle();
-    m_odometry.resetPosition(ahrs.getRotation2d().times(-1.0), getModulePositions(), pose);
-    m_autoOdometry.resetPosition(ahrs.getRotation2d().times(-1.0), getModulePositions(), pose);
+    m_odometry.resetPosition(gyro.getRotation2d().times(-1.0), getModulePositions(), pose);
+    m_autoOdometry.resetPosition(gyro.getRotation2d().times(-1.0), getModulePositions(), pose);
   }
 
   public void setPose(Pose2d pose) {
-    m_odometry.resetPosition(ahrs.getRotation2d().times(-1.0), getModulePositions(), pose);
+    m_odometry.resetPosition(gyro.getRotation2d().times(-1.0), getModulePositions(), pose);
   }
 
   /**
@@ -300,11 +292,10 @@ public class Drivetrain extends SubsystemBase {
    * @param angle the angle of the robot to reset to
    */
   public void resetOdometry(Rotation2d angle) {
-    ahrs.reset();
-    ahrs.setAngleAdjustment(angle.getDegrees());
+    gyro.setYaw(angle.getRotations());
     Pose2d pose = new Pose2d(getPose().getTranslation(), angle);
     updateKeepAngle();
-    m_odometry.resetPosition(ahrs.getRotation2d().times(-1.0), getModulePositions(), pose);
+    m_odometry.resetPosition(gyro.getRotation2d().times(-1.0), getModulePositions(), pose);
   }
 
   /**
